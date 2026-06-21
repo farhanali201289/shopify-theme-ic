@@ -33,7 +33,7 @@
   {% render 'section-spacing', sid: section.id, s: section.settings %}
   @media (max-width: 749px) {
     #shopify-section-{{ section.id }} .gap-stats {
-      grid-template-columns: 1fr 1fr !important;
+      grid-template-columns: repeat({{ section.settings.stats_cols_mob }}, 1fr) !important;
     }
   }
 </style>
@@ -46,6 +46,10 @@
     { "type": "text", "id": "attribution", "label": "Attribution", "default": "— A recovery nurse we work with" },
     { "type": "richtext", "id": "body", "label": "Body" },
     { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "range", "id": "stats_cols_mob", "label": "Stats columns on mobile",
+      "min": 1, "max": 2, "step": 1, "default": 2
+    },
     { "type": "header", "content": "─── Spacing & Width ───" },
     { "type": "header", "content": "Padding — Desktop" },
     { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 20, "step": 1, "default": 4 },
