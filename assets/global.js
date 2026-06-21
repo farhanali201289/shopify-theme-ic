@@ -86,12 +86,14 @@
   if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileNav);
 
   /* ---------- Horizontal scrollers (carousels) ---------- */
-  document.querySelectorAll('[data-scroller]').forEach((scroller) => {
-    const track = scroller.querySelector('[data-scroller-track]');
+  function initScroller(scroller) {
+    if (scroller._scrollerInit) return;
+    var track = scroller.querySelector('[data-scroller-track]');
     if (!track) return;
-    scroller.querySelectorAll('[data-scroller-btn]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const dir = btn.dataset.scrollerBtn === 'prev' ? -1 : 1;
+    scroller._scrollerInit = true;
+    scroller.querySelectorAll('[data-scroller-btn]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var dir = btn.dataset.scrollerBtn === 'prev' ? -1 : 1;
         track.scrollBy({ left: dir * Math.min(track.clientWidth * 0.85, 640), behavior: 'smooth' });
       });
     });
@@ -100,6 +102,7 @@
     if (!interval) return;
     var timer;
     function startAuto() {
+      if (track.clientWidth === 0) return;
       timer = setInterval(function() {
         var maxScroll = track.scrollWidth - track.clientWidth;
         if (track.scrollLeft >= maxScroll - 2) {
@@ -115,7 +118,25 @@
     scroller.addEventListener('mouseleave', startAuto);
     scroller.addEventListener('touchstart', stopAuto, { passive: true });
     scroller.addEventListener('touchend', function() { setTimeout(startAuto, 1000); });
+  }
+
+  document.querySelectorAll('[data-scroller]').forEach(function(scroller) {
+    if (scroller.offsetParent !== null) {
+      initScroller(scroller);
+    }
   });
+
+  /* Re-init hidden scrollers when they become visible (e.g. mobile review slider) */
+  if ('ResizeObserver' in window) {
+    var scrollerOb = new ResizeObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.contentRect.width > 0) initScroller(entry.target);
+      });
+    });
+    document.querySelectorAll('[data-scroller]').forEach(function(scroller) {
+      if (!scroller._scrollerInit) scrollerOb.observe(scroller);
+    });
+  }
 
   /* ---------- Filter chips (kit finder / review filters) ---------- */
   document.querySelectorAll('[data-filter-group]').forEach((group) => {

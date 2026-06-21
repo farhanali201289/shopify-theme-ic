@@ -145,7 +145,7 @@
   {{ s }} .pv-video-scroller .voice-video { flex: 0 0 180px; }
   {{ s }} .pv-video-scroller .scroller__btn { top: 50%; transform: translateY(-50%); }
 
-  {{ s }} .pv-reviews-mobile { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  {{ s }} .pv-reviews-mobile { display: none; }
   {{ s }} .pv-reviews-mobile .review-card {
     flex: 0 0 280px; max-width: 85vw; scroll-snap-align: start;
   }
@@ -153,7 +153,7 @@
 
   @media (max-width: 749px) {
     {{ s }} .pv-reviews-desktop { display: none !important; }
-    {{ s }} .pv-reviews-mobile { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+    {{ s }} .pv-reviews-mobile { display: block; }
     {{ s }} .pv-eyebrow {
       font-size: {{ section.settings.eb_size_m }}px;
       font-weight: {{ section.settings.eb_weight_m }};
