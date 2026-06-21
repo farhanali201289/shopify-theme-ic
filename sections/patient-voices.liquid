@@ -1,8 +1,25 @@
+{%- liquid
+  assign eb_lh = section.settings.eb_lh | times: 1.0 | divided_by: 10.0
+  assign eb_ls = section.settings.eb_ls | times: 1.0 | divided_by: 100.0
+  assign eb_lh_m = section.settings.eb_lh_m | times: 1.0 | divided_by: 10.0
+  assign eb_ls_m = section.settings.eb_ls_m | times: 1.0 | divided_by: 100.0
+
+  assign h_lh = section.settings.h_lh | times: 1.0 | divided_by: 10.0
+  assign h_ls = section.settings.h_ls | times: 1.0 | divided_by: 100.0
+  assign h_lh_m = section.settings.h_lh_m | times: 1.0 | divided_by: 10.0
+  assign h_ls_m = section.settings.h_ls_m | times: 1.0 | divided_by: 100.0
+
+  assign f_lh = section.settings.f_lh | times: 1.0 | divided_by: 10.0
+  assign f_ls = section.settings.f_ls | times: 1.0 | divided_by: 100.0
+  assign f_lh_m = section.settings.f_lh_m | times: 1.0 | divided_by: 10.0
+  assign f_ls_m = section.settings.f_ls_m | times: 1.0 | divided_by: 100.0
+-%}
+
 <section class="section" style="background: var(--sand);">
   <div class="page-width">
-    <div style="text-align:center; margin-bottom:40px;">
-      {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
-      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    <div class="pv-intro">
+      {%- if section.settings.eyebrow != blank -%}<span class="pv-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="pv-heading">{{ section.settings.heading }}</h2>
     </div>
 
     {%- assign stat_blocks = section.blocks | where: 'type', 'stat' -%}
@@ -10,7 +27,7 @@
       <div class="product-grid grid-3" style="border:1px solid var(--border); border-radius:var(--card-radius); overflow:hidden; gap:0; margin-bottom:40px;">
         {%- for block in stat_blocks -%}
           <div style="background:var(--cream); padding:24px; text-align:center; {% unless forloop.last %}border-right:1px solid var(--border);{% endunless %}" {{ block.shopify_attributes }}>
-            <div style="font-family:var(--font-heading); font-size:48px; color:var(--accent); line-height:1;">{{ block.settings.number }}</div>
+            <div class="pv-stat-num" style="font-family:var(--font-heading); font-size:48px; color:var(--accent); line-height:1;">{{ block.settings.number }}</div>
             <div style="font-family:var(--font-body); font-size:12px; color:var(--taupe); line-height:1.5; max-width:200px; margin:6px auto 0;">{{ block.settings.label }}</div>
           </div>
         {%- endfor -%}
@@ -19,18 +36,21 @@
 
     {%- assign video_blocks = section.blocks | where: 'type', 'video' -%}
     {%- if video_blocks.size > 0 -%}
-      <div class="voice-videos">
-        {%- for block in video_blocks -%}
-          {%- assign vlink = block.settings.link | default: '#' -%}
-          <a class="voice-video" href="{{ vlink }}" {{ block.shopify_attributes }}>
-            {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 360 | image_tag: loading: 'lazy', alt: block.settings.name }}{%- endif -%}
-            <span class="voice-video__play">&#9654;</span>
-            <span class="voice-video__label">
-              {%- if block.settings.category != blank -%}<span class="voice-video__cat">{{ block.settings.category }}</span>{%- endif -%}
-              <span class="voice-video__name">{{ block.settings.name }}</span>
-            </span>
-          </a>
-        {%- endfor -%}
+      <div class="scroller pv-video-scroller" data-scroller data-auto-slide="3000">
+        <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
+        <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
+        <div class="scroller__track" data-scroller-track>
+          {%- for block in video_blocks -%}
+            <a class="voice-video" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 360 | image_tag: loading: 'lazy', alt: block.settings.name }}{%- endif -%}
+              <span class="voice-video__play">&#9654;</span>
+              <span class="voice-video__label">
+                {%- if block.settings.category != blank -%}<span class="voice-video__cat">{{ block.settings.category }}</span>{%- endif -%}
+                <span class="voice-video__name">{{ block.settings.name }}</span>
+              </span>
+            </a>
+          {%- endfor -%}
+        </div>
       </div>
     {%- endif -%}
 
@@ -38,7 +58,7 @@
     {%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
 
     {%- if tab_blocks.size > 0 and review_blocks.size > 0 -%}
-      <div class="voice-tabs-label">{{ section.settings.filter_label }}</div>
+      <div class="pv-filter-label">{{ section.settings.filter_label }}</div>
       <div class="voice-tabs" data-filter-group data-filter-target="#voice-reviews-{{ section.id }}">
         {%- for block in tab_blocks -%}
           <button class="voice-tab {% if forloop.first %}is-active{% endif %}" data-filter="{{ block.settings.value | default: 'all' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</button>
@@ -65,7 +85,65 @@
   </div>
 </section>
 
-<style>{% render 'section-spacing', sid: section.id, s: section.settings %}</style>
+<style>
+  {%- capture s -%}#shopify-section-{{ section.id }}{%- endcapture -%}
+  {% render 'section-spacing', sid: section.id, s: section.settings %}
+
+  {{ s }} .pv-intro { text-align: center; margin-bottom: 40px; }
+  {{ s }} .pv-eyebrow {
+    display: block; text-transform: uppercase; margin-bottom: 8px;
+    color: {{ section.settings.eb_color | default: 'inherit' }};
+    font-size: {{ section.settings.eb_size }}px;
+    font-weight: {{ section.settings.eb_weight }};
+    text-align: {{ section.settings.eb_align }};
+    line-height: {{ eb_lh }};
+    letter-spacing: {{ eb_ls }}em;
+  }
+  {{ s }} .pv-heading {
+    color: {{ section.settings.h_color | default: 'inherit' }};
+    font-size: {{ section.settings.h_size }}px;
+    font-weight: {{ section.settings.h_weight }};
+    text-align: {{ section.settings.h_align }};
+    line-height: {{ h_lh }};
+    letter-spacing: {{ h_ls }}em;
+  }
+  {{ s }} .pv-filter-label {
+    font-family: var(--font-body); text-transform: uppercase; text-align: center; margin: 8px 0 10px;
+    color: {{ section.settings.f_color | default: 'var(--accent)' }};
+    font-size: {{ section.settings.f_size }}px;
+    font-weight: {{ section.settings.f_weight }};
+    line-height: {{ f_lh }};
+    letter-spacing: {{ f_ls }}em;
+  }
+
+  {{ s }} .pv-video-scroller { margin-bottom: 24px; }
+  {{ s }} .pv-video-scroller .voice-video { flex: 0 0 180px; }
+  {{ s }} .pv-video-scroller .scroller__btn { top: 50%; transform: translateY(-50%); }
+
+  @media (max-width: 749px) {
+    {{ s }} .pv-eyebrow {
+      font-size: {{ section.settings.eb_size_m }}px;
+      font-weight: {{ section.settings.eb_weight_m }};
+      text-align: {{ section.settings.eb_align_m }};
+      line-height: {{ eb_lh_m }};
+      letter-spacing: {{ eb_ls_m }}em;
+    }
+    {{ s }} .pv-heading {
+      font-size: {{ section.settings.h_size_m }}px;
+      font-weight: {{ section.settings.h_weight_m }};
+      text-align: {{ section.settings.h_align_m }};
+      line-height: {{ h_lh_m }};
+      letter-spacing: {{ h_ls_m }}em;
+    }
+    {{ s }} .pv-filter-label {
+      font-size: {{ section.settings.f_size_m }}px;
+      font-weight: {{ section.settings.f_weight_m }};
+      line-height: {{ f_lh_m }};
+      letter-spacing: {{ f_ls_m }}em;
+    }
+    {{ s }} .pv-video-scroller .voice-video { flex: 0 0 150px; }
+  }
+</style>
 
 {% schema %}
 {
@@ -74,6 +152,50 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What patients say" },
     { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>You'll feel the difference <em>at your very next appointment.</em></p>" },
     { "type": "text", "id": "filter_label", "label": "Filter row label", "default": "Filter patient stories" },
+
+    { "type": "header", "content": "─── Eyebrow ───" },
+    { "type": "color", "id": "eb_color", "label": "Color" },
+    { "type": "header", "content": "Eyebrow — Desktop" },
+    { "type": "range", "id": "eb_size", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 11, "unit": "px" },
+    { "type": "select", "id": "eb_weight", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "select", "id": "eb_align", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "eb_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "eb_ls", "label": "Spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 12 },
+    { "type": "header", "content": "Eyebrow — Mobile" },
+    { "type": "range", "id": "eb_size_m", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 9, "unit": "px" },
+    { "type": "select", "id": "eb_weight_m", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "select", "id": "eb_align_m", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "eb_lh_m", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "eb_ls_m", "label": "Spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 12 },
+
+    { "type": "header", "content": "─── Heading ───" },
+    { "type": "color", "id": "h_color", "label": "Color" },
+    { "type": "header", "content": "Heading — Desktop" },
+    { "type": "range", "id": "h_size", "label": "Font size", "min": 16, "max": 80, "step": 1, "default": 36, "unit": "px" },
+    { "type": "select", "id": "h_weight", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "h_align", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "h_lh", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "h_ls", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+    { "type": "header", "content": "Heading — Mobile" },
+    { "type": "range", "id": "h_size_m", "label": "Font size", "min": 16, "max": 60, "step": 1, "default": 24, "unit": "px" },
+    { "type": "select", "id": "h_weight_m", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "h_align_m", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "h_lh_m", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "h_ls_m", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "─── Filter label ───" },
+    { "type": "color", "id": "f_color", "label": "Color" },
+    { "type": "header", "content": "Filter label — Desktop" },
+    { "type": "range", "id": "f_size", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 12, "unit": "px" },
+    { "type": "select", "id": "f_weight", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "range", "id": "f_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "f_ls", "label": "Spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 16 },
+    { "type": "header", "content": "Filter label — Mobile" },
+    { "type": "range", "id": "f_size_m", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 10, "unit": "px" },
+    { "type": "select", "id": "f_weight_m", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "range", "id": "f_lh_m", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "f_ls_m", "label": "Spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 16 },
+
     { "type": "header", "content": "─── Spacing & Width ───" },
     { "type": "header", "content": "Padding — Desktop" },
     { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 20, "step": 1, "default": 4 },

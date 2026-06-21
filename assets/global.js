@@ -301,8 +301,8 @@
     el.addEventListener('click', () => { window.location.href = el.dataset.gotoUrl; })
   );
 
-  /* ---------- Gap stats counter ---------- */
-  document.querySelectorAll('.gap-stat__num').forEach((el) => {
+  /* ---------- Stats counter (gap + patient voices) ---------- */
+  document.querySelectorAll('.gap-stat__num, .pv-stat-num').forEach((el) => {
     const text = el.textContent.trim();
     const m = text.match(/^([^0-9]*?)([\d,]+)(.*?)$/);
     if (!m) return;
