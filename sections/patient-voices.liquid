@@ -72,7 +72,8 @@
     {%- endif -%}
 
     {%- if review_blocks.size > 0 -%}
-      <div class="product-grid grid-3 review-row" id="voice-reviews-{{ section.id }}">
+      {%- comment -%} Desktop: grid — Mobile: scroller {%- endcomment -%}
+      <div class="pv-reviews-desktop product-grid grid-3 review-row" id="voice-reviews-{{ section.id }}">
         {%- for block in review_blocks -%}
           <div class="review-card" data-filter-item="{{ block.settings.category | default: 'all' }}" {{ block.shopify_attributes }}>
             {%- if block.settings.avatar != blank -%}
@@ -85,6 +86,25 @@
             <div class="review-card__name">{{ block.settings.name }}</div>
           </div>
         {%- endfor -%}
+      </div>
+
+      <div class="pv-reviews-mobile scroller" data-scroller data-auto-slide="3000">
+        <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
+        <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
+        <div class="scroller__track" data-scroller-track>
+          {%- for block in review_blocks -%}
+            <div class="review-card" {{ block.shopify_attributes }}>
+              {%- if block.settings.avatar != blank -%}
+                {{ block.settings.avatar | image_url: width: 88 | image_tag: loading: 'lazy', class: 'review-card__avatar', alt: block.settings.name }}
+              {%- else -%}
+                <div class="review-card__avatar--initial">{{ block.settings.name | strip | slice: 0 }}</div>
+              {%- endif -%}
+              <div class="review-card__stars">★★★★★</div>
+              <blockquote>{{ block.settings.quote }}</blockquote>
+              <div class="review-card__name">{{ block.settings.name }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
       </div>
     {%- endif -%}
   </div>
@@ -125,7 +145,15 @@
   {{ s }} .pv-video-scroller .voice-video { flex: 0 0 180px; }
   {{ s }} .pv-video-scroller .scroller__btn { top: 50%; transform: translateY(-50%); }
 
+  {{ s }} .pv-reviews-mobile { display: none; }
+  {{ s }} .pv-reviews-mobile .review-card {
+    flex: 0 0 280px; max-width: 85vw; scroll-snap-align: start;
+  }
+  {{ s }} .pv-reviews-mobile .scroller__btn { top: 50%; transform: translateY(-50%); }
+
   @media (max-width: 749px) {
+    {{ s }} .pv-reviews-desktop { display: none !important; }
+    {{ s }} .pv-reviews-mobile { display: block; }
     {{ s }} .pv-eyebrow {
       font-size: {{ section.settings.eb_size_m }}px;
       font-weight: {{ section.settings.eb_weight_m }};
