@@ -1,22 +1,67 @@
+{%- liquid
+  assign dt_video = section.settings.video_desktop
+  assign mb_video = section.settings.video_mobile
+  assign dt_url   = section.settings.video_url_desktop
+  assign mb_url   = section.settings.video_url_mobile
+  assign dt_img   = section.settings.image_desktop
+  assign mb_img   = section.settings.image_mobile
+  assign poster_dt = section.settings.poster_desktop
+  assign poster_mb = section.settings.poster_mobile
+-%}
+
 <section class="hero" aria-label="{{ section.settings.title | strip_html | default: 'Hero' }}">
   <div class="hero__media">
-    {%- if section.settings.video != blank -%}
-      {{ section.settings.video | video_tag: image_size: '1600x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
-    {%- elsif section.settings.video_url != blank -%}
-      <video autoplay muted loop playsinline {% if section.settings.poster %}poster="{{ section.settings.poster | image_url: width: 1600 }}"{% endif %}>
-        <source src="{{ section.settings.video_url }}" type="video/mp4">
-      </video>
-    {%- elsif section.settings.image != blank -%}
-      {{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', alt: section.settings.title | strip_html }}
-    {%- else -%}
-      {{ 'lifestyle-1' | placeholder_svg_tag }}
-    {%- endif -%}
+    {%- comment -%} Desktop media {%- endcomment -%}
+    <div class="hero__desktop">
+      {%- if dt_video != blank -%}
+        {{ dt_video | video_tag: image_size: '1920x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
+      {%- elsif dt_url != blank -%}
+        <video autoplay muted loop playsinline {% if poster_dt %}poster="{{ poster_dt | image_url: width: 1920 }}"{% endif %}>
+          <source src="{{ dt_url }}" type="video/mp4">
+        </video>
+      {%- elsif dt_img != blank -%}
+        {{ dt_img | image_url: width: 1920 | image_tag: loading: 'eager', fetchpriority: 'high', alt: section.settings.title | strip_html }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Mobile media {%- endcomment -%}
+    <div class="hero__mobile">
+      {%- if mb_video != blank -%}
+        {{ mb_video | video_tag: image_size: '800x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
+      {%- elsif mb_url != blank -%}
+        <video autoplay muted loop playsinline {% if poster_mb %}poster="{{ poster_mb | image_url: width: 800 }}"{% endif %}>
+          <source src="{{ mb_url }}" type="video/mp4">
+        </video>
+      {%- elsif mb_img != blank -%}
+        {{ mb_img | image_url: width: 800 | image_tag: loading: 'eager', fetchpriority: 'high', alt: section.settings.title | strip_html }}
+      {%- elsif dt_video != blank -%}
+        {{ dt_video | video_tag: image_size: '800x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
+      {%- elsif dt_url != blank -%}
+        <video autoplay muted loop playsinline {% if poster_dt %}poster="{{ poster_dt | image_url: width: 800 }}"{% endif %}>
+          <source src="{{ dt_url }}" type="video/mp4">
+        </video>
+      {%- elsif dt_img != blank -%}
+        {{ dt_img | image_url: width: 800 | image_tag: loading: 'eager', fetchpriority: 'high', alt: section.settings.title | strip_html }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </div>
 
     <div class="hero__overlay">
-      {%- if section.settings.eyebrow != blank -%}<div class="hero__eyebrow">{{ section.settings.eyebrow }}</div>{%- endif -%}
-      {%- if section.settings.title != blank -%}<h1 class="hero__title">{{ section.settings.title }}</h1>{%- endif -%}
-      {%- if section.settings.subtitle != blank -%}<p class="hero__subtitle">{{ section.settings.subtitle }}</p>{%- endif -%}
-      {%- if section.settings.prompt != blank -%}<div class="hero__prompt">{{ section.settings.prompt }}</div>{%- endif -%}
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="hero__eyebrow">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h1 class="hero__title">{{ section.settings.title }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="hero__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+      {%- if section.settings.prompt != blank -%}
+        <div class="hero__prompt">{{ section.settings.prompt }}</div>
+      {%- endif -%}
 
       {%- if section.blocks.size > 0 -%}
         <div class="hero__chips">
@@ -29,18 +74,218 @@
   </div>
 </section>
 
+<style>
+  #shopify-section-{{ section.id }} .hero__desktop { display: block; }
+  #shopify-section-{{ section.id }} .hero__mobile  { display: none; }
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .hero__desktop { display: none; }
+    #shopify-section-{{ section.id }} .hero__mobile  { display: block; }
+  }
+
+  #shopify-section-{{ section.id }} .hero__eyebrow {
+    color: {{ section.settings.eyebrow_color | default: 'rgba(255,255,255,.75)' }};
+    font-size: {{ section.settings.eyebrow_size }}px;
+    font-weight: {{ section.settings.eyebrow_weight }};
+    text-align: {{ section.settings.eyebrow_align }};
+    line-height: {{ section.settings.eyebrow_line_height }};
+    letter-spacing: {{ section.settings.eyebrow_spacing }}em;
+  }
+  #shopify-section-{{ section.id }} .hero__title {
+    color: {{ section.settings.title_color | default: '#ffffff' }};
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: {{ section.settings.title_weight }};
+    text-align: {{ section.settings.title_align }};
+    line-height: {{ section.settings.title_line_height }};
+    letter-spacing: {{ section.settings.title_spacing }}em;
+  }
+  #shopify-section-{{ section.id }} .hero__subtitle {
+    color: {{ section.settings.subtitle_color | default: 'rgba(255,255,255,.92)' }};
+    font-size: {{ section.settings.subtitle_size }}px;
+    font-weight: {{ section.settings.subtitle_weight }};
+    text-align: {{ section.settings.subtitle_align }};
+    line-height: {{ section.settings.subtitle_line_height }};
+    letter-spacing: {{ section.settings.subtitle_spacing }}em;
+  }
+  #shopify-section-{{ section.id }} .hero__prompt {
+    color: {{ section.settings.chip_text_color | default: 'rgba(255,255,255,.85)' }};
+    font-size: {{ section.settings.chip_text_size }}px;
+    font-weight: {{ section.settings.chip_text_weight }};
+    text-align: {{ section.settings.chip_text_align }};
+    line-height: {{ section.settings.chip_text_line_height }};
+    letter-spacing: {{ section.settings.chip_text_spacing }}em;
+  }
+  {%- if section.settings.title_align == 'center' -%}
+    #shopify-section-{{ section.id }} .hero__subtitle { margin-inline: auto; }
+    #shopify-section-{{ section.id }} .hero__chips { justify-content: center; }
+  {%- elsif section.settings.title_align == 'right' -%}
+    #shopify-section-{{ section.id }} .hero__subtitle { margin-left: auto; }
+    #shopify-section-{{ section.id }} .hero__chips { justify-content: flex-end; }
+  {%- endif -%}
+</style>
+
 {% schema %}
 {
   "name": "Video hero",
   "settings": [
-    { "type": "video", "id": "video", "label": "Hosted video" },
-    { "type": "video_url", "id": "video_url", "label": "External video URL (mp4)", "accept": ["youtube", "vimeo"] },
-    { "type": "image_picker", "id": "poster", "label": "Video poster / fallback" },
-    { "type": "image_picker", "id": "image", "label": "Image (if no video)" },
+    { "type": "header", "content": "Desktop media" },
+    { "type": "video", "id": "video_desktop", "label": "Desktop video" },
+    { "type": "video_url", "id": "video_url_desktop", "label": "Desktop external video URL (mp4)", "accept": ["youtube", "vimeo"] },
+    { "type": "image_picker", "id": "poster_desktop", "label": "Desktop video poster" },
+    { "type": "image_picker", "id": "image_desktop", "label": "Desktop fallback image" },
+
+    { "type": "header", "content": "Mobile media" },
+    { "type": "video", "id": "video_mobile", "label": "Mobile video" },
+    { "type": "video_url", "id": "video_url_mobile", "label": "Mobile external video URL (mp4)", "accept": ["youtube", "vimeo"] },
+    { "type": "image_picker", "id": "poster_mobile", "label": "Mobile video poster" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile fallback image" },
+
+    { "type": "header", "content": "Eyebrow text" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Clothing engineered for treatment" },
-    { "type": "inline_richtext", "id": "title", "label": "Heading", "default": "You don’t have to figure this out alone." },
+    { "type": "color", "id": "eyebrow_color", "label": "Color" },
+    {
+      "type": "range", "id": "eyebrow_size", "label": "Font size",
+      "min": 8, "max": 24, "step": 1, "default": 11, "unit": "px"
+    },
+    {
+      "type": "select", "id": "eyebrow_weight", "label": "Font weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select", "id": "eyebrow_align", "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range", "id": "eyebrow_line_height", "label": "Line height",
+      "min": 1, "max": 2.5, "step": 0.1, "default": 1.4
+    },
+    {
+      "type": "range", "id": "eyebrow_spacing", "label": "Letter spacing",
+      "min": 0, "max": 0.3, "step": 0.01, "default": 0.15, "unit": "em"
+    },
+
+    { "type": "header", "content": "Heading" },
+    { "type": "inline_richtext", "id": "title", "label": "Heading", "default": "You don't have to figure this out alone." },
+    { "type": "color", "id": "title_color", "label": "Color" },
+    {
+      "type": "range", "id": "title_size", "label": "Font size",
+      "min": 20, "max": 80, "step": 1, "default": 44, "unit": "px"
+    },
+    {
+      "type": "select", "id": "title_weight", "label": "Font weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-bold" }
+      ],
+      "default": "300"
+    },
+    {
+      "type": "select", "id": "title_align", "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range", "id": "title_line_height", "label": "Line height",
+      "min": 0.8, "max": 2, "step": 0.05, "default": 1.1
+    },
+    {
+      "type": "range", "id": "title_spacing", "label": "Letter spacing",
+      "min": -0.05, "max": 0.2, "step": 0.01, "default": 0, "unit": "em"
+    },
+
+    { "type": "header", "content": "Subtitle" },
     { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Clothing built with hundreds of patients and nurses — for drains, ports, and dressing yourself." },
-    { "type": "text", "id": "prompt", "label": "Chip prompt", "default": "Which one is yours?" }
+    { "type": "color", "id": "subtitle_color", "label": "Color" },
+    {
+      "type": "range", "id": "subtitle_size", "label": "Font size",
+      "min": 10, "max": 30, "step": 1, "default": 16, "unit": "px"
+    },
+    {
+      "type": "select", "id": "subtitle_weight", "label": "Font weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select", "id": "subtitle_align", "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range", "id": "subtitle_line_height", "label": "Line height",
+      "min": 1, "max": 2.5, "step": 0.1, "default": 1.6
+    },
+    {
+      "type": "range", "id": "subtitle_spacing", "label": "Letter spacing",
+      "min": 0, "max": 0.2, "step": 0.01, "default": 0, "unit": "em"
+    },
+
+    { "type": "header", "content": "Chip text" },
+    { "type": "text", "id": "prompt", "label": "Chip prompt text", "default": "Which one is yours?" },
+    { "type": "color", "id": "chip_text_color", "label": "Color" },
+    {
+      "type": "range", "id": "chip_text_size", "label": "Font size",
+      "min": 8, "max": 24, "step": 1, "default": 12, "unit": "px"
+    },
+    {
+      "type": "select", "id": "chip_text_weight", "label": "Font weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select", "id": "chip_text_align", "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range", "id": "chip_text_line_height", "label": "Line height",
+      "min": 1, "max": 2.5, "step": 0.1, "default": 1.4
+    },
+    {
+      "type": "range", "id": "chip_text_spacing", "label": "Letter spacing",
+      "min": 0, "max": 0.3, "step": 0.01, "default": 0.18, "unit": "em"
+    }
   ],
   "blocks": [
     {
