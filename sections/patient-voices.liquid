@@ -65,13 +65,30 @@
   </div>
 </section>
 
+<style>{% render 'section-spacing', sid: section.id, s: section.settings %}</style>
+
 {% schema %}
 {
   "name": "Patient voices",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What patients say" },
     { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>You'll feel the difference <em>at your very next appointment.</em></p>" },
-    { "type": "text", "id": "filter_label", "label": "Filter row label", "default": "Filter patient stories" }
+    { "type": "text", "id": "filter_label", "label": "Filter row label", "default": "Filter patient stories" },
+    { "type": "header", "content": "─── Spacing & Width ───" },
+    { "type": "header", "content": "Padding — Desktop" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 200, "step": 2, "default": 0, "unit": "px" },
+    { "type": "select", "id": "padding_top_unit", "label": "Padding top unit", "options": [{"value":"px","label":"px"},{"value":"%","label":"%"}], "default": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 200, "step": 2, "default": 0, "unit": "px" },
+    { "type": "select", "id": "padding_bottom_unit", "label": "Padding bottom unit", "options": [{"value":"px","label":"px"},{"value":"%","label":"%"}], "default": "px" },
+    { "type": "range", "id": "section_width", "label": "Width", "min": 10, "max": 100, "step": 1, "default": 100 },
+    { "type": "select", "id": "section_width_unit", "label": "Width unit", "options": [{"value":"%","label":"%"},{"value":"px","label":"px"}], "default": "%" },
+    { "type": "header", "content": "Padding — Mobile" },
+    { "type": "range", "id": "padding_top_mob", "label": "Padding top", "min": 0, "max": 200, "step": 2, "default": 0, "unit": "px" },
+    { "type": "select", "id": "padding_top_unit_mob", "label": "Padding top unit", "options": [{"value":"px","label":"px"},{"value":"%","label":"%"}], "default": "px" },
+    { "type": "range", "id": "padding_bottom_mob", "label": "Padding bottom", "min": 0, "max": 200, "step": 2, "default": 0, "unit": "px" },
+    { "type": "select", "id": "padding_bottom_unit_mob", "label": "Padding bottom unit", "options": [{"value":"px","label":"px"},{"value":"%","label":"%"}], "default": "px" },
+    { "type": "range", "id": "section_width_mob", "label": "Width", "min": 10, "max": 100, "step": 1, "default": 100 },
+    { "type": "select", "id": "section_width_unit_mob", "label": "Width unit", "options": [{"value":"%","label":"%"},{"value":"px","label":"px"}], "default": "%" }
   ],
   "blocks": [
     {

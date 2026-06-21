@@ -22,6 +22,8 @@
   </div>
 </section>
 
+<style>{% render 'section-spacing', sid: section.id, s: section.settings %}</style>
+
 {% schema %}
 {
   "name": "Image with text",
@@ -37,7 +39,22 @@
     { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>I watched my father go through treatment and never once feel like a person.</p>" },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>The doctors were exceptional. But nobody thought about what he would wear. That's a problem with a solution. Privacy. Dignity. Looking and feeling human through every stage. That's what Inspired Comforts is.</p>" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Read the full story →" },
-    { "type": "url", "id": "button_link", "label": "Button link" }
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "header", "content": "─── Spacing & Width ───" },
+    { "type": "header", "content": "Padding — Desktop" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 200, "step": 2, "default": 0, "unit": "px" },
+    { "type": "select", "id": "padding_top_unit", "label": "Padding top unit", "options": [{"value":"px","label":"px"},{"value":"%","label":"%"}], "default": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 200, "step": 2, "default": 0, "unit": "px" },
+    { "type": "select", "id": "padding_bottom_unit", "label": "Padding bottom unit", "options": [{"value":"px","label":"px"},{"value":"%","label":"%"}], "default": "px" },
+    { "type": "range", "id": "section_width", "label": "Width", "min": 10, "max": 100, "step": 1, "default": 100 },
+    { "type": "select", "id": "section_width_unit", "label": "Width unit", "options": [{"value":"%","label":"%"},{"value":"px","label":"px"}], "default": "%" },
+    { "type": "header", "content": "Padding — Mobile" },
+    { "type": "range", "id": "padding_top_mob", "label": "Padding top", "min": 0, "max": 200, "step": 2, "default": 0, "unit": "px" },
+    { "type": "select", "id": "padding_top_unit_mob", "label": "Padding top unit", "options": [{"value":"px","label":"px"},{"value":"%","label":"%"}], "default": "px" },
+    { "type": "range", "id": "padding_bottom_mob", "label": "Padding bottom", "min": 0, "max": 200, "step": 2, "default": 0, "unit": "px" },
+    { "type": "select", "id": "padding_bottom_unit_mob", "label": "Padding bottom unit", "options": [{"value":"px","label":"px"},{"value":"%","label":"%"}], "default": "px" },
+    { "type": "range", "id": "section_width_mob", "label": "Width", "min": 10, "max": 100, "step": 1, "default": 100 },
+    { "type": "select", "id": "section_width_unit_mob", "label": "Width unit", "options": [{"value":"%","label":"%"},{"value":"px","label":"px"}], "default": "%" }
   ],
   "presets": [ { "name": "Image with text" } ]
 }

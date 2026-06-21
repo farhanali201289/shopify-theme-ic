@@ -1,0 +1,38 @@
+{%- comment -%}
+  Section spacing & width snippet.
+  Params: sid (section id), s (section settings object)
+{%- endcomment -%}
+
+{%- liquid
+  assign pt = s.padding_top | default: 0
+  assign pb = s.padding_bottom | default: 0
+  assign pt_u = s.padding_top_unit | default: 'px'
+  assign pb_u = s.padding_bottom_unit | default: 'px'
+  assign sw = s.section_width | default: 100
+  assign sw_u = s.section_width_unit | default: '%'
+
+  assign pt_m = s.padding_top_mob | default: 0
+  assign pb_m = s.padding_bottom_mob | default: 0
+  assign pt_u_m = s.padding_top_unit_mob | default: 'px'
+  assign pb_u_m = s.padding_bottom_unit_mob | default: 'px'
+  assign sw_m = s.section_width_mob | default: 100
+  assign sw_u_m = s.section_width_unit_mob | default: '%'
+-%}
+
+#shopify-section-{{ sid }} > section,
+#shopify-section-{{ sid }} > div,
+#shopify-section-{{ sid }} > footer {
+  padding-top: {{ pt }}{{ pt_u }};
+  padding-bottom: {{ pb }}{{ pb_u }};
+  width: {{ sw }}{{ sw_u }};
+  margin-inline: auto;
+}
+@media (max-width: 749px) {
+  #shopify-section-{{ sid }} > section,
+  #shopify-section-{{ sid }} > div,
+  #shopify-section-{{ sid }} > footer {
+    padding-top: {{ pt_m }}{{ pt_u_m }};
+    padding-bottom: {{ pb_m }}{{ pb_u_m }};
+    width: {{ sw_m }}{{ sw_u_m }};
+  }
+}
