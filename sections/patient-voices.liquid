@@ -36,7 +36,7 @@
 
     {%- assign video_blocks = section.blocks | where: 'type', 'video' -%}
     {%- if video_blocks.size > 0 -%}
-      <div class="scroller pv-video-scroller" data-scroller data-auto-slide="3000">
+      <div class="scroller pv-video-scroller" data-scroller {% if section.settings.auto_slide %}data-auto-slide="{{ section.settings.slide_speed }}"{% endif %}>
         <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
         <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
         <div class="scroller__track" data-scroller-track>
@@ -88,7 +88,7 @@
         {%- endfor -%}
       </div>
 
-      <div class="pv-reviews-mobile scroller" data-scroller data-auto-slide="3000">
+      <div class="pv-reviews-mobile scroller" data-scroller {% if section.settings.auto_slide %}data-auto-slide="{{ section.settings.slide_speed }}"{% endif %}>
         <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
         <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
         <div class="scroller__track" data-scroller-track>
@@ -145,7 +145,7 @@
   {{ s }} .pv-video-scroller .voice-video { flex: 0 0 180px; }
   {{ s }} .pv-video-scroller .scroller__btn { top: 50%; transform: translateY(-50%); }
 
-  {{ s }} .pv-reviews-mobile { display: none; }
+  {{ s }} .pv-reviews-mobile { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
   {{ s }} .pv-reviews-mobile .review-card {
     flex: 0 0 280px; max-width: 85vw; scroll-snap-align: start;
   }
@@ -153,7 +153,7 @@
 
   @media (max-width: 749px) {
     {{ s }} .pv-reviews-desktop { display: none !important; }
-    {{ s }} .pv-reviews-mobile { display: block; }
+    {{ s }} .pv-reviews-mobile { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
     {{ s }} .pv-eyebrow {
       font-size: {{ section.settings.eb_size_m }}px;
       font-weight: {{ section.settings.eb_weight_m }};
@@ -185,6 +185,9 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What patients say" },
     { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>You'll feel the difference <em>at your very next appointment.</em></p>" },
     { "type": "text", "id": "filter_label", "label": "Filter row label", "default": "Filter patient stories" },
+    { "type": "header", "content": "─── Slider ───" },
+    { "type": "checkbox", "id": "auto_slide", "label": "Auto slide", "default": true },
+    { "type": "range", "id": "slide_speed", "label": "Slide interval", "min": 1000, "max": 10000, "step": 500, "default": 3000, "unit": "ms" },
 
     { "type": "header", "content": "─── Eyebrow ───" },
     { "type": "color", "id": "eb_color", "label": "Color" },

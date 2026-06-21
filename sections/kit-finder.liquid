@@ -39,7 +39,7 @@
 
     {%- for block in section.blocks -%}
       {%- assign chip_coll = collections[block.settings.collection] -%}
-      <div class="scroller kit-scroller kf-track {% unless forloop.first %}kf-track--hidden{% endunless %}" data-kf-track="{{ block.id }}" data-scroller>
+      <div class="scroller kit-scroller kf-track {% unless forloop.first %}kf-track--hidden{% endunless %}" data-kf-track="{{ block.id }}" data-scroller {% if section.settings.auto_slide %}data-auto-slide="{{ section.settings.slide_speed }}"{% endif %}>
         <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
         <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
         <div class="scroller__track" data-scroller-track>
@@ -177,6 +177,8 @@
     { "type": "text", "id": "text", "label": "Text", "default": "Each kit is the result of 300,000+ patients telling us what they needed." },
     { "type": "range", "id": "product_limit", "min": 4, "max": 24, "step": 1, "label": "Products per chip", "default": 16 },
     { "type": "checkbox", "id": "byo_enabled", "label": "Show 'Design your own kit' card", "default": true },
+    { "type": "checkbox", "id": "auto_slide", "label": "Auto slide", "default": true },
+    { "type": "range", "id": "slide_speed", "label": "Slide interval", "min": 1000, "max": 10000, "step": 500, "default": 3000, "unit": "ms" },
     { "type": "text", "id": "button_label", "label": "Footer link label", "default": "Browse all kits →" },
     { "type": "url", "id": "button_link", "label": "Footer link" },
 

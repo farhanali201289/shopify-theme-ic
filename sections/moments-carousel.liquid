@@ -10,7 +10,7 @@
     {%- if section.settings.heading != blank -%}
       <h2 class="mc-heading">{{ section.settings.heading }}</h2>
     {%- endif -%}
-    <div class="scroller" data-scroller {% if section.settings.auto_slide %}data-auto-slide="3000"{% endif %}>
+    <div class="scroller" data-scroller {% if section.settings.auto_slide %}data-auto-slide="{{ section.settings.slide_speed }}"{% endif %}>
       <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
       <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
       <div class="scroller__track" data-scroller-track>
@@ -61,6 +61,7 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading" },
     { "type": "checkbox", "id": "auto_slide", "label": "Auto slide", "default": true },
+    { "type": "range", "id": "slide_speed", "label": "Slide interval", "min": 1000, "max": 10000, "step": 500, "default": 3000, "unit": "ms" },
 
     { "type": "header", "content": "─── Heading style ───" },
     { "type": "color", "id": "h_color", "label": "Color" },
