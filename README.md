@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Inspired Comforts — Shopify OS 2.0 theme
 
 A from-scratch Online Store 2.0 theme recreating the **v10.9 wireframe** design system
@@ -56,3 +57,7 @@ journey pages. These are page-template + section work for following passes.
 - Vanilla JS only (`assets/global.js`), progressive enhancement, no build step.
 - All sections are block-based and theme-editor configurable with presets.
 - CSS uses design tokens (`--accent`, `--cream`, …) injected from settings in `theme.liquid`.
+=======
+# shopify-theme-ic
+New theme for inspired comfort
+>>>>>>> 7175b603dcd6cebc45149ad39dfc62249f2f841a

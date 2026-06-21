@@ -12,21 +12,9 @@
   };
 
   /* ---------- Mega menu (desktop, click + hover safe) ---------- */
-  function positionMega(li) {
-    const mega = li.querySelector('.mega');
-    if (!mega || mega.classList.contains('mega-shop')) return;
-    mega.style.left = '0';
-    mega.style.right = 'auto';
-    const rect = mega.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
-      mega.style.left = 'auto';
-      mega.style.right = '0';
-    }
-  }
   document.querySelectorAll('[data-mega-trigger]').forEach((li) => {
     const link = li.querySelector('.header__nav-link');
     if (!link) return;
-    li.addEventListener('mouseenter', () => positionMega(li));
     link.addEventListener('click', (e) => {
       if (!li.querySelector('.mega')) return;
       e.preventDefault();
@@ -34,7 +22,6 @@
       document.querySelectorAll('[data-mega-trigger].is-open').forEach((o) => o.classList.remove('is-open'));
       li.classList.toggle('is-open', !open);
       document.body.classList.toggle('mega-open', !open);
-      if (!open) positionMega(li);
     });
   });
   document.addEventListener('keydown', (e) => {
