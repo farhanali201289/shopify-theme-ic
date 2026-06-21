@@ -41,14 +41,19 @@
         <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
         <div class="scroller__track" data-scroller-track>
           {%- for block in video_blocks -%}
-            <a class="voice-video" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
-              {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 360 | image_tag: loading: 'lazy', alt: block.settings.name }}{%- endif -%}
+            <div class="voice-video" data-pv-video {{ block.shopify_attributes }}>
+              {%- if block.settings.video != blank -%}
+                <video class="voice-video__vid" src="{{ block.settings.video.sources[0].url }}" muted loop playsinline preload="metadata"></video>
+              {%- endif -%}
+              {%- if block.settings.image != blank -%}
+                <img class="voice-video__poster" src="{{ block.settings.image | image_url: width: 360 }}" alt="{{ block.settings.name }}" loading="lazy">
+              {%- endif -%}
               <span class="voice-video__play">&#9654;</span>
               <span class="voice-video__label">
                 {%- if block.settings.category != blank -%}<span class="voice-video__cat">{{ block.settings.category }}</span>{%- endif -%}
                 <span class="voice-video__name">{{ block.settings.name }}</span>
               </span>
-            </a>
+            </div>
           {%- endfor -%}
         </div>
       </div>
@@ -225,8 +230,8 @@
       "type": "video",
       "name": "Video tile",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Thumbnail" },
-        { "type": "url", "id": "link", "label": "Video link" },
+        { "type": "video", "id": "video", "label": "Upload video" },
+        { "type": "image_picker", "id": "image", "label": "Poster / thumbnail" },
         { "type": "text", "id": "category", "label": "Category label", "default": "Feeling like myself" },
         { "type": "text", "id": "name", "label": "Name / caption", "default": "Maria R. · Mastectomy" }
       ]

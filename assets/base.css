@@ -398,8 +398,9 @@ body.mega-open .header__overlay { opacity: 1; visibility: visible; }
 /* Patient-voices video tiles + filter tabs */
 .voice-videos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 24px; }
 .voice-video { position: relative; aspect-ratio: 9/16; border-radius: 8px; overflow: hidden; background: #1C1917; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.voice-video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
-.voice-video__play { position: relative; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.2); border: 1.5px solid rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; font-size: 11px; color: #fff; }
+.voice-video img, .voice-video__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; transition: opacity .3s; z-index: 1; }
+.voice-video__vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.voice-video__play { position: relative; z-index: 2; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.2); border: 1.5px solid rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; font-size: 11px; color: #fff; transition: opacity .3s; }
 .voice-video__label { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 8px; background: linear-gradient(to top, rgba(0,0,0,.75), transparent); }
 .voice-video__cat { font-family: var(--font-body); font-size: 10px; color: #98C8B8; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 3px; }
 .voice-video__name { font-family: var(--font-body); font-size: 11px; color: #fff; line-height: 1.3; }

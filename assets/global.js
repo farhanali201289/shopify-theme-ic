@@ -301,6 +301,29 @@
     el.addEventListener('click', () => { window.location.href = el.dataset.gotoUrl; })
   );
 
+  /* ---------- Patient voices video play/pause ---------- */
+  document.querySelectorAll('[data-pv-video]').forEach((card) => {
+    const vid = card.querySelector('.voice-video__vid');
+    if (!vid) return;
+    const poster = card.querySelector('.voice-video__poster');
+    const playBtn = card.querySelector('.voice-video__play');
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      if (vid.paused) {
+        document.querySelectorAll('.voice-video__vid').forEach((v) => { if (v !== vid) { v.pause(); v.muted = true; const p = v.closest('[data-pv-video]'); if (p) { const pp = p.querySelector('.voice-video__poster'); const pb = p.querySelector('.voice-video__play'); if (pp) pp.style.opacity = ''; if (pb) pb.style.opacity = ''; } } });
+        vid.muted = false;
+        vid.play();
+        if (poster) poster.style.opacity = '0';
+        if (playBtn) playBtn.style.opacity = '0';
+      } else {
+        vid.pause();
+        vid.muted = true;
+        if (poster) poster.style.opacity = '';
+        if (playBtn) playBtn.style.opacity = '';
+      }
+    });
+  });
+
   /* ---------- Stats counter (gap + patient voices) ---------- */
   document.querySelectorAll('.gap-stat__num, .pv-stat-num').forEach((el) => {
     const text = el.textContent.trim();
