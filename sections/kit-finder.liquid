@@ -1,50 +1,73 @@
 {%- liquid
-  assign coll = collections[section.settings.collection]
+  assign eb_lh = section.settings.eb_lh | times: 1.0 | divided_by: 10.0
+  assign eb_ls = section.settings.eb_ls | times: 1.0 | divided_by: 100.0
+  assign eb_lh_m = section.settings.eb_lh_m | times: 1.0 | divided_by: 10.0
+  assign eb_ls_m = section.settings.eb_ls_m | times: 1.0 | divided_by: 100.0
+
+  assign h_lh = section.settings.h_lh | times: 1.0 | divided_by: 10.0
+  assign h_ls = section.settings.h_ls | times: 1.0 | divided_by: 100.0
+  assign h_lh_m = section.settings.h_lh_m | times: 1.0 | divided_by: 10.0
+  assign h_ls_m = section.settings.h_ls_m | times: 1.0 | divided_by: 100.0
+
+  assign t_lh = section.settings.t_lh | times: 1.0 | divided_by: 10.0
+  assign t_ls = section.settings.t_ls | times: 1.0 | divided_by: 100.0
+  assign t_lh_m = section.settings.t_lh_m | times: 1.0 | divided_by: 10.0
+  assign t_ls_m = section.settings.t_ls_m | times: 1.0 | divided_by: 100.0
 -%}
+
 <section class="section" id="kit-finder-{{ section.id }}">
   <div class="page-width">
-    <div style="text-align:center; max-width:680px; margin:0 auto 24px;">
-      {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
-      <h2 class="section-heading">{{ section.settings.heading }}</h2>
-      {%- if section.settings.text != blank -%}<p class="section-subtext" style="margin:14px auto 0;">{{ section.settings.text }}</p>{%- endif -%}
+    <div class="kf-intro">
+      {%- if section.settings.eyebrow != blank -%}<span class="kf-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="kf-heading">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<p class="kf-text">{{ section.settings.text }}</p>{%- endif -%}
     </div>
 
     {%- if section.blocks.size > 0 -%}
-      <div class="chip-row" data-filter-group data-filter-target="#kit-track-{{ section.id }}" style="justify-content:center;">
+      <div class="chip-row" style="justify-content:center;" data-kf-chips>
         {%- for block in section.blocks -%}
-          <button class="chip {% if forloop.first %}is-active{% endif %}" data-filter="{{ block.settings.value | default: 'all' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</button>
+          {%- assign chip_coll = collections[block.settings.collection] -%}
+          <button class="chip kf-chip {% if forloop.first %}is-active{% endif %}"
+            data-kf-chip="{{ block.id }}"
+            data-kf-coll-url="{{ chip_coll.url | default: '#' }}"
+            {{ block.shopify_attributes }}>
+            {{ block.settings.label }}
+          </button>
         {%- endfor -%}
       </div>
     {%- endif -%}
 
-    <div class="scroller kit-scroller" data-scroller>
-      <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
-      <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
-      <div class="scroller__track" id="kit-track-{{ section.id }}" data-scroller-track>
-        {%- if section.settings.byo_link != blank -%}
-          <a href="{{ section.settings.byo_link }}" class="kit-card kit-card--byo" data-filter-item="always">
-            <div class="kit-card__body">
-              <div>
-                <div class="kit-card__eyebrow" style="color:#F7E9C9;">Most flexible</div>
-                <div class="kit-card__title" style="color:#FCEFD6; font-size:28px;">Design your own kit</div>
-                <p style="font-size:13.5px; color:#F3D9B8; line-height:1.6; margin-top:8px;">Pick <strong style="color:#FCEFD6;">any 3 pieces</strong> across any category — we'll take <strong style="color:#FCEFD6;">20% off</strong> automatically.</p>
+    {%- for block in section.blocks -%}
+      {%- assign chip_coll = collections[block.settings.collection] -%}
+      <div class="scroller kit-scroller kf-track {% unless forloop.first %}kf-track--hidden{% endunless %}" data-kf-track="{{ block.id }}" data-scroller>
+        <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
+        <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
+        <div class="scroller__track" data-scroller-track>
+          {%- if section.settings.byo_enabled -%}
+            <a href="{{ chip_coll.url | default: '#' }}" class="kit-card kit-card--byo" data-kf-byo>
+              <div class="kit-card__body">
+                <div>
+                  <div class="kit-card__eyebrow" style="color:#F7E9C9;">Most flexible</div>
+                  <div class="kit-card__title" style="color:#FCEFD6; font-size:28px;">Design your own kit</div>
+                  <p style="font-size:13.5px; color:#F3D9B8; line-height:1.6; margin-top:8px;">Pick <strong style="color:#FCEFD6;">any 3 pieces</strong> across any category — we'll take <strong style="color:#FCEFD6;">20% off</strong> automatically.</p>
+                </div>
+                <span class="kit-card__btn" style="background:#F7E9C9; color:#6B2E1E;">Start building →</span>
               </div>
-              <span class="kit-card__btn" style="background:#F7E9C9; color:#6B2E1E;">Start building →</span>
-            </div>
-          </a>
-        {%- endif -%}
+            </a>
+          {%- endif -%}
 
-        {%- if coll != blank -%}
-          {%- for product in coll.products limit: section.settings.product_limit -%}
-            {% render 'kit-card', product: product %}
-          {%- endfor -%}
-        {%- else -%}
-          {%- for i in (1..4) -%}
-            <div class="kit-card"><div class="kit-card__media">{{ 'product-1' | placeholder_svg_tag }}</div><div class="kit-card__body"><div class="kit-card__title">Example kit</div><div class="kit-card__subtitle">Connect a collection in the theme editor.</div></div></div>
-          {%- endfor -%}
-        {%- endif -%}
+          {%- if chip_coll != blank -%}
+            {%- for product in chip_coll.products limit: section.settings.product_limit -%}
+              {% render 'kit-card', product: product %}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..4) -%}
+              <div class="kit-card"><div class="kit-card__media">{{ 'product-1' | placeholder_svg_tag }}</div><div class="kit-card__body"><div class="kit-card__title">Select a collection</div><div class="kit-card__subtitle">Set a collection on this filter chip in the theme editor.</div></div></div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
       </div>
-    </div>
+    {%- endfor -%}
 
     {%- if section.settings.button_label != blank -%}
       <div style="text-align:center; margin-top:28px;">
@@ -54,18 +77,163 @@
   </div>
 </section>
 
+<style>
+  {%- capture s -%}#kit-finder-{{ section.id }}{%- endcapture -%}
+
+  {{ s }} .kf-intro { text-align: center; max-width: 680px; margin: 0 auto 24px; }
+  {{ s }} .kf-track--hidden { display: none; }
+
+  {{ s }} .kf-eyebrow {
+    display: block; text-transform: uppercase; margin-bottom: 8px;
+    color: {{ section.settings.eb_color | default: 'inherit' }};
+    font-size: {{ section.settings.eb_size }}px;
+    font-weight: {{ section.settings.eb_weight }};
+    text-align: {{ section.settings.eb_align }};
+    line-height: {{ eb_lh }};
+    letter-spacing: {{ eb_ls }}em;
+  }
+  {{ s }} .kf-heading {
+    color: {{ section.settings.h_color | default: 'inherit' }};
+    font-size: {{ section.settings.h_size }}px;
+    font-weight: {{ section.settings.h_weight }};
+    text-align: {{ section.settings.h_align }};
+    line-height: {{ h_lh }};
+    letter-spacing: {{ h_ls }}em;
+  }
+  {{ s }} .kf-text {
+    margin: 14px auto 0;
+    color: {{ section.settings.t_color | default: 'inherit' }};
+    font-size: {{ section.settings.t_size }}px;
+    font-weight: {{ section.settings.t_weight }};
+    text-align: {{ section.settings.t_align }};
+    line-height: {{ t_lh }};
+    letter-spacing: {{ t_ls }}em;
+  }
+  {{ s }} .kf-chip {
+    font-size: {{ section.settings.chip_size }}px;
+    font-weight: {{ section.settings.chip_weight }};
+    color: {{ section.settings.chip_color | default: 'var(--brown)' }};
+    letter-spacing: {{ section.settings.chip_ls | times: 1.0 | divided_by: 100.0 }}em;
+  }
+  {{ s }} .kf-chip.is-active {
+    background: {{ section.settings.chip_active_bg | default: 'var(--brown)' }};
+    color: {{ section.settings.chip_active_color | default: '#fff' }};
+    border-color: {{ section.settings.chip_active_bg | default: 'var(--brown)' }};
+  }
+
+  @media (max-width: 749px) {
+    {{ s }} .kf-eyebrow {
+      font-size: {{ section.settings.eb_size_m }}px;
+      font-weight: {{ section.settings.eb_weight_m }};
+      text-align: {{ section.settings.eb_align_m }};
+      line-height: {{ eb_lh_m }};
+      letter-spacing: {{ eb_ls_m }}em;
+    }
+    {{ s }} .kf-heading {
+      font-size: {{ section.settings.h_size_m }}px;
+      font-weight: {{ section.settings.h_weight_m }};
+      text-align: {{ section.settings.h_align_m }};
+      line-height: {{ h_lh_m }};
+      letter-spacing: {{ h_ls_m }}em;
+    }
+    {{ s }} .kf-text {
+      font-size: {{ section.settings.t_size_m }}px;
+      font-weight: {{ section.settings.t_weight_m }};
+      text-align: {{ section.settings.t_align_m }};
+      line-height: {{ t_lh_m }};
+      letter-spacing: {{ t_ls_m }}em;
+    }
+    {{ s }} .kf-chip {
+      font-size: {{ section.settings.chip_size_m }}px;
+      font-weight: {{ section.settings.chip_weight_m }};
+    }
+  }
+</style>
+
+<script>
+(function(){
+  var section = document.getElementById('kit-finder-{{ section.id }}');
+  if (!section) return;
+  var chips = section.querySelectorAll('[data-kf-chip]');
+  var tracks = section.querySelectorAll('[data-kf-track]');
+  chips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      var id = chip.dataset.kfChip;
+      chips.forEach(function(c){ c.classList.toggle('is-active', c === chip); });
+      tracks.forEach(function(t){ t.classList.toggle('kf-track--hidden', t.dataset.kfTrack !== id); });
+    });
+  });
+})();
+</script>
+
 {% schema %}
 {
   "name": "Kit finder",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Built around your journey" },
     { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>Every kit was designed around a specific recovery — <em>including yours.</em></p>" },
-    { "type": "text", "id": "text", "label": "Text", "default": "Each kit is the result of 300,000+ patients telling us what they needed. Nothing filler." },
-    { "type": "collection", "id": "collection", "label": "Kit collection" },
-    { "type": "range", "id": "product_limit", "min": 4, "max": 24, "step": 1, "label": "Products to show", "default": 16 },
-    { "type": "url", "id": "byo_link", "label": "Build-your-own link" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Each kit is the result of 300,000+ patients telling us what they needed." },
+    { "type": "range", "id": "product_limit", "min": 4, "max": 24, "step": 1, "label": "Products per chip", "default": 16 },
+    { "type": "checkbox", "id": "byo_enabled", "label": "Show 'Design your own kit' card", "default": true },
     { "type": "text", "id": "button_label", "label": "Footer link label", "default": "Browse all kits →" },
-    { "type": "url", "id": "button_link", "label": "Footer link" }
+    { "type": "url", "id": "button_link", "label": "Footer link" },
+
+    { "type": "header", "content": "─── Eyebrow ───" },
+    { "type": "color", "id": "eb_color", "label": "Color" },
+    { "type": "header", "content": "Eyebrow — Desktop" },
+    { "type": "range", "id": "eb_size", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 11, "unit": "px" },
+    { "type": "select", "id": "eb_weight", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "select", "id": "eb_align", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "eb_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "eb_ls", "label": "Spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 12 },
+    { "type": "header", "content": "Eyebrow — Mobile" },
+    { "type": "range", "id": "eb_size_m", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 9, "unit": "px" },
+    { "type": "select", "id": "eb_weight_m", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "select", "id": "eb_align_m", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "eb_lh_m", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "eb_ls_m", "label": "Spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 12 },
+
+    { "type": "header", "content": "─── Heading ───" },
+    { "type": "color", "id": "h_color", "label": "Color" },
+    { "type": "header", "content": "Heading — Desktop" },
+    { "type": "range", "id": "h_size", "label": "Font size", "min": 16, "max": 80, "step": 1, "default": 36, "unit": "px" },
+    { "type": "select", "id": "h_weight", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "h_align", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "h_lh", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "h_ls", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+    { "type": "header", "content": "Heading — Mobile" },
+    { "type": "range", "id": "h_size_m", "label": "Font size", "min": 16, "max": 60, "step": 1, "default": 24, "unit": "px" },
+    { "type": "select", "id": "h_weight_m", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "h_align_m", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "h_lh_m", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "h_ls_m", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "─── Text ───" },
+    { "type": "color", "id": "t_color", "label": "Color" },
+    { "type": "header", "content": "Text — Desktop" },
+    { "type": "range", "id": "t_size", "label": "Font size", "min": 10, "max": 30, "step": 1, "default": 15, "unit": "px" },
+    { "type": "select", "id": "t_weight", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "t_align", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "t_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 16 },
+    { "type": "range", "id": "t_ls", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+    { "type": "header", "content": "Text — Mobile" },
+    { "type": "range", "id": "t_size_m", "label": "Font size", "min": 10, "max": 24, "step": 1, "default": 13, "unit": "px" },
+    { "type": "select", "id": "t_weight_m", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "t_align_m", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "t_lh_m", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 16 },
+    { "type": "range", "id": "t_ls_m", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "─── Chip label ───" },
+    { "type": "color", "id": "chip_color", "label": "Chip text color" },
+    { "type": "color", "id": "chip_active_bg", "label": "Chip active background" },
+    { "type": "color", "id": "chip_active_color", "label": "Chip active text color" },
+    { "type": "header", "content": "Chip — Desktop" },
+    { "type": "range", "id": "chip_size", "label": "Font size", "min": 8, "max": 20, "step": 1, "default": 12, "unit": "px" },
+    { "type": "select", "id": "chip_weight", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "600" },
+    { "type": "range", "id": "chip_ls", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+    { "type": "header", "content": "Chip — Mobile" },
+    { "type": "range", "id": "chip_size_m", "label": "Font size", "min": 8, "max": 20, "step": 1, "default": 11, "unit": "px" },
+    { "type": "select", "id": "chip_weight_m", "label": "Weight", "options": [{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "600" }
   ],
   "blocks": [
     {
@@ -73,7 +241,7 @@
       "name": "Filter chip",
       "settings": [
         { "type": "text", "id": "label", "label": "Label", "default": "All Kits" },
-        { "type": "text", "id": "value", "label": "Filter value (product type or tag handle; 'all' = show everything)", "default": "all" }
+        { "type": "collection", "id": "collection", "label": "Collection" }
       ]
     }
   ],
@@ -81,12 +249,11 @@
     {
       "name": "Kit finder",
       "blocks": [
-        { "type": "chip", "settings": { "label": "All Kits", "value": "all" } },
-        { "type": "chip", "settings": { "label": "Dialysis", "value": "dialysis" } },
-        { "type": "chip", "settings": { "label": "IV & Infusions", "value": "iv-infusions" } },
-        { "type": "chip", "settings": { "label": "Mastectomy", "value": "mastectomy" } },
-        { "type": "chip", "settings": { "label": "Post-Surgery", "value": "post-surgery" } },
-        { "type": "chip", "settings": { "label": "Chemotherapy", "value": "chemotherapy" } }
+        { "type": "chip", "settings": { "label": "All Kits" } },
+        { "type": "chip", "settings": { "label": "Dialysis" } },
+        { "type": "chip", "settings": { "label": "Mastectomy" } },
+        { "type": "chip", "settings": { "label": "Post-Surgery" } },
+        { "type": "chip", "settings": { "label": "Chemotherapy" } }
       ]
     }
   ]
