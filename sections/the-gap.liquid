@@ -21,13 +21,7 @@
   <div class="gap-stats">
     {%- for block in section.blocks -%}
       <div class="gap-stat" {{ block.shopify_attributes }}>
-        {%- if block.settings.counter_end != blank and block.settings.counter_end != '0' -%}
-          <div class="gap-stat__num" data-gap-counter="{{ block.settings.counter_end }}" data-prefix="{{ block.settings.counter_prefix }}" data-suffix="{{ block.settings.counter_suffix }}">
-            {{ block.settings.counter_prefix }}0{{ block.settings.counter_suffix }}
-          </div>
-        {%- else -%}
-          <div class="gap-stat__num">{{ block.settings.number }}</div>
-        {%- endif -%}
+        <div class="gap-stat__num" data-gap-num>{{ block.settings.number }}</div>
         <div class="gap-stat__head">{{ block.settings.head }}</div>
         <div class="gap-stat__body">{{ block.settings.body }}</div>
       </div>
@@ -37,27 +31,37 @@
 
 <style>
   {% render 'section-spacing', sid: section.id, s: section.settings %}
+  {% if section.settings.stats_2col_mob %}
   @media (max-width: 749px) {
-    #shopify-section-{{ section.id }} .gap-stats {
-      grid-template-columns: {% if section.settings.stats_cols_mob == '2' %}1fr 1fr{% else %}1fr{% endif %};
-    }
+    #shopify-section-{{ section.id }} .gap-stats { grid-template-columns: 1fr 1fr; }
   }
+  {% endif %}
 </style>
 
 <script>
 (function(){
   var done = false;
-  var els = document.querySelectorAll('#gap-{{ section.id }} [data-gap-counter]');
+  var els = document.querySelectorAll('#gap-{{ section.id }} [data-gap-num]');
   if (!els.length) return;
-  function run(){
+
+  function parseNum(text) {
+    text = text.trim();
+    var m = text.match(/^([^0-9]*?)([\d,]+)(.*?)$/);
+    if (!m) return null;
+    return { prefix: m[1], num: parseInt(m[2].replace(/,/g, ''), 10), suffix: m[3] };
+  }
+
+  function run() {
     if (done) return;
     done = true;
-    els.forEach(function(el){
-      var end = parseInt(el.getAttribute('data-gap-counter'), 10) || 0;
-      var pre = el.getAttribute('data-prefix') || '';
-      var suf = el.getAttribute('data-suffix') || '';
+    els.forEach(function(el) {
+      var parsed = parseNum(el.textContent);
+      if (!parsed || isNaN(parsed.num)) return;
+      var end = parsed.num;
+      var pre = parsed.prefix;
+      var suf = parsed.suffix;
       var t0 = null;
-      function tick(ts){
+      function tick(ts) {
         if (!t0) t0 = ts;
         var p = Math.min((ts - t0) / 1000, 1);
         var e = 1 - Math.pow(1 - p, 3);
@@ -68,10 +72,11 @@
       requestAnimationFrame(tick);
     });
   }
+
   if ('IntersectionObserver' in window) {
-    var ob = new IntersectionObserver(function(entries){
+    var ob = new IntersectionObserver(function(entries) {
       if (entries[0].isIntersecting) { run(); ob.disconnect(); }
-    }, {threshold: 0.3});
+    }, { threshold: 0.3 });
     ob.observe(document.getElementById('gap-{{ section.id }}'));
   } else { run(); }
 })();
@@ -85,11 +90,7 @@
     { "type": "text", "id": "attribution", "label": "Attribution", "default": "— A recovery nurse we work with" },
     { "type": "richtext", "id": "body", "label": "Body" },
     { "type": "image_picker", "id": "image", "label": "Image" },
-    {
-      "type": "select", "id": "stats_cols_mob", "label": "Stats columns (mobile)",
-      "options": [{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}],
-      "default": "1"
-    },
+    { "type": "checkbox", "id": "stats_2col_mob", "label": "Stats 2 columns on mobile", "default": false },
     { "type": "header", "content": "─── Spacing & Width ───" },
     { "type": "header", "content": "Padding — Desktop" },
     { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 20, "step": 1, "default": 4 },
@@ -111,13 +112,9 @@
       "type": "stat",
       "name": "Stat",
       "settings": [
-        { "type": "text", "id": "number", "label": "Display value (if no counter)", "default": "73%" },
+        { "type": "text", "id": "number", "label": "Number", "default": "73%" },
         { "type": "text", "id": "head", "label": "Headline", "default": "of patients" },
-        { "type": "textarea", "id": "body", "label": "Body", "default": "said nobody gave them guidance on what to wear before treatment." },
-        { "type": "header", "content": "Counter" },
-        { "type": "text", "id": "counter_end", "label": "Counter target number (empty = off)", "info": "e.g. 73" },
-        { "type": "text", "id": "counter_prefix", "label": "Prefix", "info": "Text before number" },
-        { "type": "text", "id": "counter_suffix", "label": "Suffix", "info": "Text after number e.g. % or +" }
+        { "type": "textarea", "id": "body", "label": "Body", "default": "said nobody gave them guidance on what to wear before treatment." }
       ]
     }
   ],
@@ -125,9 +122,9 @@
     {
       "name": "The gap (quote + stats)",
       "blocks": [
-        { "type": "stat", "settings": { "number": "73%", "counter_end": "73", "counter_suffix": "%", "head": "of patients", "body": "said nobody gave them guidance on what to wear before their first treatment appointment." } },
-        { "type": "stat", "settings": { "number": "62%", "counter_end": "62", "counter_suffix": "%", "head": "cite clothing", "body": "as a significant factor in how they feel emotionally on treatment days." } },
-        { "type": "stat", "settings": { "number": "89%", "counter_end": "89", "counter_suffix": "%", "head": "of our customers", "body": "felt more confident at their next appointment after receiving their kit." } },
+        { "type": "stat", "settings": { "number": "73%", "head": "of patients", "body": "said nobody gave them guidance on what to wear before their first treatment appointment." } },
+        { "type": "stat", "settings": { "number": "62%", "head": "cite clothing", "body": "as a significant factor in how they feel emotionally on treatment days." } },
+        { "type": "stat", "settings": { "number": "89%", "head": "of our customers", "body": "felt more confident at their next appointment after receiving their kit." } },
         { "type": "stat", "settings": { "number": "1 in 4", "head": "patients told us", "body": "they wore the same clothes to every appointment because figuring it out was too hard." } }
       ]
     }
