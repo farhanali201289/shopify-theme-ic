@@ -11,7 +11,6 @@
 
 <section class="hero" aria-label="{{ section.settings.title | strip_html | default: 'Hero' }}">
   <div class="hero__media">
-    {%- comment -%} Desktop media {%- endcomment -%}
     <div class="hero__desktop">
       {%- if dt_video != blank -%}
         {{ dt_video | video_tag: image_size: '1920x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
@@ -26,7 +25,6 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} Mobile media {%- endcomment -%}
     <div class="hero__mobile">
       {%- if mb_video != blank -%}
         {{ mb_video | video_tag: image_size: '800x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
@@ -62,7 +60,6 @@
       {%- if section.settings.prompt != blank -%}
         <div class="hero__prompt">{{ section.settings.prompt }}</div>
       {%- endif -%}
-
       {%- if section.blocks.size > 0 -%}
         <div class="hero__chips">
           {%- for block in section.blocks -%}
@@ -74,17 +71,37 @@
   </div>
 </section>
 
-<style>
-  #shopify-section-{{ section.id }} .hero__desktop { display: block; }
-  #shopify-section-{{ section.id }} .hero__mobile  { display: none; }
-  @media (max-width: 749px) {
-    #shopify-section-{{ section.id }} .hero__desktop { display: none; }
-    #shopify-section-{{ section.id }} .hero__mobile  { display: block; }
-  }
+{%- comment -%} Compute line-height & letter-spacing values {%- endcomment -%}
+{%- liquid
+  assign eb_lh = section.settings.eyebrow_lh | times: 1.0 | divided_by: 10.0
+  assign eb_ls = section.settings.eyebrow_ls | times: 1.0 | divided_by: 100.0
+  assign eb_lh_m = section.settings.eyebrow_lh_mob | times: 1.0 | divided_by: 10.0
+  assign eb_ls_m = section.settings.eyebrow_ls_mob | times: 1.0 | divided_by: 100.0
 
-  {%- assign eb_lh = section.settings.eyebrow_line_height | times: 1.0 | divided_by: 10.0 -%}
-  {%- assign eb_ls = section.settings.eyebrow_spacing | times: 1.0 | divided_by: 100.0 -%}
-  #shopify-section-{{ section.id }} .hero__eyebrow {
+  assign t_lh = section.settings.title_lh | times: 1.0 | divided_by: 10.0
+  assign t_ls = section.settings.title_ls | times: 1.0 | divided_by: 100.0
+  assign t_lh_m = section.settings.title_lh_mob | times: 1.0 | divided_by: 10.0
+  assign t_ls_m = section.settings.title_ls_mob | times: 1.0 | divided_by: 100.0
+
+  assign s_lh = section.settings.subtitle_lh | times: 1.0 | divided_by: 10.0
+  assign s_ls = section.settings.subtitle_ls | times: 1.0 | divided_by: 100.0
+  assign s_lh_m = section.settings.subtitle_lh_mob | times: 1.0 | divided_by: 10.0
+  assign s_ls_m = section.settings.subtitle_ls_mob | times: 1.0 | divided_by: 100.0
+
+  assign c_lh = section.settings.chip_lh | times: 1.0 | divided_by: 10.0
+  assign c_ls = section.settings.chip_ls | times: 1.0 | divided_by: 100.0
+  assign c_lh_m = section.settings.chip_lh_mob | times: 1.0 | divided_by: 10.0
+  assign c_ls_m = section.settings.chip_ls_mob | times: 1.0 | divided_by: 100.0
+-%}
+
+<style>
+  {%- capture sid -%}#shopify-section-{{ section.id }}{%- endcapture -%}
+
+  {{ sid }} .hero__desktop { display: block; }
+  {{ sid }} .hero__mobile  { display: none; }
+
+  /* ---- Desktop styles ---- */
+  {{ sid }} .hero__eyebrow {
     color: {{ section.settings.eyebrow_color | default: 'rgba(255,255,255,.75)' }};
     font-size: {{ section.settings.eyebrow_size }}px;
     font-weight: {{ section.settings.eyebrow_weight }};
@@ -92,10 +109,7 @@
     line-height: {{ eb_lh }};
     letter-spacing: {{ eb_ls }}em;
   }
-
-  {%- assign t_lh = section.settings.title_line_height | times: 1.0 | divided_by: 10.0 -%}
-  {%- assign t_ls = section.settings.title_spacing | times: 1.0 | divided_by: 100.0 -%}
-  #shopify-section-{{ section.id }} .hero__title {
+  {{ sid }} .hero__title {
     color: {{ section.settings.title_color | default: '#ffffff' }};
     font-size: {{ section.settings.title_size }}px;
     font-weight: {{ section.settings.title_weight }};
@@ -103,10 +117,7 @@
     line-height: {{ t_lh }};
     letter-spacing: {{ t_ls }}em;
   }
-
-  {%- assign s_lh = section.settings.subtitle_line_height | times: 1.0 | divided_by: 10.0 -%}
-  {%- assign s_ls = section.settings.subtitle_spacing | times: 1.0 | divided_by: 100.0 -%}
-  #shopify-section-{{ section.id }} .hero__subtitle {
+  {{ sid }} .hero__subtitle {
     color: {{ section.settings.subtitle_color | default: 'rgba(255,255,255,.92)' }};
     font-size: {{ section.settings.subtitle_size }}px;
     font-weight: {{ section.settings.subtitle_weight }};
@@ -114,25 +125,68 @@
     line-height: {{ s_lh }};
     letter-spacing: {{ s_ls }}em;
   }
-
-  {%- assign c_lh = section.settings.chip_text_line_height | times: 1.0 | divided_by: 10.0 -%}
-  {%- assign c_ls = section.settings.chip_text_spacing | times: 1.0 | divided_by: 100.0 -%}
-  #shopify-section-{{ section.id }} .hero__prompt {
-    color: {{ section.settings.chip_text_color | default: 'rgba(255,255,255,.85)' }};
-    font-size: {{ section.settings.chip_text_size }}px;
-    font-weight: {{ section.settings.chip_text_weight }};
-    text-align: {{ section.settings.chip_text_align }};
+  {{ sid }} .hero__prompt {
+    color: {{ section.settings.chip_color | default: 'rgba(255,255,255,.85)' }};
+    font-size: {{ section.settings.chip_size }}px;
+    font-weight: {{ section.settings.chip_weight }};
+    text-align: {{ section.settings.chip_align }};
     line-height: {{ c_lh }};
     letter-spacing: {{ c_ls }}em;
   }
 
   {%- if section.settings.title_align == 'center' -%}
-    #shopify-section-{{ section.id }} .hero__subtitle { margin-inline: auto; }
-    #shopify-section-{{ section.id }} .hero__chips { justify-content: center; }
+    {{ sid }} .hero__subtitle { margin-inline: auto; }
+    {{ sid }} .hero__chips { justify-content: center; }
   {%- elsif section.settings.title_align == 'right' -%}
-    #shopify-section-{{ section.id }} .hero__subtitle { margin-left: auto; }
-    #shopify-section-{{ section.id }} .hero__chips { justify-content: flex-end; }
+    {{ sid }} .hero__subtitle { margin-left: auto; }
+    {{ sid }} .hero__chips { justify-content: flex-end; }
   {%- endif -%}
+
+  /* ---- Mobile styles ---- */
+  @media (max-width: 749px) {
+    {{ sid }} .hero__desktop { display: none; }
+    {{ sid }} .hero__mobile  { display: block; }
+
+    {{ sid }} .hero__eyebrow {
+      font-size: {{ section.settings.eyebrow_size_mob }}px;
+      font-weight: {{ section.settings.eyebrow_weight_mob }};
+      text-align: {{ section.settings.eyebrow_align_mob }};
+      line-height: {{ eb_lh_m }};
+      letter-spacing: {{ eb_ls_m }}em;
+    }
+    {{ sid }} .hero__title {
+      font-size: {{ section.settings.title_size_mob }}px;
+      font-weight: {{ section.settings.title_weight_mob }};
+      text-align: {{ section.settings.title_align_mob }};
+      line-height: {{ t_lh_m }};
+      letter-spacing: {{ t_ls_m }}em;
+    }
+    {{ sid }} .hero__subtitle {
+      font-size: {{ section.settings.subtitle_size_mob }}px;
+      font-weight: {{ section.settings.subtitle_weight_mob }};
+      text-align: {{ section.settings.subtitle_align_mob }};
+      line-height: {{ s_lh_m }};
+      letter-spacing: {{ s_ls_m }}em;
+    }
+    {{ sid }} .hero__prompt {
+      font-size: {{ section.settings.chip_size_mob }}px;
+      font-weight: {{ section.settings.chip_weight_mob }};
+      text-align: {{ section.settings.chip_align_mob }};
+      line-height: {{ c_lh_m }};
+      letter-spacing: {{ c_ls_m }}em;
+    }
+
+    {%- if section.settings.title_align_mob == 'center' -%}
+      {{ sid }} .hero__subtitle { margin-inline: auto; }
+      {{ sid }} .hero__chips { justify-content: center; }
+    {%- elsif section.settings.title_align_mob == 'right' -%}
+      {{ sid }} .hero__subtitle { margin-inline: 0; margin-left: auto; }
+      {{ sid }} .hero__chips { justify-content: flex-end; }
+    {%- else -%}
+      {{ sid }} .hero__subtitle { margin-inline: 0; }
+      {{ sid }} .hero__chips { justify-content: flex-start; }
+    {%- endif -%}
+  }
 </style>
 
 {% schema %}
@@ -151,149 +205,77 @@
     { "type": "image_picker", "id": "poster_mobile", "label": "Mobile video poster" },
     { "type": "image_picker", "id": "image_mobile", "label": "Mobile fallback image" },
 
-    { "type": "header", "content": "--- Eyebrow ---" },
+    { "type": "header", "content": "─── Eyebrow ───" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Clothing engineered for treatment" },
-    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color" },
-    {
-      "type": "range", "id": "eyebrow_size", "label": "Eyebrow font size",
-      "min": 8, "max": 24, "step": 1, "default": 11, "unit": "px"
-    },
-    {
-      "type": "select", "id": "eyebrow_weight", "label": "Eyebrow font weight",
-      "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra-bold" }
-      ],
-      "default": "400"
-    },
-    {
-      "type": "select", "id": "eyebrow_align", "label": "Eyebrow alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "range", "id": "eyebrow_line_height", "label": "Eyebrow line height (÷10)",
-      "min": 10, "max": 25, "step": 1, "default": 14
-    },
-    {
-      "type": "range", "id": "eyebrow_spacing", "label": "Eyebrow letter spacing (÷100 em)",
-      "min": 0, "max": 30, "step": 1, "default": 15
-    },
+    { "type": "color", "id": "eyebrow_color", "label": "Color" },
 
-    { "type": "header", "content": "--- Heading ---" },
+    { "type": "header", "content": "Eyebrow — Desktop" },
+    { "type": "range", "id": "eyebrow_size", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 11, "unit": "px" },
+    { "type": "select", "id": "eyebrow_weight", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "eyebrow_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "eyebrow_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "eyebrow_ls", "label": "Letter spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 15 },
+
+    { "type": "header", "content": "Eyebrow — Mobile" },
+    { "type": "range", "id": "eyebrow_size_mob", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 9, "unit": "px" },
+    { "type": "select", "id": "eyebrow_weight_mob", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "eyebrow_align_mob", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "eyebrow_lh_mob", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "eyebrow_ls_mob", "label": "Letter spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 15 },
+
+    { "type": "header", "content": "─── Heading ───" },
     { "type": "inline_richtext", "id": "title", "label": "Heading", "default": "You don't have to figure this out alone." },
-    { "type": "color", "id": "title_color", "label": "Heading color" },
-    {
-      "type": "range", "id": "title_size", "label": "Heading font size",
-      "min": 20, "max": 80, "step": 1, "default": 44, "unit": "px"
-    },
-    {
-      "type": "select", "id": "title_weight", "label": "Heading font weight",
-      "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra-bold" }
-      ],
-      "default": "300"
-    },
-    {
-      "type": "select", "id": "title_align", "label": "Content alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "range", "id": "title_line_height", "label": "Heading line height (÷10)",
-      "min": 8, "max": 20, "step": 1, "default": 11
-    },
-    {
-      "type": "range", "id": "title_spacing", "label": "Heading letter spacing (÷100 em)",
-      "min": 0, "max": 20, "step": 1, "default": 0
-    },
+    { "type": "color", "id": "title_color", "label": "Color" },
 
-    { "type": "header", "content": "--- Subtitle ---" },
+    { "type": "header", "content": "Heading — Desktop" },
+    { "type": "range", "id": "title_size", "label": "Font size", "min": 20, "max": 80, "step": 1, "default": 44, "unit": "px" },
+    { "type": "select", "id": "title_weight", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "300" },
+    { "type": "select", "id": "title_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "title_lh", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 11 },
+    { "type": "range", "id": "title_ls", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "Heading — Mobile" },
+    { "type": "range", "id": "title_size_mob", "label": "Font size", "min": 16, "max": 60, "step": 1, "default": 28, "unit": "px" },
+    { "type": "select", "id": "title_weight_mob", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "300" },
+    { "type": "select", "id": "title_align_mob", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "title_lh_mob", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 11 },
+    { "type": "range", "id": "title_ls_mob", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "─── Subtitle ───" },
     { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Clothing built with hundreds of patients and nurses — for drains, ports, and dressing yourself." },
-    { "type": "color", "id": "subtitle_color", "label": "Subtitle color" },
-    {
-      "type": "range", "id": "subtitle_size", "label": "Subtitle font size",
-      "min": 10, "max": 30, "step": 1, "default": 16, "unit": "px"
-    },
-    {
-      "type": "select", "id": "subtitle_weight", "label": "Subtitle font weight",
-      "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra-bold" }
-      ],
-      "default": "400"
-    },
-    {
-      "type": "select", "id": "subtitle_align", "label": "Subtitle alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "range", "id": "subtitle_line_height", "label": "Subtitle line height (÷10)",
-      "min": 10, "max": 25, "step": 1, "default": 16
-    },
-    {
-      "type": "range", "id": "subtitle_spacing", "label": "Subtitle letter spacing (÷100 em)",
-      "min": 0, "max": 20, "step": 1, "default": 0
-    },
+    { "type": "color", "id": "subtitle_color", "label": "Color" },
 
-    { "type": "header", "content": "--- Chip prompt ---" },
+    { "type": "header", "content": "Subtitle — Desktop" },
+    { "type": "range", "id": "subtitle_size", "label": "Font size", "min": 10, "max": 30, "step": 1, "default": 16, "unit": "px" },
+    { "type": "select", "id": "subtitle_weight", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "subtitle_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "subtitle_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 16 },
+    { "type": "range", "id": "subtitle_ls", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "Subtitle — Mobile" },
+    { "type": "range", "id": "subtitle_size_mob", "label": "Font size", "min": 10, "max": 24, "step": 1, "default": 14, "unit": "px" },
+    { "type": "select", "id": "subtitle_weight_mob", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "subtitle_align_mob", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "subtitle_lh_mob", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 16 },
+    { "type": "range", "id": "subtitle_ls_mob", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "─── Chip prompt ───" },
     { "type": "text", "id": "prompt", "label": "Chip prompt text", "default": "Which one is yours?" },
-    { "type": "color", "id": "chip_text_color", "label": "Chip text color" },
-    {
-      "type": "range", "id": "chip_text_size", "label": "Chip text font size",
-      "min": 8, "max": 24, "step": 1, "default": 12, "unit": "px"
-    },
-    {
-      "type": "select", "id": "chip_text_weight", "label": "Chip text font weight",
-      "options": [
-        { "value": "300", "label": "Light" },
-        { "value": "400", "label": "Normal" },
-        { "value": "600", "label": "Semi-bold" },
-        { "value": "700", "label": "Bold" },
-        { "value": "800", "label": "Extra-bold" }
-      ],
-      "default": "700"
-    },
-    {
-      "type": "select", "id": "chip_text_align", "label": "Chip text alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "range", "id": "chip_text_line_height", "label": "Chip text line height (÷10)",
-      "min": 10, "max": 25, "step": 1, "default": 14
-    },
-    {
-      "type": "range", "id": "chip_text_spacing", "label": "Chip text letter spacing (÷100 em)",
-      "min": 0, "max": 30, "step": 1, "default": 18
-    }
+    { "type": "color", "id": "chip_color", "label": "Color" },
+
+    { "type": "header", "content": "Chip prompt — Desktop" },
+    { "type": "range", "id": "chip_size", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 12, "unit": "px" },
+    { "type": "select", "id": "chip_weight", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "select", "id": "chip_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "chip_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "chip_ls", "label": "Letter spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 18 },
+
+    { "type": "header", "content": "Chip prompt — Mobile" },
+    { "type": "range", "id": "chip_size_mob", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 10, "unit": "px" },
+    { "type": "select", "id": "chip_weight_mob", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "select", "id": "chip_align_mob", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "chip_lh_mob", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "chip_ls_mob", "label": "Letter spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 18 }
   ],
   "blocks": [
     {
