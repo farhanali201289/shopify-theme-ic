@@ -29,7 +29,14 @@
   </div>
 </section>
 
-<style>{% render 'section-spacing', sid: section.id, s: section.settings %}</style>
+<style>
+  {% render 'section-spacing', sid: section.id, s: section.settings %}
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .gap-stats {
+      grid-template-columns: {% if section.settings.stats_cols_mob == '2' %}1fr 1fr{% else %}1fr{% endif %};
+    }
+  }
+</style>
 
 {% schema %}
 {
@@ -39,6 +46,11 @@
     { "type": "text", "id": "attribution", "label": "Attribution", "default": "— A recovery nurse we work with" },
     { "type": "richtext", "id": "body", "label": "Body" },
     { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select", "id": "stats_cols_mob", "label": "Stats columns (mobile)",
+      "options": [{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}],
+      "default": "1"
+    },
     { "type": "header", "content": "─── Spacing & Width ───" },
     { "type": "header", "content": "Padding — Desktop" },
     { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 20, "step": 1, "default": 4 },
