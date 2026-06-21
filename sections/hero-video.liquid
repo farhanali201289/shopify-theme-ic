@@ -82,38 +82,50 @@
     #shopify-section-{{ section.id }} .hero__mobile  { display: block; }
   }
 
+  {%- assign eb_lh = section.settings.eyebrow_line_height | times: 1.0 | divided_by: 10.0 -%}
+  {%- assign eb_ls = section.settings.eyebrow_spacing | times: 1.0 | divided_by: 100.0 -%}
   #shopify-section-{{ section.id }} .hero__eyebrow {
     color: {{ section.settings.eyebrow_color | default: 'rgba(255,255,255,.75)' }};
     font-size: {{ section.settings.eyebrow_size }}px;
     font-weight: {{ section.settings.eyebrow_weight }};
     text-align: {{ section.settings.eyebrow_align }};
-    line-height: {{ section.settings.eyebrow_line_height }};
-    letter-spacing: {{ section.settings.eyebrow_spacing }}em;
+    line-height: {{ eb_lh }};
+    letter-spacing: {{ eb_ls }}em;
   }
+
+  {%- assign t_lh = section.settings.title_line_height | times: 1.0 | divided_by: 10.0 -%}
+  {%- assign t_ls = section.settings.title_spacing | times: 1.0 | divided_by: 100.0 -%}
   #shopify-section-{{ section.id }} .hero__title {
     color: {{ section.settings.title_color | default: '#ffffff' }};
     font-size: {{ section.settings.title_size }}px;
     font-weight: {{ section.settings.title_weight }};
     text-align: {{ section.settings.title_align }};
-    line-height: {{ section.settings.title_line_height }};
-    letter-spacing: {{ section.settings.title_spacing }}em;
+    line-height: {{ t_lh }};
+    letter-spacing: {{ t_ls }}em;
   }
+
+  {%- assign s_lh = section.settings.subtitle_line_height | times: 1.0 | divided_by: 10.0 -%}
+  {%- assign s_ls = section.settings.subtitle_spacing | times: 1.0 | divided_by: 100.0 -%}
   #shopify-section-{{ section.id }} .hero__subtitle {
     color: {{ section.settings.subtitle_color | default: 'rgba(255,255,255,.92)' }};
     font-size: {{ section.settings.subtitle_size }}px;
     font-weight: {{ section.settings.subtitle_weight }};
     text-align: {{ section.settings.subtitle_align }};
-    line-height: {{ section.settings.subtitle_line_height }};
-    letter-spacing: {{ section.settings.subtitle_spacing }}em;
+    line-height: {{ s_lh }};
+    letter-spacing: {{ s_ls }}em;
   }
+
+  {%- assign c_lh = section.settings.chip_text_line_height | times: 1.0 | divided_by: 10.0 -%}
+  {%- assign c_ls = section.settings.chip_text_spacing | times: 1.0 | divided_by: 100.0 -%}
   #shopify-section-{{ section.id }} .hero__prompt {
     color: {{ section.settings.chip_text_color | default: 'rgba(255,255,255,.85)' }};
     font-size: {{ section.settings.chip_text_size }}px;
     font-weight: {{ section.settings.chip_text_weight }};
     text-align: {{ section.settings.chip_text_align }};
-    line-height: {{ section.settings.chip_text_line_height }};
-    letter-spacing: {{ section.settings.chip_text_spacing }}em;
+    line-height: {{ c_lh }};
+    letter-spacing: {{ c_ls }}em;
   }
+
   {%- if section.settings.title_align == 'center' -%}
     #shopify-section-{{ section.id }} .hero__subtitle { margin-inline: auto; }
     #shopify-section-{{ section.id }} .hero__chips { justify-content: center; }
@@ -129,29 +141,28 @@
   "settings": [
     { "type": "header", "content": "Desktop media" },
     { "type": "video", "id": "video_desktop", "label": "Desktop video" },
-    { "type": "video_url", "id": "video_url_desktop", "label": "Desktop external video URL (mp4)", "accept": ["youtube", "vimeo"] },
+    { "type": "video_url", "id": "video_url_desktop", "label": "Desktop video URL (mp4)", "accept": ["youtube", "vimeo"] },
     { "type": "image_picker", "id": "poster_desktop", "label": "Desktop video poster" },
     { "type": "image_picker", "id": "image_desktop", "label": "Desktop fallback image" },
 
     { "type": "header", "content": "Mobile media" },
     { "type": "video", "id": "video_mobile", "label": "Mobile video" },
-    { "type": "video_url", "id": "video_url_mobile", "label": "Mobile external video URL (mp4)", "accept": ["youtube", "vimeo"] },
+    { "type": "video_url", "id": "video_url_mobile", "label": "Mobile video URL (mp4)", "accept": ["youtube", "vimeo"] },
     { "type": "image_picker", "id": "poster_mobile", "label": "Mobile video poster" },
     { "type": "image_picker", "id": "image_mobile", "label": "Mobile fallback image" },
 
-    { "type": "header", "content": "Eyebrow text" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Clothing engineered for treatment" },
-    { "type": "color", "id": "eyebrow_color", "label": "Color" },
+    { "type": "header", "content": "--- Eyebrow ---" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Clothing engineered for treatment" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color" },
     {
-      "type": "range", "id": "eyebrow_size", "label": "Font size",
+      "type": "range", "id": "eyebrow_size", "label": "Eyebrow font size",
       "min": 8, "max": 24, "step": 1, "default": 11, "unit": "px"
     },
     {
-      "type": "select", "id": "eyebrow_weight", "label": "Font weight",
+      "type": "select", "id": "eyebrow_weight", "label": "Eyebrow font weight",
       "options": [
         { "value": "300", "label": "Light" },
         { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
         { "value": "600", "label": "Semi-bold" },
         { "value": "700", "label": "Bold" },
         { "value": "800", "label": "Extra-bold" }
@@ -159,7 +170,7 @@
       "default": "400"
     },
     {
-      "type": "select", "id": "eyebrow_align", "label": "Text alignment",
+      "type": "select", "id": "eyebrow_align", "label": "Eyebrow alignment",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
@@ -168,27 +179,26 @@
       "default": "left"
     },
     {
-      "type": "range", "id": "eyebrow_line_height", "label": "Line height",
-      "min": 1, "max": 2.5, "step": 0.1, "default": 1.4
+      "type": "range", "id": "eyebrow_line_height", "label": "Eyebrow line height (÷10)",
+      "min": 10, "max": 25, "step": 1, "default": 14
     },
     {
-      "type": "range", "id": "eyebrow_spacing", "label": "Letter spacing",
-      "min": 0, "max": 0.3, "step": 0.01, "default": 0.15, "unit": "em"
+      "type": "range", "id": "eyebrow_spacing", "label": "Eyebrow letter spacing (÷100 em)",
+      "min": 0, "max": 30, "step": 1, "default": 15
     },
 
-    { "type": "header", "content": "Heading" },
+    { "type": "header", "content": "--- Heading ---" },
     { "type": "inline_richtext", "id": "title", "label": "Heading", "default": "You don't have to figure this out alone." },
-    { "type": "color", "id": "title_color", "label": "Color" },
+    { "type": "color", "id": "title_color", "label": "Heading color" },
     {
-      "type": "range", "id": "title_size", "label": "Font size",
+      "type": "range", "id": "title_size", "label": "Heading font size",
       "min": 20, "max": 80, "step": 1, "default": 44, "unit": "px"
     },
     {
-      "type": "select", "id": "title_weight", "label": "Font weight",
+      "type": "select", "id": "title_weight", "label": "Heading font weight",
       "options": [
         { "value": "300", "label": "Light" },
         { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
         { "value": "600", "label": "Semi-bold" },
         { "value": "700", "label": "Bold" },
         { "value": "800", "label": "Extra-bold" }
@@ -196,7 +206,7 @@
       "default": "300"
     },
     {
-      "type": "select", "id": "title_align", "label": "Text alignment",
+      "type": "select", "id": "title_align", "label": "Content alignment",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
@@ -205,27 +215,26 @@
       "default": "left"
     },
     {
-      "type": "range", "id": "title_line_height", "label": "Line height",
-      "min": 0.8, "max": 2, "step": 0.05, "default": 1.1
+      "type": "range", "id": "title_line_height", "label": "Heading line height (÷10)",
+      "min": 8, "max": 20, "step": 1, "default": 11
     },
     {
-      "type": "range", "id": "title_spacing", "label": "Letter spacing",
-      "min": -0.05, "max": 0.2, "step": 0.01, "default": 0, "unit": "em"
+      "type": "range", "id": "title_spacing", "label": "Heading letter spacing (÷100 em)",
+      "min": 0, "max": 20, "step": 1, "default": 0
     },
 
-    { "type": "header", "content": "Subtitle" },
+    { "type": "header", "content": "--- Subtitle ---" },
     { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Clothing built with hundreds of patients and nurses — for drains, ports, and dressing yourself." },
-    { "type": "color", "id": "subtitle_color", "label": "Color" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle color" },
     {
-      "type": "range", "id": "subtitle_size", "label": "Font size",
+      "type": "range", "id": "subtitle_size", "label": "Subtitle font size",
       "min": 10, "max": 30, "step": 1, "default": 16, "unit": "px"
     },
     {
-      "type": "select", "id": "subtitle_weight", "label": "Font weight",
+      "type": "select", "id": "subtitle_weight", "label": "Subtitle font weight",
       "options": [
         { "value": "300", "label": "Light" },
         { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
         { "value": "600", "label": "Semi-bold" },
         { "value": "700", "label": "Bold" },
         { "value": "800", "label": "Extra-bold" }
@@ -233,7 +242,7 @@
       "default": "400"
     },
     {
-      "type": "select", "id": "subtitle_align", "label": "Text alignment",
+      "type": "select", "id": "subtitle_align", "label": "Subtitle alignment",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
@@ -242,27 +251,26 @@
       "default": "left"
     },
     {
-      "type": "range", "id": "subtitle_line_height", "label": "Line height",
-      "min": 1, "max": 2.5, "step": 0.1, "default": 1.6
+      "type": "range", "id": "subtitle_line_height", "label": "Subtitle line height (÷10)",
+      "min": 10, "max": 25, "step": 1, "default": 16
     },
     {
-      "type": "range", "id": "subtitle_spacing", "label": "Letter spacing",
-      "min": 0, "max": 0.2, "step": 0.01, "default": 0, "unit": "em"
+      "type": "range", "id": "subtitle_spacing", "label": "Subtitle letter spacing (÷100 em)",
+      "min": 0, "max": 20, "step": 1, "default": 0
     },
 
-    { "type": "header", "content": "Chip text" },
+    { "type": "header", "content": "--- Chip prompt ---" },
     { "type": "text", "id": "prompt", "label": "Chip prompt text", "default": "Which one is yours?" },
-    { "type": "color", "id": "chip_text_color", "label": "Color" },
+    { "type": "color", "id": "chip_text_color", "label": "Chip text color" },
     {
-      "type": "range", "id": "chip_text_size", "label": "Font size",
+      "type": "range", "id": "chip_text_size", "label": "Chip text font size",
       "min": 8, "max": 24, "step": 1, "default": 12, "unit": "px"
     },
     {
-      "type": "select", "id": "chip_text_weight", "label": "Font weight",
+      "type": "select", "id": "chip_text_weight", "label": "Chip text font weight",
       "options": [
         { "value": "300", "label": "Light" },
         { "value": "400", "label": "Normal" },
-        { "value": "500", "label": "Medium" },
         { "value": "600", "label": "Semi-bold" },
         { "value": "700", "label": "Bold" },
         { "value": "800", "label": "Extra-bold" }
@@ -270,7 +278,7 @@
       "default": "700"
     },
     {
-      "type": "select", "id": "chip_text_align", "label": "Text alignment",
+      "type": "select", "id": "chip_text_align", "label": "Chip text alignment",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
@@ -279,12 +287,12 @@
       "default": "left"
     },
     {
-      "type": "range", "id": "chip_text_line_height", "label": "Line height",
-      "min": 1, "max": 2.5, "step": 0.1, "default": 1.4
+      "type": "range", "id": "chip_text_line_height", "label": "Chip text line height (÷10)",
+      "min": 10, "max": 25, "step": 1, "default": 14
     },
     {
-      "type": "range", "id": "chip_text_spacing", "label": "Letter spacing",
-      "min": 0, "max": 0.3, "step": 0.01, "default": 0.18, "unit": "em"
+      "type": "range", "id": "chip_text_spacing", "label": "Chip text letter spacing (÷100 em)",
+      "min": 0, "max": 30, "step": 1, "default": 18
     }
   ],
   "blocks": [
