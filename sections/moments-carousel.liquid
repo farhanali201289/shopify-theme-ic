@@ -1,16 +1,24 @@
+{%- liquid
+  assign h_lh = section.settings.h_lh | times: 1.0 | divided_by: 10.0
+  assign h_ls = section.settings.h_ls | times: 1.0 | divided_by: 100.0
+  assign h_lh_m = section.settings.h_lh_m | times: 1.0 | divided_by: 10.0
+  assign h_ls_m = section.settings.h_ls_m | times: 1.0 | divided_by: 100.0
+-%}
+
 <section class="section section--tight">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
-      <h2 class="section-heading" style="text-align:center; margin-bottom:24px;">{{ section.settings.heading }}</h2>
+      <h2 class="mc-heading">{{ section.settings.heading }}</h2>
     {%- endif -%}
-    <div class="scroller" data-scroller>
+    <div class="scroller" data-scroller {% if section.settings.auto_slide %}data-auto-slide="3000"{% endif %}>
       <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
       <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
       <div class="scroller__track" data-scroller-track>
         {%- for block in section.blocks -%}
           <figure class="moment-card" {{ block.shopify_attributes }}>
             {%- if block.settings.image != blank -%}
-              {{ block.settings.image | image_url: width: 680 | image_tag: loading: 'lazy', alt: block.settings.caption | strip_html }}
+              {%- assign cap_alt = block.settings.caption | strip_html | default: 'Moment' -%}
+              {{ block.settings.image | image_url: width: 680 | image_tag: loading: 'lazy', alt: cap_alt }}
             {%- else -%}
               {{ 'lifestyle-2' | placeholder_svg_tag }}
             {%- endif -%}
@@ -22,11 +30,51 @@
   </div>
 </section>
 
+<style>
+  {%- capture s -%}#shopify-section-{{ section.id }}{%- endcapture -%}
+
+  {{ s }} .mc-heading {
+    text-align: center; margin-bottom: 24px;
+    color: {{ section.settings.h_color | default: 'inherit' }};
+    font-size: {{ section.settings.h_size }}px;
+    font-weight: {{ section.settings.h_weight }};
+    text-align: {{ section.settings.h_align }};
+    line-height: {{ h_lh }};
+    letter-spacing: {{ h_ls }}em;
+  }
+
+  @media (max-width: 749px) {
+    {{ s }} .mc-heading {
+      font-size: {{ section.settings.h_size_m }}px;
+      font-weight: {{ section.settings.h_weight_m }};
+      text-align: {{ section.settings.h_align_m }};
+      line-height: {{ h_lh_m }};
+      letter-spacing: {{ h_ls_m }}em;
+    }
+  }
+</style>
+
 {% schema %}
 {
   "name": "Moments carousel",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading" }
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "checkbox", "id": "auto_slide", "label": "Auto slide", "default": true },
+
+    { "type": "header", "content": "─── Heading style ───" },
+    { "type": "color", "id": "h_color", "label": "Color" },
+    { "type": "header", "content": "Heading — Desktop" },
+    { "type": "range", "id": "h_size", "label": "Font size", "min": 16, "max": 80, "step": 1, "default": 36, "unit": "px" },
+    { "type": "select", "id": "h_weight", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "h_align", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "h_lh", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "h_ls", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+    { "type": "header", "content": "Heading — Mobile" },
+    { "type": "range", "id": "h_size_m", "label": "Font size", "min": 16, "max": 60, "step": 1, "default": 24, "unit": "px" },
+    { "type": "select", "id": "h_weight_m", "label": "Weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "h_align_m", "label": "Align", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "range", "id": "h_lh_m", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "h_ls_m", "label": "Spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 }
   ],
   "blocks": [
     {

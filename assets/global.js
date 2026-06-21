@@ -95,6 +95,26 @@
         track.scrollBy({ left: dir * Math.min(track.clientWidth * 0.85, 640), behavior: 'smooth' });
       });
     });
+
+    var interval = parseInt(scroller.dataset.autoSlide, 10);
+    if (!interval) return;
+    var timer;
+    function startAuto() {
+      timer = setInterval(function() {
+        var maxScroll = track.scrollWidth - track.clientWidth;
+        if (track.scrollLeft >= maxScroll - 2) {
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          track.scrollBy({ left: Math.min(track.clientWidth * 0.85, 640), behavior: 'smooth' });
+        }
+      }, interval);
+    }
+    function stopAuto() { clearInterval(timer); }
+    startAuto();
+    scroller.addEventListener('mouseenter', stopAuto);
+    scroller.addEventListener('mouseleave', startAuto);
+    scroller.addEventListener('touchstart', stopAuto, { passive: true });
+    scroller.addEventListener('touchend', function() { setTimeout(startAuto, 1000); });
   });
 
   /* ---------- Filter chips (kit finder / review filters) ---------- */
