@@ -100,59 +100,109 @@
   <div class="header__overlay"></div>
 </header>
 
-{%- comment -%} Mobile nav drawer {%- endcomment -%}
+{%- comment -%} Mobile nav — offcanvas drawer {%- endcomment -%}
+<div class="mobile-nav__overlay" data-mobile-overlay></div>
 <nav class="mobile-nav" data-mobile-nav aria-label="Mobile">
-  <div class="page-width" style="padding-block:16px;">
-    {%- if section.settings.cta_label != blank -%}
-      <a href="{{ section.settings.cta_link }}" class="header__pill-cta mobile-nav__cta">{{ section.settings.cta_label }}</a>
-    {%- endif -%}
+  <div class="mobile-nav__header">
+    <button class="mobile-nav__close" data-mobile-toggle aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l12 12M16 4L4 16"/></svg>
+    </button>
+  </div>
+  <div class="mobile-nav__links">
     {%- if nav_items.size > 0 -%}
       {%- for block in nav_items -%}
         {%- if block.settings.mega_type == 'shop' and shop_conditions.size > 0 -%}
           <details>
-            <summary class="header__nav-link" style="justify-content:space-between; width:100%;">{{ block.settings.title }}</summary>
+            <summary class="mobile-nav__link">{{ block.settings.title }}</summary>
             {%- for c in shop_conditions -%}
-              <a href="{{ c.settings.link }}" style="display:block; padding:6px 0 6px 14px; font-size:13px;">{{ c.settings.name }}</a>
+              <a href="{{ c.settings.link }}" class="mobile-nav__sub">{{ c.settings.name }}</a>
             {%- endfor -%}
           </details>
         {%- elsif block.settings.mega_type == 'columns' -%}
           <details>
-            <summary class="header__nav-link" style="justify-content:space-between; width:100%;">{{ block.settings.title }}</summary>
+            <summary class="mobile-nav__link">{{ block.settings.title }}</summary>
             {%- assign keys = '1,2,3,4,5' | split: ',' -%}
             {%- for n in keys -%}
               {%- assign lk = 'col' | append: n | append: '_links' -%}
               {%- assign lines = block.settings[lk] | newline_to_br | split: '<br />' -%}
               {%- for line in lines -%}
                 {%- assign parts = line | strip | split: '|' -%}
-                {%- if parts[0] != blank -%}<a href="{{ parts[1] | strip }}" style="display:block; padding:6px 0 6px 14px; font-size:13px;">{{ parts[0] | strip }}</a>{%- endif -%}
+                {%- if parts[0] != blank -%}<a href="{{ parts[1] | strip }}" class="mobile-nav__sub">{{ parts[0] | strip }}</a>{%- endif -%}
               {%- endfor -%}
             {%- endfor -%}
           </details>
         {%- else -%}
-          <a href="{{ block.settings.url | default: '#' }}" style="display:block; padding:10px 0; font-weight:600;">{{ block.settings.title }}</a>
+          <a href="{{ block.settings.url | default: '#' }}" class="mobile-nav__link">{{ block.settings.title }}</a>
         {%- endif -%}
       {%- endfor -%}
     {%- else -%}
       {%- for link in menu.links -%}
         {%- if link.links.size > 0 -%}
           <details>
-            <summary class="header__nav-link" style="justify-content:space-between; width:100%;">{{ link.title }}</summary>
-            {%- for child in link.links -%}<a href="{{ child.url }}" style="display:block; padding:6px 0 6px 14px; font-size:13px;">{{ child.title }}</a>{%- endfor -%}
+            <summary class="mobile-nav__link">{{ link.title }}</summary>
+            {%- for child in link.links -%}<a href="{{ child.url }}" class="mobile-nav__sub">{{ child.title }}</a>{%- endfor -%}
           </details>
         {%- else -%}
-          <a href="{{ link.url }}" style="display:block; padding:10px 0; font-weight:600;">{{ link.title }}</a>
+          <a href="{{ link.url }}" class="mobile-nav__link">{{ link.title }}</a>
         {%- endif -%}
       {%- endfor -%}
     {%- endif -%}
   </div>
+  {%- if section.settings.cta_label != blank -%}
+    <div class="mobile-nav__footer">
+      <a href="{{ section.settings.cta_link }}" class="mobile-nav__cta">{{ section.settings.cta_label }}</a>
+    </div>
+  {%- endif -%}
 </nav>
 
 <style>
-  .mobile-nav.is-open { display: block; background: var(--cream); border-bottom: 1px solid var(--border); }
-  .mobile-nav details { border-bottom: 1px solid var(--border); padding: 10px 0; }
-  .mobile-nav summary { list-style: none; }
-  .mobile-nav summary::-webkit-details-marker { display: none; }
-  .mobile-nav .mobile-nav__cta { display: block; text-align: center; margin-bottom: 14px; padding: 13px; font-size: 14px; }
+  .header__logo img { --logo-width: {{ section.settings.logo_desktop_width }}px; }
+  @media (max-width: 990px) {
+    .header__logo img { --logo-width: {{ section.settings.logo_mobile_width }}px; }
+  }
+
+  .mobile-nav { --mobile-nav-bg: {{ section.settings.mobile_nav_bg | default: 'var(--cream)' }}; }
+  .mobile-nav__header {
+    display: flex; justify-content: flex-end; padding: 16px 20px 8px;
+  }
+  .mobile-nav__close {
+    background: none; border: none; color: var(--brown); cursor: pointer; padding: 4px;
+  }
+  .mobile-nav__links {
+    flex: 1; padding: 0 24px; overflow-y: auto;
+  }
+  .mobile-nav__link {
+    display: flex; justify-content: space-between; align-items: center; width: 100%;
+    font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--brown);
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+    background: none; border-top: none; border-left: none; border-right: none; cursor: pointer;
+    list-style: none; text-decoration: none;
+  }
+  .mobile-nav__link::-webkit-details-marker { display: none; }
+  .mobile-nav__sub {
+    display: block; padding: 8px 0 8px 16px; font-family: var(--font-body);
+    font-size: 13px; color: var(--brown); text-decoration: none;
+  }
+  .mobile-nav__sub:hover { color: var(--accent); }
+  .mobile-nav details { border-bottom: 1px solid var(--border); }
+  .mobile-nav details summary { list-style: none; }
+  .mobile-nav details summary::-webkit-details-marker { display: none; }
+  .mobile-nav details[open] summary::after { transform: rotate(180deg); }
+  .mobile-nav details summary::after {
+    content: ''; width: 10px; height: 10px; flex-shrink: 0;
+    border-right: 2px solid var(--brown); border-bottom: 2px solid var(--brown);
+    transform: rotate(45deg); transition: transform .2s;
+  }
+  .mobile-nav details[open] summary::after { transform: rotate(-135deg); }
+  .mobile-nav__footer {
+    padding: 20px 24px; margin-top: auto;
+  }
+  .mobile-nav__cta {
+    display: block; text-align: center; background: var(--accent); color: #fff;
+    font-family: var(--font-body); font-size: 14px; font-weight: 700;
+    padding: 14px 20px; border-radius: 100px; text-decoration: none;
+  }
+  .mobile-nav__cta:hover { background: var(--accent-dark); }
 
   .mega-shop {
     --mega-cond-size: {{ section.settings.mega_cond_size }}px;
@@ -174,6 +224,14 @@
   "name": "Header",
   "settings": [
     { "type": "image_picker", "id": "logo", "label": "Logo image" },
+    {
+      "type": "range", "id": "logo_desktop_width", "label": "Logo width (desktop)",
+      "min": 30, "max": 150, "step": 2, "default": 44, "unit": "px"
+    },
+    {
+      "type": "range", "id": "logo_mobile_width", "label": "Logo width (mobile)",
+      "min": 24, "max": 120, "step": 2, "default": 36, "unit": "px"
+    },
     { "type": "text", "id": "logo_tagline", "label": "Logo tagline (text logo only)", "default": "Adaptive recovery clothing" },
     { "type": "link_list", "id": "menu", "label": "Fallback menu (used only if no Nav item blocks added)", "default": "main-menu" },
     { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
@@ -181,6 +239,8 @@
     { "type": "header", "content": "Call to action" },
     { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Find my kit" },
     { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "header", "content": "Mobile menu" },
+    { "type": "color", "id": "mobile_nav_bg", "label": "Mobile menu background color" },
     { "type": "header", "content": "Shop mega defaults" },
     { "type": "text", "id": "shop_save_badge", "label": "Save badge", "default": "Build a kit · any 3 save 15%, add a 4th for 20%" },
     { "type": "text", "id": "shop_byo_eyebrow", "label": "Build-your-own eyebrow", "default": "Build your own kit · you choose the pieces" },

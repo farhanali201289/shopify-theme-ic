@@ -62,12 +62,28 @@
     });
   });
 
-  /* ---------- Mobile nav ---------- */
+  /* ---------- Mobile nav (offcanvas) ---------- */
   const mobileNav = document.querySelector('[data-mobile-nav]');
-  function closeMobileNav() { if (mobileNav) mobileNav.classList.remove('is-open'); }
+  const mobileOverlay = document.querySelector('[data-mobile-overlay]');
+  function openMobileNav() {
+    if (!mobileNav) return;
+    mobileNav.classList.add('is-open');
+    if (mobileOverlay) mobileOverlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileNav() {
+    if (!mobileNav) return;
+    mobileNav.classList.remove('is-open');
+    if (mobileOverlay) mobileOverlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
   document.querySelectorAll('[data-mobile-toggle]').forEach((b) =>
-    b.addEventListener('click', () => mobileNav && mobileNav.classList.toggle('is-open'))
+    b.addEventListener('click', () => {
+      if (mobileNav && mobileNav.classList.contains('is-open')) closeMobileNav();
+      else openMobileNav();
+    })
   );
+  if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileNav);
 
   /* ---------- Horizontal scrollers (carousels) ---------- */
   document.querySelectorAll('[data-scroller]').forEach((scroller) => {
