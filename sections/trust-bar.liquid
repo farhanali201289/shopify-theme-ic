@@ -3,13 +3,11 @@
     {%- for block in section.blocks -%}
       {%- if forloop.index > 1 -%}<span class="trust-stat__divider">|</span>{%- endif -%}
       <div class="trust-stat" {{ block.shopify_attributes }}>
-        {%- if block.settings.counter_end != blank and block.settings.counter_end != '0' and block.settings.counter_end != '' -%}
-          <span class="trust-stat__val" data-counter="{{ block.settings.counter_end }}" data-prefix="{{ block.settings.counter_prefix }}" data-suffix="{{ block.settings.counter_suffix }}">
-            {{ block.settings.counter_prefix }}0{{ block.settings.counter_suffix }}
-          </span>
-        {%- else -%}
-          <span class="trust-stat__val">{{ block.settings.value }}</span>
-        {%- endif -%}
+        <span class="trust-stat__val"
+          {%- if block.settings.counter_end != blank and block.settings.counter_end != '0' %} data-counter="{{ block.settings.counter_end }}" data-prefix="{{ block.settings.counter_prefix }}" data-suffix="{{ block.settings.counter_suffix }}"{% endif -%}
+        >
+          {{ block.settings.counter_prefix }}{% if block.settings.counter_end != blank and block.settings.counter_end != '0' %}0{% else %}0{% endif %}{{ block.settings.counter_suffix }}
+        </span>
         <span class="trust-stat__label">{{ block.settings.label }}</span>
       </div>
     {%- endfor -%}
@@ -69,7 +67,6 @@
       "type": "stat",
       "name": "Stat",
       "settings": [
-        { "type": "text", "id": "value", "label": "Static value (used if counter is empty)", "default": "14k+" },
         { "type": "text", "id": "label", "label": "Label", "default": "patients served" },
         { "type": "header", "content": "Counter" },
         { "type": "text", "id": "counter_end", "label": "Counter target number (empty = off)", "info": "e.g. 14000" },
@@ -82,10 +79,10 @@
     {
       "name": "Trust bar",
       "blocks": [
-        { "type": "stat", "settings": { "value": "14k+", "counter_end": "14000", "counter_suffix": "+", "label": "patients served" } },
-        { "type": "stat", "settings": { "value": "4.9 ★", "label": "1,200+ reviews" } },
-        { "type": "stat", "settings": { "value": "1,247", "counter_end": "1247", "label": "kits sponsored" } },
-        { "type": "stat", "settings": { "value": "<1%", "label": "return rate" } }
+        { "type": "stat", "settings": { "counter_end": "14000", "counter_suffix": "+", "label": "patients served" } },
+        { "type": "stat", "settings": { "counter_end": "49", "counter_prefix": "", "counter_suffix": " ★", "label": "1,200+ reviews" } },
+        { "type": "stat", "settings": { "counter_end": "1247", "label": "kits sponsored" } },
+        { "type": "stat", "settings": { "counter_end": "1", "counter_prefix": "<", "counter_suffix": "%", "label": "return rate" } }
       ]
     }
   ]
