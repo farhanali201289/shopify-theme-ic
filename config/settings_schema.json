@@ -1,0 +1,231 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Inspired Comforts",
+    "theme_version": "1.0.0",
+    "theme_author": "Inspired Comforts",
+    "theme_documentation_url": "https://inspiredcomforts.com",
+    "theme_support_url": "https://inspiredcomforts.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Core palette"
+      },
+      {
+        "type": "color",
+        "id": "color_cream",
+        "label": "Cream background",
+        "default": "#FCFAF4"
+      },
+      {
+        "type": "color",
+        "id": "color_sand",
+        "label": "Sand surface",
+        "default": "#F1EBDC"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Sage accent",
+        "default": "#5C6E3A"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_dark",
+        "label": "Deep clay-green",
+        "default": "#3A4A28"
+      },
+      {
+        "type": "color",
+        "id": "color_brown",
+        "label": "Brown / ink text",
+        "default": "#1D1A14"
+      },
+      {
+        "type": "color",
+        "id": "color_taupe",
+        "label": "Taupe muted text",
+        "default": "#8A8074"
+      },
+      {
+        "type": "color",
+        "id": "color_gift",
+        "label": "Gift / dusty-rose accent",
+        "default": "#9A4E3C"
+      },
+      {
+        "type": "color",
+        "id": "color_highlight",
+        "label": "Highlight on dark",
+        "default": "#F7E9C9"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "color",
+        "id": "color_button_bg",
+        "label": "Primary button background",
+        "default": "#1D1A14"
+      },
+      {
+        "type": "color",
+        "id": "color_button_text",
+        "label": "Primary button text",
+        "default": "#FCFAF4"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Headings use Cormorant Garamond and body uses DM Sans (loaded via Google Fonts to match the brand). Adjust scale below."
+      },
+      {
+        "type": "range",
+        "id": "type_body_scale",
+        "min": 90,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "label": "Body text scale",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "type_heading_scale",
+        "min": 90,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "label": "Heading scale",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "label": "Page width",
+        "default": 1280
+      },
+      {
+        "type": "range",
+        "id": "spacing_sections",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Spacing between sections",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "card_corner_radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Card corner radius",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "button_corner_radius",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Button corner radius",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Image ratio",
+        "options": [
+          { "value": "portrait", "label": "Portrait (4:5)" },
+          { "value": "square", "label": "Square (1:1)" },
+          { "value": "landscape", "label": "Landscape (4:3)" }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_vendor",
+        "label": "Show vendor / category",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_rating",
+        "label": "Show product rating",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_quick_add",
+        "label": "Show quick add button",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "drawer", "label": "Drawer" },
+          { "value": "page", "label": "Page" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_free_shipping",
+        "label": "Show free shipping progress bar",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "cart_free_shipping_threshold",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "$",
+        "label": "Free shipping threshold",
+        "default": 75
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram_link", "label": "Instagram URL" },
+      { "type": "text", "id": "social_tiktok_link", "label": "TikTok URL" },
+      { "type": "text", "id": "social_facebook_link", "label": "Facebook URL" },
+      { "type": "text", "id": "social_youtube_link", "label": "YouTube URL" }
+    ]
+  }
+]

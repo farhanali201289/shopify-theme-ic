@@ -1,0 +1,73 @@
+<section class="section value-section">
+  <div class="page-width">
+    <div class="value-intro">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="section-heading">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<p class="section-subtext" style="margin-top:16px;">{{ section.settings.text }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.image != blank -%}
+        <div class="value-intro__media">{{ section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: section.settings.heading | strip_html }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="value-grid">
+      {%- for block in section.blocks -%}
+        <div class="value-cell" {{ block.shopify_attributes }}>
+          <div class="value-cell__icon">{% render 'icon', name: block.settings.icon %}</div>
+          <div class="value-cell__title">{{ block.settings.title }}</div>
+          <div class="value-cell__sub">{{ block.settings.subtitle }}</div>
+          <div class="value-cell__body">{{ block.settings.body }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Value proposition",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What we give back to you" },
+    { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>You focus on getting better. <em>We've already handled the rest.</em></p>" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Every product came from a real patient telling us what they wished they'd had." },
+    { "type": "image_picker", "id": "image", "label": "Intro image" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon",
+          "options": [
+            { "value": "shield", "label": "Shield" },
+            { "value": "user", "label": "Person" },
+            { "value": "arrow", "label": "Arrow" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "users", "label": "People" }
+          ],
+          "default": "shield"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Your dignity" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Stays intact at every appointment" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Port access without lifting your top. Drains managed without exposure." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Value proposition",
+      "blocks": [
+        { "type": "value", "settings": { "icon": "shield", "title": "Your dignity", "subtitle": "Stays intact at every appointment", "body": "Port access without lifting your top. Drains managed without exposure. Nothing undresses you in front of others." } },
+        { "type": "value", "settings": { "icon": "user", "title": "Your identity", "subtitle": "You still look and feel like you", "body": "Not a patient in a gown. You, dressed — with every practical consideration already built in." } },
+        { "type": "value", "settings": { "icon": "arrow", "title": "Your independence", "subtitle": "Get dressed without asking for help", "body": "Front closures. Magnetic snaps. Side zips. The morning routine is yours again — even in week one." } },
+        { "type": "value", "settings": { "icon": "heart", "title": "Your comfort", "subtitle": "Softness that holds up through treatment", "body": "Temperature regulation. Zero pressure on sensitive areas. Fabrics chosen for chemo sensitivity and post-surgical skin." } },
+        { "type": "value", "settings": { "icon": "clock", "title": "Your time", "subtitle": "One less thing to figure out", "body": "Every kit arrives ready. No hunting for the right piece. Everything you need, in one box." } },
+        { "type": "value", "settings": { "icon": "users", "title": "300,000+", "subtitle": "Patients across hospitals and clinics", "body": "We've learned from every one of them. That knowledge is what you're buying — not just the garments." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

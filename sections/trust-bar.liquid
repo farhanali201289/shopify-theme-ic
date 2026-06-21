@@ -1,0 +1,41 @@
+<section class="trust-strip" style="background: {{ section.settings.bg }};">
+  <div class="trust-strip__inner">
+    {%- for block in section.blocks -%}
+      {%- if forloop.index > 1 -%}<span class="trust-stat__divider">|</span>{%- endif -%}
+      <div class="trust-stat" {{ block.shopify_attributes }}>
+        <span class="trust-stat__val">{{ block.settings.value }}</span>
+        <span class="trust-stat__label">{{ block.settings.label }}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust bar",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Background", "default": "#1D1A14" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "14k+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "patients served" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust bar",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "14k+", "label": "patients served" } },
+        { "type": "stat", "settings": { "value": "4.9 ★", "label": "1,200+ reviews" } },
+        { "type": "stat", "settings": { "value": "1,247", "label": "kits sponsored" } },
+        { "type": "stat", "settings": { "value": "<1%", "label": "return rate" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

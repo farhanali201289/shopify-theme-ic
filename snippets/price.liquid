@@ -1,0 +1,28 @@
+{%- comment -%}
+  Renders a price block.
+  Accepts: product (object) OR price/compare_at_price (numbers)
+{%- endcomment -%}
+{%- liquid
+  if product
+    assign target = product
+    assign price = product.price
+    assign compare = product.compare_at_price
+  else
+    assign price = price | default: 0
+    assign compare = compare_at_price
+  endif
+  assign on_sale = false
+  if compare and compare > price
+    assign on_sale = true
+  endif
+-%}
+<span class="price{% if on_sale %} price--on-sale{% endif %}">
+  {%- if target.price_varies and target.compare_at_price == blank -%}
+    <span class="price__regular">{{ 'products.product.from_price' | t: price: price | money }}</span>
+  {%- else -%}
+    <span class="price__regular">{{ price | money }}</span>
+    {%- if on_sale -%}
+      <s class="price__compare">{{ compare | money }}</s>
+    {%- endif -%}
+  {%- endif -%}
+</span>

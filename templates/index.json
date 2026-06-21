@@ -1,0 +1,171 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-video",
+      "blocks": {
+        "c1": { "type": "chip", "settings": { "label": "Dialysis", "link": "/collections/dialysis" } },
+        "c2": { "type": "chip", "settings": { "label": "IV & Infusions", "link": "/collections/iv-infusions" } },
+        "c3": { "type": "chip", "settings": { "label": "Mastectomy", "link": "/collections/mastectomy" } },
+        "c4": { "type": "chip", "settings": { "label": "Post-Surgery", "link": "/collections/post-surgery" } },
+        "c5": { "type": "chip", "settings": { "label": "Chemotherapy", "link": "/collections/chemotherapy" } },
+        "c6": { "type": "chip", "settings": { "label": "Gifting for someone", "link": "/collections/caregiver-gifts" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6"],
+      "settings": {
+        "eyebrow": "Clothing engineered for treatment",
+        "title": "You don’t have to figure this out alone.",
+        "subtitle": "Clothing built with hundreds of patients and nurses — for drains, ports, and dressing yourself.",
+        "prompt": "Which one is yours?"
+      }
+    },
+    "trust": {
+      "type": "trust-bar",
+      "blocks": {
+        "s1": { "type": "stat", "settings": { "value": "14k+", "label": "patients served" } },
+        "s2": { "type": "stat", "settings": { "value": "4.9 ★", "label": "1,200+ reviews" } },
+        "s3": { "type": "stat", "settings": { "value": "1,247", "label": "kits sponsored" } },
+        "s4": { "type": "stat", "settings": { "value": "<1%", "label": "return rate" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"]
+    },
+    "value": {
+      "type": "value-proposition",
+      "blocks": {
+        "v1": { "type": "value", "settings": { "icon": "shield", "title": "Your dignity", "subtitle": "Stays intact at every appointment", "body": "Port access without lifting your top. Drains managed without exposure. Nothing undresses you in front of others." } },
+        "v2": { "type": "value", "settings": { "icon": "user", "title": "Your identity", "subtitle": "You still look and feel like you", "body": "Not a patient in a gown. You, dressed — with every practical consideration already built in." } },
+        "v3": { "type": "value", "settings": { "icon": "arrow", "title": "Your independence", "subtitle": "Get dressed without asking for help", "body": "Front closures. Magnetic snaps. Side zips. The morning routine is yours again — even in week one." } },
+        "v4": { "type": "value", "settings": { "icon": "heart", "title": "Your comfort", "subtitle": "Softness that holds up through treatment", "body": "Temperature regulation. Zero pressure on sensitive areas. Fabrics chosen for chemo sensitivity and post-surgical skin." } },
+        "v5": { "type": "value", "settings": { "icon": "clock", "title": "Your time", "subtitle": "One less thing to figure out", "body": "Every kit arrives ready. No hunting for the right piece. Everything you need, in one box." } },
+        "v6": { "type": "value", "settings": { "icon": "users", "title": "300,000+", "subtitle": "Patients across hospitals and clinics", "body": "We've learned from every one of them. That knowledge is what you're buying — not just the garments." } }
+      },
+      "block_order": ["v1", "v2", "v3", "v4", "v5", "v6"],
+      "settings": {
+        "eyebrow": "What we give back to you",
+        "heading": "<p>You focus on getting better. <em>We've already handled the rest.</em></p>",
+        "text": "Every product we make came from a real patient telling us what they wished they'd had. 300,000+ patients' worth of feedback — built into the fabric."
+      }
+    },
+    "moments": {
+      "type": "moments-carousel",
+      "blocks": {
+        "m1": { "type": "moment", "settings": { "caption": "Day 4 at home — drains managed, book in hand." } },
+        "m2": { "type": "moment", "settings": { "caption": "Sleeves that open for the nurse — not for the room." } },
+        "m3": { "type": "moment", "settings": { "caption": "Dressed by herself, week one." } },
+        "m4": { "type": "moment", "settings": { "caption": "Visitors at 2pm. Ready by noon." } },
+        "m5": { "type": "moment", "settings": { "caption": "Not a hospital gown. Hers." } },
+        "m6": { "type": "moment", "settings": { "caption": "Snap-front, one hand, no help." } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4", "m5", "m6"]
+    },
+    "kits": {
+      "type": "kit-finder",
+      "blocks": {
+        "k0": { "type": "chip", "settings": { "label": "All Kits", "value": "all" } },
+        "k1": { "type": "chip", "settings": { "label": "Dialysis", "value": "dialysis" } },
+        "k2": { "type": "chip", "settings": { "label": "IV & Infusions", "value": "iv-infusions" } },
+        "k3": { "type": "chip", "settings": { "label": "Mastectomy", "value": "mastectomy" } },
+        "k4": { "type": "chip", "settings": { "label": "Post-Surgery", "value": "post-surgery" } },
+        "k5": { "type": "chip", "settings": { "label": "Chemotherapy", "value": "chemotherapy" } },
+        "k6": { "type": "chip", "settings": { "label": "Caregiver Gift", "value": "caregiver-gift" } }
+      },
+      "block_order": ["k0", "k1", "k2", "k3", "k4", "k5", "k6"],
+      "settings": {
+        "eyebrow": "Built around your journey",
+        "heading": "<p>Every kit was designed around a specific recovery — <em>including yours.</em></p>",
+        "text": "We listened to 300,000+ patients about what they needed and didn't have. Each kit is the result of that — every item chosen, nothing filler.",
+        "byo_link": "/pages/build-your-own",
+        "button_label": "Browse all kits →",
+        "button_link": "/collections/all"
+      }
+    },
+    "offer": {
+      "type": "offer-band",
+      "blocks": {
+        "o1": { "type": "item", "settings": { "text": "<strong>Free recovery guide</strong> with every kit — curated with patients, caregivers & nurses" } },
+        "o2": { "type": "item", "settings": { "text": "<strong>Free shipping</strong> over $75" } },
+        "o3": { "type": "item", "settings": { "text": "<strong>30-day</strong> feel-like-yourself guarantee" } }
+      },
+      "block_order": ["o1", "o2", "o3"],
+      "settings": {
+        "heading": "<strong>Any 3 pieces — 20% off.</strong> Pick a ready-made kit, or build your own.",
+        "footnote": "<p>Whatever's next — surgery, your next infusion, Tuesday's session — most orders ship same day, so you're ready for it.</p>"
+      }
+    },
+    "gap": {
+      "type": "the-gap",
+      "blocks": {
+        "g1": { "type": "stat", "settings": { "number": "73%", "head": "of patients", "body": "said nobody gave them guidance on what to wear before their first treatment appointment." } },
+        "g2": { "type": "stat", "settings": { "number": "62%", "head": "cite clothing", "body": "as a significant factor in how they feel emotionally on treatment days — yet almost never addressed by care teams." } },
+        "g3": { "type": "stat", "settings": { "number": "89%", "head": "of our customers", "body": "felt more confident at their next treatment appointment after receiving their kit." } },
+        "g4": { "type": "stat", "settings": { "number": "1 in 4", "head": "patients told us", "body": "they wore the same clothes to every appointment because figuring it out was too hard — until they found us." } }
+      },
+      "block_order": ["g1", "g2", "g3", "g4"],
+      "settings": {
+        "quote": "“The doctors are extraordinary. But nobody thinks about the rest of you.”",
+        "attribution": "— A recovery nurse we work with",
+        "body": "<p>The medical plan covers everything — except mornings, mirrors, visitors, and feeling like yourself. That's the part we build for.</p><p><strong>Let us take that one off your plate.</strong></p>"
+      }
+    },
+    "voices": {
+      "type": "patient-voices",
+      "blocks": {
+        "ps1": { "type": "stat", "settings": { "number": "89%", "label": "felt more confident at their treatment appointment" } },
+        "ps2": { "type": "stat", "settings": { "number": "3.2×", "label": "faster nurse access during infusion vs standard clothing" } },
+        "ps3": { "type": "stat", "settings": { "number": "94%", "label": "would recommend Inspired Comforts to another patient" } },
+        "vid1": { "type": "video", "settings": { "category": "Feeling like myself", "name": "Maria R. · Mastectomy" } },
+        "vid2": { "type": "video", "settings": { "category": "Getting through treatment", "name": "Diane K. · Chemo, cycle 4" } },
+        "vid3": { "type": "video", "settings": { "category": "Caregiver moments", "name": "James T. · Dialysis" } },
+        "vid4": { "type": "video", "settings": { "category": "First appointment", "name": "Anita P. · Bilateral mastectomy" } },
+        "vid5": { "type": "video", "settings": { "category": "Going home", "name": "Rosa M. · Hip replacement" } },
+        "vid6": { "type": "video", "settings": { "category": "Caregiver moments", "name": "Tom W. · His wife's chemo" } },
+        "tab0": { "type": "tab", "settings": { "label": "All", "value": "all" } },
+        "tab1": { "type": "tab", "settings": { "label": "Feeling Like Myself", "value": "myself" } },
+        "tab2": { "type": "tab", "settings": { "label": "Getting Through Treatment", "value": "treatment" } },
+        "tab3": { "type": "tab", "settings": { "label": "Caregiver Moments", "value": "caregiver" } },
+        "tab4": { "type": "tab", "settings": { "label": "First Appointment", "value": "appointment" } },
+        "tab5": { "type": "tab", "settings": { "label": "Going Home", "value": "home" } },
+        "r1": { "type": "review", "settings": { "quote": "I wore the camisole home from the hospital. Three weeks later I still hadn't taken it off. The drain pockets are the thing nobody else makes.", "name": "Maria R. · DCIS, double mastectomy", "category": "myself" } },
+        "r2": { "type": "review", "settings": { "quote": "The nurse didn't have to ask me to lift anything. I just rolled up the sleeve. At cycle 4 it meant everything.", "name": "Diane K. · Breast cancer, chemo", "category": "treatment" } },
+        "r3": { "type": "review", "settings": { "quote": "My husband bought the care package. He'd never have known what to look for. I cried when I opened it.", "name": "Anita P. · Bilateral mastectomy", "category": "caregiver" } }
+      },
+      "block_order": ["ps1", "ps2", "ps3", "vid1", "vid2", "vid3", "vid4", "vid5", "vid6", "tab0", "tab1", "tab2", "tab3", "tab4", "tab5", "r1", "r2", "r3"],
+      "settings": {
+        "eyebrow": "What patients say",
+        "heading": "<p>You'll feel the difference <em>at your very next appointment.</em></p>",
+        "filter_label": "Filter patient stories"
+      }
+    },
+    "founder": {
+      "type": "image-with-text",
+      "settings": {
+        "layout": "media_left",
+        "bg": "#FCFAF4",
+        "eyebrow": "Why this exists",
+        "heading": "<p>I watched my father go through treatment and never once feel like a person.</p>",
+        "text": "<p>The doctors were exceptional. But nobody — not one person — thought about what he would wear. He sat through six hours of treatment in clothes that exposed him, that made him feel like a patient instead of a man.</p><p>That's a problem with a solution. Privacy. Dignity. Looking and feeling human through every stage. That's what Inspired Comforts is.</p>",
+        "button_label": "Read the full story →",
+        "button_link": "/pages/our-story"
+      }
+    },
+    "find": {
+      "type": "find-my-kit",
+      "blocks": {
+        "f1": { "type": "option", "settings": { "label": "Dialysis", "link": "/collections/dialysis" } },
+        "f2": { "type": "option", "settings": { "label": "IV & Infusions", "link": "/collections/iv-infusions" } },
+        "f3": { "type": "option", "settings": { "label": "Mastectomy", "link": "/collections/mastectomy" } },
+        "f4": { "type": "option", "settings": { "label": "Post-Surgery", "link": "/collections/post-surgery" } },
+        "f5": { "type": "option", "settings": { "label": "Chemotherapy", "link": "/collections/chemotherapy" } },
+        "f6": { "type": "option", "settings": { "label": "Gifting for someone", "link": "/collections/caregiver-gifts" } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4", "f5", "f6"],
+      "settings": {
+        "eyebrow": "Personalised for you",
+        "heading": "<p>Find your kit<br>in 30 seconds.</p>",
+        "text": "Tell us what you're going through and we'll match you to the right kit — instantly. No email needed.",
+        "button_label": "Find my kit",
+        "button_link": "/pages/find-my-kit"
+      }
+    }
+  },
+  "order": ["hero", "trust", "value", "moments", "kits", "offer", "gap", "voices", "founder", "find"]
+}

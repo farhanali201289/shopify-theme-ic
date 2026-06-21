@@ -1,0 +1,80 @@
+<section class="section" style="background: var(--sand); border-top: 1px solid var(--border);">
+  <div class="page-width page-width--narrow" style="text-align:center;">
+    {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    {%- if section.settings.text != blank -%}<p class="section-subtext" style="margin:14px auto 32px;">{{ section.settings.text }}</p>{%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="product-grid grid-3" style="text-align:left; margin-bottom:28px;">
+        {%- for block in section.blocks -%}
+          <a href="{{ block.settings.link }}" {{ block.shopify_attributes }}
+             style="border:1.5px solid var(--border); padding:16px 20px; background:#fff; display:flex; align-items:center; gap:12px; border-radius:10px; font-family:var(--font-body); font-size:13px; color:var(--brown);">
+            <span style="width:3px; height:28px; background:var(--accent); border-radius:10px; flex-shrink:0;"></span>
+            {{ block.settings.label }}
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link }}" class="btn" style="margin-bottom:30px;">{{ section.settings.button_label }} →</a>
+    {%- endif -%}
+
+    {%- if section.settings.show_email -%}
+      <div style="max-width:580px; margin:0 auto; background:#fff; border:1px solid var(--border-strong); border-radius:14px; padding:26px 30px; text-align:left;">
+        <div class="eyebrow" style="color:var(--accent);">{{ section.settings.email_eyebrow }}</div>
+        <div style="font-family:var(--font-heading); font-size:24px; color:var(--brown); margin-bottom:10px;">{{ section.settings.email_heading }}</div>
+        {%- if section.settings.email_text != blank -%}<div class="rte" style="font-size:13.5px; color:#52503F; line-height:1.8; margin-bottom:16px;">{{ section.settings.email_text }}</div>{%- endif -%}
+        {%- form 'customer', class: 'inline-form' -%}
+          <input type="hidden" name="contact[tags]" value="recovery-guide">
+          <input type="email" name="contact[email]" placeholder="your@email.com" required aria-label="Email">
+          <button type="submit" class="btn btn--accent">{{ section.settings.email_button | default: 'Send my free guide' }}</button>
+          {%- if form.posted_successfully? -%}<p style="color:var(--accent); width:100%; margin-top:8px;">Thanks — check your inbox.</p>{%- endif -%}
+        {%- endform -%}
+      </div>
+      <div style="font-family:var(--font-body); font-size:11px; color:var(--taupe); margin-top:12px;">No spam, ever. Unsubscribe anytime.</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Find my kit",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Personalised for you" },
+    { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>Find your kit<br>in 30 seconds.</p>" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Tell us what you're going through and we'll match you to the right kit — instantly. No email needed." },
+    { "type": "text", "id": "button_label", "label": "Primary button", "default": "Find my kit" },
+    { "type": "url", "id": "button_link", "label": "Primary button link" },
+    { "type": "header", "content": "Email capture" },
+    { "type": "checkbox", "id": "show_email", "label": "Show email capture", "default": true },
+    { "type": "text", "id": "email_eyebrow", "label": "Email eyebrow", "default": "Just researching today?" },
+    { "type": "text", "id": "email_heading", "label": "Email heading", "default": "Take the free recovery guide with you." },
+    { "type": "richtext", "id": "email_text", "label": "Email text", "default": "<p>Matched to whichever condition you pick — written with oncology, dialysis and surgical recovery nurses.</p>" },
+    { "type": "text", "id": "email_button", "label": "Email button label", "default": "Send my free guide" }
+  ],
+  "blocks": [
+    {
+      "type": "option",
+      "name": "Condition option",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Dialysis" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Find my kit",
+      "blocks": [
+        { "type": "option", "settings": { "label": "Dialysis" } },
+        { "type": "option", "settings": { "label": "IV & Infusions" } },
+        { "type": "option", "settings": { "label": "Mastectomy" } },
+        { "type": "option", "settings": { "label": "Post-Surgery" } },
+        { "type": "option", "settings": { "label": "Chemotherapy" } },
+        { "type": "option", "settings": { "label": "Gifting for someone" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

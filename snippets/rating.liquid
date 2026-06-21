@@ -1,0 +1,16 @@
+{%- comment -%}
+  Renders a star rating line. Reads the product `rating` metafield
+  (type: rating) if present, with optional `reviews` count metafield.
+  Usage: {% render 'rating', product: product %}
+{%- endcomment -%}
+{%- liquid
+  assign rating_value = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count
+-%}
+{%- if rating_value != blank -%}
+  {%- assign rounded = rating_value.rating | round -%}
+  <span class="product-card__rating" aria-label="Rated {{ rating_value.rating }} out of {{ rating_value.scale_max }}">
+    {%- for i in (1..5) -%}{% if i <= rounded %}★{% else %}☆{% endif %}{%- endfor -%}
+    {{ rating_value.rating }}{% if rating_count != blank %} ({{ rating_count }}){% endif %}
+  </span>
+{%- endif -%}

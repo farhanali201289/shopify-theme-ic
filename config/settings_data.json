@@ -1,0 +1,43 @@
+{
+  "current": {
+    "color_cream": "#FCFAF4",
+    "color_sand": "#F1EBDC",
+    "color_accent": "#5C6E3A",
+    "color_accent_dark": "#3A4A28",
+    "color_brown": "#1D1A14",
+    "color_taupe": "#8A8074",
+    "color_gift": "#9A4E3C",
+    "color_highlight": "#F7E9C9",
+    "color_button_bg": "#1D1A14",
+    "color_button_text": "#FCFAF4",
+    "type_body_scale": 100,
+    "type_heading_scale": 100,
+    "page_width": 1280,
+    "spacing_sections": 0,
+    "card_corner_radius": 12,
+    "button_corner_radius": 100,
+    "card_image_ratio": "portrait",
+    "card_show_vendor": true,
+    "card_show_rating": true,
+    "card_quick_add": true,
+    "cart_type": "drawer",
+    "cart_show_free_shipping": true,
+    "cart_free_shipping_threshold": 75,
+    "social_instagram_link": "",
+    "social_tiktok_link": "",
+    "social_facebook_link": "",
+    "social_youtube_link": ""
+  },
+  "presets": {
+    "Inspired Comforts": {
+      "color_cream": "#FCFAF4",
+      "color_sand": "#F1EBDC",
+      "color_accent": "#5C6E3A",
+      "color_accent_dark": "#3A4A28",
+      "color_brown": "#1D1A14",
+      "color_taupe": "#8A8074",
+      "color_gift": "#9A4E3C",
+      "color_highlight": "#F7E9C9"
+    }
+  }
+}

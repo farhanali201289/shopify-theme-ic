@@ -1,0 +1,63 @@
+{%- liquid
+  assign threshold = settings.cart_free_shipping_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+-%}
+<div class="cart-drawer__head">
+  <div class="cart-drawer__title">{{ 'cart.title' | t }} {% if cart.item_count > 0 %}({{ cart.item_count }}){% endif %}</div>
+  <button class="cart-drawer__close" data-cart-close aria-label="{{ 'accessibility.close' | t }}">&times;</button>
+</div>
+
+<div class="cart-drawer__body" data-cart-contents>
+  {%- if settings.cart_show_free_shipping -%}
+    <div class="cart-progress">
+      {%- if remaining > 0 -%}
+        {{ 'cart.free_shipping_progress' | t: amount: remaining | money }}
+      {%- else -%}
+        ✓ {{ 'cart.free_shipping_qualified' | t }}
+      {%- endif -%}
+      <div class="cart-progress__bar">
+        <div class="cart-progress__fill" style="width: {% if cart.total_price >= threshold %}100{% else %}{{ cart.total_price | times: 100.0 | divided_by: threshold }}{% endif %}%;"></div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if cart.item_count > 0 -%}
+    {%- for item in cart.items -%}
+      <div class="cart-line">
+        {%- if item.image -%}
+          <a href="{{ item.url }}">{{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: item.title }}</a>
+        {%- endif -%}
+        <div style="flex:1; min-width:0;">
+          <a href="{{ item.url }}" class="cart-line__title">{{ item.product.title }}</a>
+          {%- unless item.variant.title contains 'Default' -%}
+            <div class="cart-line__meta">{{ item.variant.title }}</div>
+          {%- endunless -%}
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+            <div class="cart-line__qty" data-line-qty="{{ forloop.index }}">
+              <button data-qty-minus aria-label="Decrease">−</button>
+              <input type="text" value="{{ item.quantity }}" inputmode="numeric" aria-label="{{ 'products.product.quantity' | t }}">
+              <button data-qty-plus aria-label="Increase">+</button>
+            </div>
+            <button class="cart-line__remove" data-line-remove="{{ forloop.index }}" aria-label="{{ 'cart.remove' | t }}">&times;</button>
+          </div>
+        </div>
+        <div style="font-weight:700; font-size:13px;">{{ item.final_line_price | money }}</div>
+      </div>
+    {%- endfor -%}
+  {%- else -%}
+    <p style="text-align:center; color:var(--taupe); padding:32px 0;">{{ 'cart.empty' | t }}</p>
+  {%- endif -%}
+</div>
+
+<div class="cart-drawer__foot">
+  {%- if cart.item_count > 0 -%}
+    <div style="display:flex; justify-content:space-between; font-weight:800; font-size:15px; margin-bottom:12px;">
+      <span>{{ 'cart.subtotal' | t }}</span>
+      <span>{{ cart.total_price | money }}</span>
+    </div>
+    <a href="{{ routes.cart_url }}/checkout" class="btn btn--full">{{ 'cart.checkout' | t }} →</a>
+    <p style="text-align:center; font-size:11px; color:var(--taupe); margin-top:9px;">{{ 'cart.guarantee' | t }}</p>
+  {%- else -%}
+    <a href="{{ routes.all_products_collection_url }}" class="btn btn--full">{{ 'cart.continue_shopping' | t }}</a>
+  {%- endif -%}
+</div>

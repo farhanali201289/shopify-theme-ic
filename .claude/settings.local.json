@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/hasankazi/Documents/Claude/Projects/Shopify update/openclaw/**)",
+      "Read(//Users/hasankazi/Documents/Claude/Projects/Shopify update/**)"
+    ]
+  }
+}

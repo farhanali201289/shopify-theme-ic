@@ -1,0 +1,35 @@
+{%- comment -%}
+  Column mega built from a nav_item block (col1..col5 heading + links).
+  Param: block
+{%- endcomment -%}
+{%- liquid
+  assign keys = '1,2,3,4,5' | split: ','
+  assign count = 0
+  for n in keys
+    assign hk = 'col' | append: n | append: '_heading'
+    assign lk = 'col' | append: n | append: '_links'
+    if block.settings[hk] != blank or block.settings[lk] != blank
+      assign count = count | plus: 1
+    endif
+  endfor
+-%}
+<div class="mega">
+  <div class="mega__inner" style="grid-template-columns: repeat({{ count | at_least: 1 }}, 1fr);">
+    {%- for n in keys -%}
+      {%- assign hk = 'col' | append: n | append: '_heading' -%}
+      {%- assign lk = 'col' | append: n | append: '_links' -%}
+      {%- assign heading = block.settings[hk] -%}
+      {%- assign links = block.settings[lk] -%}
+      {%- if heading != blank or links != blank -%}
+        <div class="mega__col">
+          {%- if heading != blank -%}<h4>{{ heading }}</h4>{%- endif -%}
+          {%- assign lines = links | newline_to_br | split: '<br />' -%}
+          {%- for line in lines -%}
+            {%- assign parts = line | strip | split: '|' -%}
+            {%- if parts[0] != blank -%}<a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a>{%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>

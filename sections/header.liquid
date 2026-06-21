@@ -1,0 +1,265 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+  assign nav_items = section.blocks | where: 'type', 'nav_item'
+  assign shop_conditions = section.blocks | where: 'type', 'shop_condition'
+-%}
+
+<header class="site-header" role="banner">
+  <div class="page-width">
+    <div class="header__inner">
+
+      <button class="header__burger" data-mobile-toggle aria-label="{{ 'sections.header.menu' | t }}" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="header__logo">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 320 | image_tag: loading: 'eager', alt: shop.name }}
+        {%- else -%}
+          {{ shop.name }}
+          <span>{{ section.settings.logo_tagline }}</span>
+        {%- endif -%}
+      </a>
+
+      <nav aria-label="Primary">
+        <ul class="header__nav">
+          {%- if nav_items.size > 0 -%}
+            {%- comment -%} ===== Theme-defined nav (self-contained) ===== {%- endcomment -%}
+            {%- for block in nav_items -%}
+              {%- liquid
+                assign mt = block.settings.mega_type
+                assign is_shop = false
+                if mt == 'shop' and shop_conditions.size > 0
+                  assign is_shop = true
+                endif
+                assign has_mega = false
+                if is_shop or mt == 'columns'
+                  assign has_mega = true
+                endif
+              -%}
+              <li {% if has_mega %}data-mega-trigger{% endif %} {{ block.shopify_attributes }}>
+                <a href="{{ block.settings.url | default: '#' }}" class="header__nav-link">
+                  {{ block.settings.title }}
+                  {%- if has_mega -%}<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4l3 3 3-3"/></svg>{%- endif -%}
+                </a>
+                {%- if is_shop -%}
+                  {% render 'nav-mega-shop', conditions: shop_conditions, save_badge: section.settings.shop_save_badge, byo_eyebrow: section.settings.shop_byo_eyebrow, byo_heading: section.settings.shop_byo_heading %}
+                {%- elsif mt == 'columns' -%}
+                  {% render 'nav-mega-columns', block: block %}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+
+          {%- else -%}
+            {%- comment -%} ===== Fallback: admin linklist nav ===== {%- endcomment -%}
+            {%- for link in menu.links -%}
+              <li {% if link.links.size > 0 %}data-mega-trigger{% endif %}>
+                <a href="{{ link.url }}" class="header__nav-link">
+                  {{ link.title }}
+                  {%- if link.links.size > 0 -%}<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4l3 3 3-3"/></svg>{%- endif -%}
+                </a>
+                {%- if link.links.size > 0 -%}
+                  <div class="mega">
+                    <div class="mega__inner" style="grid-template-columns: repeat({{ link.links.size | at_most: 5 }}, 1fr);">
+                      {%- for child in link.links -%}
+                        <div class="mega__col">
+                          <h4><a href="{{ child.url }}">{{ child.title }}</a></h4>
+                          {%- for grandchild in child.links -%}<a href="{{ grandchild.url }}">{{ grandchild.title }}</a>{%- endfor -%}
+                        </div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_link }}" class="header__pill-cta">{{ section.settings.cta_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.show_search -%}
+          <a href="{{ routes.search_url }}" class="header__action" aria-label="{{ 'general.search.search' | t }}">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="6.5"/><path d="M14 14l4 4" stroke-linecap="round"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+          <a href="{{ routes.account_url }}" class="header__action" aria-label="Account">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="6.5" r="3.3"/><path d="M3.5 17a6.5 6.5 0 0 1 13 0" stroke-linecap="round"/></svg>
+          </a>
+        {%- endif -%}
+        <a href="{{ routes.cart_url }}" class="header__action" data-cart-toggle aria-label="{{ 'sections.header.cart' | t }}">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5.5 6.5h9l-.9 9.5a1 1 0 0 1-1 .9H7.4a1 1 0 0 1-1-.9L5.5 6.5z"/><path d="M7.5 6.5a2.5 2.5 0 0 1 5 0" stroke-linecap="round"/></svg>
+          <span class="header__cart-count" data-cart-count {% if cart.item_count == 0 %}style="display:none"{% endif %}>{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="header__overlay"></div>
+</header>
+
+{%- comment -%} Mobile nav drawer {%- endcomment -%}
+<nav class="mobile-nav" data-mobile-nav aria-label="Mobile">
+  <div class="page-width" style="padding-block:16px;">
+    {%- if section.settings.cta_label != blank -%}
+      <a href="{{ section.settings.cta_link }}" class="header__pill-cta mobile-nav__cta">{{ section.settings.cta_label }}</a>
+    {%- endif -%}
+    {%- if nav_items.size > 0 -%}
+      {%- for block in nav_items -%}
+        {%- if block.settings.mega_type == 'shop' and shop_conditions.size > 0 -%}
+          <details>
+            <summary class="header__nav-link" style="justify-content:space-between; width:100%;">{{ block.settings.title }}</summary>
+            {%- for c in shop_conditions -%}
+              <a href="{{ c.settings.link }}" style="display:block; padding:6px 0 6px 14px; font-size:13px;">{{ c.settings.name }}</a>
+            {%- endfor -%}
+          </details>
+        {%- elsif block.settings.mega_type == 'columns' -%}
+          <details>
+            <summary class="header__nav-link" style="justify-content:space-between; width:100%;">{{ block.settings.title }}</summary>
+            {%- assign keys = '1,2,3,4,5' | split: ',' -%}
+            {%- for n in keys -%}
+              {%- assign lk = 'col' | append: n | append: '_links' -%}
+              {%- assign lines = block.settings[lk] | newline_to_br | split: '<br />' -%}
+              {%- for line in lines -%}
+                {%- assign parts = line | strip | split: '|' -%}
+                {%- if parts[0] != blank -%}<a href="{{ parts[1] | strip }}" style="display:block; padding:6px 0 6px 14px; font-size:13px;">{{ parts[0] | strip }}</a>{%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+          </details>
+        {%- else -%}
+          <a href="{{ block.settings.url | default: '#' }}" style="display:block; padding:10px 0; font-weight:600;">{{ block.settings.title }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for link in menu.links -%}
+        {%- if link.links.size > 0 -%}
+          <details>
+            <summary class="header__nav-link" style="justify-content:space-between; width:100%;">{{ link.title }}</summary>
+            {%- for child in link.links -%}<a href="{{ child.url }}" style="display:block; padding:6px 0 6px 14px; font-size:13px;">{{ child.title }}</a>{%- endfor -%}
+          </details>
+        {%- else -%}
+          <a href="{{ link.url }}" style="display:block; padding:10px 0; font-weight:600;">{{ link.title }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</nav>
+
+<style>
+  .mobile-nav.is-open { display: block; background: var(--cream); border-bottom: 1px solid var(--border); }
+  .mobile-nav details { border-bottom: 1px solid var(--border); padding: 10px 0; }
+  .mobile-nav summary { list-style: none; }
+  .mobile-nav summary::-webkit-details-marker { display: none; }
+  .mobile-nav .mobile-nav__cta { display: block; text-align: center; margin-bottom: 14px; padding: 13px; font-size: 14px; }
+
+  .mega-shop {
+    --mega-cond-size: {{ section.settings.mega_cond_size }}px;
+    --mega-cond-color: {{ section.settings.mega_cond_color | default: 'var(--brown)' }};
+    --mega-cond-active: {{ section.settings.mega_cond_active_color | default: 'var(--gift)' }};
+    --mega-tag-size: {{ section.settings.mega_tag_size }}px;
+    --mega-tag-color: {{ section.settings.mega_tag_color | default: 'var(--taupe)' }};
+    --mega-title-size: {{ section.settings.mega_title_size }}px;
+    --mega-title-color: {{ section.settings.mega_title_color | default: 'var(--brown)' }};
+    --mega-link-size: {{ section.settings.mega_link_size }}px;
+    --mega-link-color: {{ section.settings.mega_link_color | default: 'var(--brown)' }};
+    --mega-label-size: {{ section.settings.mega_label_size }}px;
+    --mega-label-color: {{ section.settings.mega_label_color | default: 'var(--taupe)' }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo image" },
+    { "type": "text", "id": "logo_tagline", "label": "Logo tagline (text logo only)", "default": "Adaptive recovery clothing" },
+    { "type": "link_list", "id": "menu", "label": "Fallback menu (used only if no Nav item blocks added)", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Show account", "default": false },
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Find my kit" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "header", "content": "Shop mega defaults" },
+    { "type": "text", "id": "shop_save_badge", "label": "Save badge", "default": "Build a kit · any 3 save 15%, add a 4th for 20%" },
+    { "type": "text", "id": "shop_byo_eyebrow", "label": "Build-your-own eyebrow", "default": "Build your own kit · you choose the pieces" },
+    { "type": "text", "id": "shop_byo_heading", "label": "Build-your-own heading", "default": "Any 3 pieces, save 15%. Add a 4th — save 20%." },
+    { "type": "header", "content": "Mega menu styling" },
+    {
+      "type": "range", "id": "mega_cond_size", "label": "Condition name font size",
+      "min": 10, "max": 22, "step": 1, "default": 14, "unit": "px"
+    },
+    { "type": "color", "id": "mega_cond_color", "label": "Condition name color" },
+    { "type": "color", "id": "mega_cond_active_color", "label": "Active condition color" },
+    {
+      "type": "range", "id": "mega_tag_size", "label": "Tagline / subtitle font size",
+      "min": 8, "max": 16, "step": 1, "default": 11, "unit": "px"
+    },
+    { "type": "color", "id": "mega_tag_color", "label": "Tagline color" },
+    {
+      "type": "range", "id": "mega_title_size", "label": "Panel title font size",
+      "min": 16, "max": 40, "step": 1, "default": 26, "unit": "px"
+    },
+    { "type": "color", "id": "mega_title_color", "label": "Panel title color" },
+    {
+      "type": "range", "id": "mega_link_size", "label": "Links font size",
+      "min": 10, "max": 20, "step": 1, "default": 13, "unit": "px"
+    },
+    { "type": "color", "id": "mega_link_color", "label": "Links color" },
+    {
+      "type": "range", "id": "mega_label_size", "label": "Section label font size",
+      "min": 7, "max": 14, "step": 0.5, "default": 9.5, "unit": "px"
+    },
+    { "type": "color", "id": "mega_label_color", "label": "Section label color" }
+  ],
+  "blocks": [
+    {
+      "type": "nav_item",
+      "name": "Nav item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Shop" },
+        { "type": "url", "id": "url", "label": "Link" },
+        {
+          "type": "select", "id": "mega_type", "label": "Dropdown type",
+          "options": [
+            { "value": "none", "label": "None (plain link)" },
+            { "value": "columns", "label": "Column mega (below)" },
+            { "value": "shop", "label": "Shop condition-switcher" }
+          ],
+          "default": "none"
+        },
+        { "type": "header", "content": "Column mega (only when type = Column mega)" },
+        { "type": "text", "id": "col1_heading", "label": "Column 1 heading" },
+        { "type": "textarea", "id": "col1_links", "label": "Column 1 links", "info": "One per line: Label | /url" },
+        { "type": "text", "id": "col2_heading", "label": "Column 2 heading" },
+        { "type": "textarea", "id": "col2_links", "label": "Column 2 links" },
+        { "type": "text", "id": "col3_heading", "label": "Column 3 heading" },
+        { "type": "textarea", "id": "col3_links", "label": "Column 3 links" },
+        { "type": "text", "id": "col4_heading", "label": "Column 4 heading" },
+        { "type": "textarea", "id": "col4_links", "label": "Column 4 links" },
+        { "type": "text", "id": "col5_heading", "label": "Column 5 heading" },
+        { "type": "textarea", "id": "col5_links", "label": "Column 5 links" }
+      ]
+    },
+    {
+      "type": "shop_condition",
+      "name": "Shop condition / panel",
+      "settings": [
+        { "type": "text", "id": "group", "label": "Group label", "default": "Shop by condition" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Dialysis" },
+        { "type": "text", "id": "tagline", "label": "Tagline", "default": "Arm access · warmth" },
+        { "type": "image_picker", "id": "image", "label": "Thumbnail" },
+        { "type": "url", "id": "link", "label": "Collection link" },
+        { "type": "text", "id": "all_label", "label": "‘All’ link label", "default": "All Dialysis →" },
+        { "type": "text", "id": "journey_label", "label": "Journey column label", "default": "Your journey" },
+        { "type": "textarea", "id": "journey_links", "label": "Journey links", "info": "One per line: Label | /url | care" },
+        { "type": "textarea", "id": "kit_links", "label": "Curated kit links", "info": "One per line: Label | /url" },
+        { "type": "textarea", "id": "piece_links", "label": "Individual piece links", "info": "One per line: Label | /url" },
+        { "type": "image_picker", "id": "byo_image", "label": "Build-your-own image" },
+        { "type": "url", "id": "byo_link", "label": "Build-your-own link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

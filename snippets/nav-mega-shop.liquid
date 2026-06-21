@@ -1,0 +1,96 @@
+{%- comment -%}
+  Shop condition-switcher mega.
+  Params: conditions (array of shop_condition blocks), save_badge, byo_eyebrow, byo_heading
+{%- endcomment -%}
+<div class="mega mega-shop" data-shop-mega>
+  <div class="mega__inner">
+    <div class="mega-shop__left">
+      {%- assign current_group = '' -%}
+      {%- for block in conditions -%}
+        {%- if block.settings.group != current_group -%}
+          {%- assign current_group = block.settings.group -%}
+          <div class="mega-shop__label">{{ block.settings.group }}</div>
+        {%- endif -%}
+        <button type="button" class="mega-cond {% if forloop.first %}is-active{% endif %}" data-cond="{{ block.id }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img class="mega-cond__img" src="{{ block.settings.image | image_url: width: 84 }}" alt="" loading="lazy" width="42" height="42">
+          {%- else -%}<span class="mega-cond__img"></span>{%- endif -%}
+          <span>
+            <span class="mega-cond__name">{{ block.settings.name }}</span>
+            {%- if block.settings.tagline != blank -%}<span class="mega-cond__tag">{{ block.settings.tagline }}</span>{%- endif -%}
+          </span>
+          <span class="mega-cond__arr">&#8250;</span>
+        </button>
+      {%- endfor -%}
+      {%- if save_badge != blank -%}<div class="mega-savebadge">{{ save_badge }}</div>{%- endif -%}
+    </div>
+
+    <div class="mega-shop__right">
+      <button type="button" class="mega-panel-close" data-mega-close aria-label="Close menu">&times;</button>
+      {%- for block in conditions -%}
+        <div class="mega-panel {% if forloop.first %}is-active{% endif %}" data-panel="{{ block.id }}">
+          <div class="mega-panel__head">
+            <div>
+              <a href="{{ block.settings.link }}" class="mega-panel__title">{{ block.settings.name }}</a>
+              {%- if block.settings.tagline != blank -%}<div class="mega-panel__sub">{{ block.settings.tagline }}</div>{%- endif -%}
+            </div>
+            {%- if block.settings.all_label != blank -%}<a href="{{ block.settings.link }}" class="mega-panel__all">{{ block.settings.all_label }}</a>{%- endif -%}
+          </div>
+
+          <div class="mega-panel__body">
+            <div>
+              {%- if block.settings.journey_links != blank -%}
+                <div class="mega-collabel">{{ block.settings.journey_label | default: 'Your journey' }}</div>
+                <div class="mega-jlinks">
+                  {%- assign jlines = block.settings.journey_links | newline_to_br | split: '<br />' -%}
+                  {%- for line in jlines -%}
+                    {%- assign parts = line | strip | split: '|' -%}
+                    {%- if parts[0] != blank -%}
+                      <a href="{{ parts[1] | strip }}" {% if parts[2] %}class="is-care"{% endif %}><span class="mega-jdot"></span>{{ parts[0] | strip }}</a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+            <div>
+              {%- if block.settings.kit_links != blank -%}
+                <div class="mega-collabel">Curated kits</div>
+                <div class="mega-kits">
+                  {%- assign klines = block.settings.kit_links | newline_to_br | split: '<br />' -%}
+                  {%- for line in klines -%}
+                    {%- assign parts = line | strip | split: '|' -%}
+                    {%- if parts[0] != blank -%}<a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a>{%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- if block.settings.piece_links != blank -%}
+            <div class="mega-pieces">
+              <div class="mega-pieces__label">Or shop individual pieces</div>
+              {%- assign plines = block.settings.piece_links | newline_to_br | split: '<br />' -%}
+              {%- for line in plines -%}
+                {%- assign parts = line | strip | split: '|' -%}
+                {%- if parts[0] != blank -%}<a class="mega-piece" href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a>{%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.byo_link != blank -%}
+            <a href="{{ block.settings.byo_link }}" class="mega-build">
+              <div class="mega-build__img">
+                {%- if block.settings.byo_image != blank -%}{{ block.settings.byo_image | image_url: width: 420 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+              </div>
+              <div class="mega-build__txt">
+                <div class="mega-build__eyebrow">{{ byo_eyebrow }}</div>
+                <div class="mega-build__head">{{ byo_heading }}</div>
+                <span class="mega-build__cta">Start building →</span>
+              </div>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

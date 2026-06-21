@@ -1,0 +1,53 @@
+{%- comment -%}
+  Rich kit card for the kit-finder carousel (matches v10.9 design).
+  Driven by product metafields with safe fallbacks:
+    custom.card_badge       → corner badge text ("Most popular", "Gift idea"…)
+    custom.card_subtitle    → line under title
+    custom.kit_contents     → "What's inside" items
+    custom.card_descriptor  → italic descriptor line
+  Params: product (required)
+{%- endcomment -%}
+{%- liquid
+  assign badge = product.metafields.custom.card_badge
+  assign subtitle = product.metafields.custom.card_subtitle
+  assign contents = product.metafields.custom.kit_contents
+  assign descriptor = product.metafields.custom.card_descriptor
+  assign is_gift = false
+  if badge contains 'Gift' or badge contains 'gift'
+    assign is_gift = true
+  endif
+-%}
+<a href="{{ product.url }}" class="kit-card" data-filter-item="{{ product.type | handle }} {{ product.tags | join: ' ' | handle }}">
+  <div class="kit-card__media">
+    {%- if badge != blank -%}
+      <span class="kit-card__badge"><span class="badge{% if is_gift %} badge--gift{% endif %}">{{ badge }}</span></span>
+    {%- endif -%}
+    {%- if product.featured_media -%}
+      {{ product.featured_media | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,420,600', sizes: '300px', alt: product.featured_media.alt | default: product.title }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag }}
+    {%- endif -%}
+  </div>
+
+  <div class="kit-card__body">
+    {%- if product.type != blank -%}<div class="kit-card__eyebrow">{{ product.type }}</div>{%- endif -%}
+    <div class="kit-card__title">{{ product.title }}</div>
+    {%- if subtitle != blank -%}<div class="kit-card__subtitle">{{ subtitle }}</div>{%- endif -%}
+
+    {%- if contents != blank or descriptor != blank -%}
+      <div class="kit-card__inside">
+        {%- if contents != blank -%}
+          <div class="kit-card__inside-label">What's inside</div>
+          <div class="kit-card__inside-items">{{ contents }}</div>
+        {%- endif -%}
+        {%- if descriptor != blank -%}<div class="kit-card__descriptor">{{ descriptor }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="kit-card__foot">
+      <div class="kit-card__price">{% render 'price', product: product %}</div>
+      <div class="kit-card__guide">{{ 'products.product.free_guide' | t }}</div>
+      <span class="kit-card__btn">{{ 'products.product.view_kit' | t }}</span>
+    </div>
+  </div>
+</a>

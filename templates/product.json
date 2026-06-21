@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "a1": { "type": "accordion", "settings": { "title": "Sizing & fit", "content": "<p>Order your usual size — every piece is cut for swelling, dressings, and access. Free size exchanges, both ways, no time limit.</p>" } },
+        "a2": { "type": "accordion", "settings": { "title": "Shipping & returns", "content": "<p>Free shipping over $75. Ships in 1–2 business days. 30-day comfort guarantee with free returns.</p>" } }
+      },
+      "block_order": ["a1", "a2"],
+      "settings": {}
+    },
+    "cross_sell": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Complete your kit",
+        "heading": "You might also need",
+        "product_limit": 4,
+        "columns": 4,
+        "bg": "#F1EBDC"
+      }
+    }
+  },
+  "order": ["main", "cross_sell"]
+}

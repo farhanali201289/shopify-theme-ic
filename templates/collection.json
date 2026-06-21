@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "products_per_page": 24,
+        "columns": 3,
+        "show_sort": true,
+        "show_title": true
+      }
+    },
+    "related": {
+      "type": "image-with-text",
+      "settings": {
+        "bg": "#F1EBDC",
+        "layout": "media_right",
+        "eyebrow": "Not sure where to start?",
+        "heading": "<p>Find your kit in 30 seconds.</p>",
+        "text": "<p>Tell us what you're going through and we'll point you to the right pieces — no guesswork.</p>",
+        "button_label": "Find my kit →",
+        "button_link": "/pages/find-my-kit"
+      }
+    }
+  },
+  "order": ["main", "related"]
+}

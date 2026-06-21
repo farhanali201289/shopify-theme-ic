@@ -1,0 +1,44 @@
+<section class="split" style="{% if section.settings.layout == 'media_right' %}direction:rtl;{% endif %} background: {{ section.settings.bg }};">
+  <div class="split__media" style="direction:ltr;">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.heading | strip_html }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag }}
+    {%- endif -%}
+  </div>
+  <div class="split__content" style="direction:ltr;">
+    {%- if section.settings.eyebrow != blank -%}<span class="eyebrow" style="{% if section.settings.bg == '#1D1A14' %}color:var(--taupe);{% endif %}">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="section-heading" style="font-size:clamp(24px,3vw,32px); {% if section.settings.bg == '#1D1A14' %}color:#fff;{% endif %}">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="rte" style="font-family:var(--font-body); font-size:14px; color: {% if section.settings.bg == '#1D1A14' %}rgba(255,255,255,.75){% else %}var(--taupe){% endif %}; line-height:1.8; margin-top:8px;">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <div style="margin-top:22px;">
+        <a href="{{ section.settings.button_link }}" class="btn btn--secondary" style="{% if section.settings.bg == '#1D1A14' %}color:#fff; border-color:rgba(255,255,255,.4);{% endif %}">{{ section.settings.button_label }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select", "id": "layout", "label": "Media position",
+      "options": [ { "value": "media_left", "label": "Left" }, { "value": "media_right", "label": "Right" } ],
+      "default": "media_left"
+    },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#FCFAF4" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why this exists" },
+    { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>I watched my father go through treatment and never once feel like a person.</p>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>The doctors were exceptional. But nobody thought about what he would wear. That's a problem with a solution. Privacy. Dignity. Looking and feeling human through every stage. That's what Inspired Comforts is.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Read the full story →" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [ { "name": "Image with text" } ]
+}
+{% endschema %}

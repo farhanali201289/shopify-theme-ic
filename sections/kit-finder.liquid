@@ -1,0 +1,94 @@
+{%- liquid
+  assign coll = collections[section.settings.collection]
+-%}
+<section class="section" id="kit-finder-{{ section.id }}">
+  <div class="page-width">
+    <div style="text-align:center; max-width:680px; margin:0 auto 24px;">
+      {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<p class="section-subtext" style="margin:14px auto 0;">{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="chip-row" data-filter-group data-filter-target="#kit-track-{{ section.id }}" style="justify-content:center;">
+        {%- for block in section.blocks -%}
+          <button class="chip {% if forloop.first %}is-active{% endif %}" data-filter="{{ block.settings.value | default: 'all' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="scroller kit-scroller" data-scroller>
+      <button class="scroller__btn scroller__btn--prev" data-scroller-btn="prev" aria-label="Previous">&#8592;</button>
+      <button class="scroller__btn scroller__btn--next" data-scroller-btn="next" aria-label="Next">&#8594;</button>
+      <div class="scroller__track" id="kit-track-{{ section.id }}" data-scroller-track>
+        {%- if section.settings.byo_link != blank -%}
+          <a href="{{ section.settings.byo_link }}" class="kit-card kit-card--byo" data-filter-item="always">
+            <div class="kit-card__body">
+              <div>
+                <div class="kit-card__eyebrow" style="color:#F7E9C9;">Most flexible</div>
+                <div class="kit-card__title" style="color:#FCEFD6; font-size:28px;">Design your own kit</div>
+                <p style="font-size:13.5px; color:#F3D9B8; line-height:1.6; margin-top:8px;">Pick <strong style="color:#FCEFD6;">any 3 pieces</strong> across any category — we'll take <strong style="color:#FCEFD6;">20% off</strong> automatically.</p>
+              </div>
+              <span class="kit-card__btn" style="background:#F7E9C9; color:#6B2E1E;">Start building →</span>
+            </div>
+          </a>
+        {%- endif -%}
+
+        {%- if coll != blank -%}
+          {%- for product in coll.products limit: section.settings.product_limit -%}
+            {% render 'kit-card', product: product %}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..4) -%}
+            <div class="kit-card"><div class="kit-card__media">{{ 'product-1' | placeholder_svg_tag }}</div><div class="kit-card__body"><div class="kit-card__title">Example kit</div><div class="kit-card__subtitle">Connect a collection in the theme editor.</div></div></div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.button_label != blank -%}
+      <div style="text-align:center; margin-top:28px;">
+        <a href="{{ section.settings.button_link }}" class="link-underline">{{ section.settings.button_label }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Kit finder",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Built around your journey" },
+    { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>Every kit was designed around a specific recovery — <em>including yours.</em></p>" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Each kit is the result of 300,000+ patients telling us what they needed. Nothing filler." },
+    { "type": "collection", "id": "collection", "label": "Kit collection" },
+    { "type": "range", "id": "product_limit", "min": 4, "max": 24, "step": 1, "label": "Products to show", "default": 16 },
+    { "type": "url", "id": "byo_link", "label": "Build-your-own link" },
+    { "type": "text", "id": "button_label", "label": "Footer link label", "default": "Browse all kits →" },
+    { "type": "url", "id": "button_link", "label": "Footer link" }
+  ],
+  "blocks": [
+    {
+      "type": "chip",
+      "name": "Filter chip",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "All Kits" },
+        { "type": "text", "id": "value", "label": "Filter value (product type or tag handle; 'all' = show everything)", "default": "all" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kit finder",
+      "blocks": [
+        { "type": "chip", "settings": { "label": "All Kits", "value": "all" } },
+        { "type": "chip", "settings": { "label": "Dialysis", "value": "dialysis" } },
+        { "type": "chip", "settings": { "label": "IV & Infusions", "value": "iv-infusions" } },
+        { "type": "chip", "settings": { "label": "Mastectomy", "value": "mastectomy" } },
+        { "type": "chip", "settings": { "label": "Post-Surgery", "value": "post-surgery" } },
+        { "type": "chip", "settings": { "label": "Chemotherapy", "value": "chemotherapy" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

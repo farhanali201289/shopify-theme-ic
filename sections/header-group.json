@@ -1,0 +1,184 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "text": "Free shipping on orders over $75   ·   30-day comfort guarantee   ·   Free returns"
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "nav_shop": {
+          "type": "nav_item",
+          "settings": { "title": "Shop", "url": "/collections/all", "mega_type": "shop" }
+        },
+        "nav_guides": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Recovery Guides",
+            "url": "/pages/resources",
+            "mega_type": "columns",
+            "col1_heading": "Guides",
+            "col1_links": "All Guides | /pages/resources\nMastectomy Guide | /pages/mastectomy-pre-surgery\nChemo Guide | /pages/chemo-starting\nDialysis Guide | /pages/dialysis-new\nSurgery Recovery Guide | /collections/post-surgery",
+            "col2_heading": "Blog",
+            "col2_links": "All Articles | /blogs/news\nPatient Stories | /blogs/news\nClinical Research | /blogs/news\nCaregiver Advice | /blogs/news",
+            "col3_heading": "By Condition",
+            "col3_links": "Mastectomy Hub | /pages/resources\nChemotherapy Hub | /pages/resources\nDialysis Hub | /pages/resources\nPost-Surgery Hub | /pages/resources\nCaregiver Resources | /pages/resources",
+            "col4_heading": "Templates",
+            "col4_links": "Mastectomy Prep Checklist | /pages/resources\nChemo Day Bag Template | /pages/resources\nDialysis Session Planner | /pages/resources\nSurgery Recovery Tracker | /pages/resources\nCaregiver Handoff Notes | /pages/resources",
+            "col5_heading": "For Care Teams",
+            "col5_links": "Group Order Template | /pages/resources\nPatient Dressing Guide | /pages/resources\nRequest Brochures | /pages/resources\nReferral QR Codes | /pages/resources\nPartner Discount Codes | /pages/resources"
+          }
+        },
+        "nav_story": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Our Story",
+            "url": "/pages/our-story",
+            "mega_type": "columns",
+            "col1_heading": "Our Story",
+            "col1_links": "Founder Story | /pages/our-story\nWhy Inspired Comforts exists | /pages/our-story",
+            "col2_heading": "Our Team",
+            "col2_links": "Meet the Team | /pages/our-team\nWhat drives each of us | /pages/our-team",
+            "col3_heading": "Our Promise",
+            "col3_links": "Quality & Craft | /pages/our-commitment\nCustomer care & our commitment | /pages/our-commitment"
+          }
+        },
+        "nav_partners": {
+          "type": "nav_item",
+          "settings": {
+            "title": "Partners",
+            "url": "/pages/partners",
+            "mega_type": "columns",
+            "col1_heading": "Healthcare Partners",
+            "col1_links": "Hospitals & Clinics | /pages/partners-hospitals\nOncology Practices | /pages/partners-hospitals\nDialysis Centers | /pages/partners-dialysis\nBreast Cancer Clinics | /pages/partners-breast\nSurgery Centers | /pages/partners-breast\nRefer a Facility | /pages/partners",
+            "col2_heading": "Nonprofits & Causes",
+            "col2_links": "Patient Advocacy Orgs | /pages/partners-nonprofits\nSponsor a Kit | /pages/sponsor-a-kit\nHospital Gifting Program | /pages/partners-nonprofits\nGrant Partnerships | /pages/partners-nonprofits",
+            "col3_heading": "Creators & Ambassadors",
+            "col3_links": "Patient Ambassadors | /pages/ambassadors\nContent Creators | /pages/partners-creators\nAffiliate Program | /pages/partners-creators\nShare Your Story | /pages/ambassadors"
+          }
+        },
+        "cond_dialysis": {
+          "type": "shop_condition",
+          "settings": {
+            "group": "Shop by condition",
+            "name": "Dialysis",
+            "tagline": "Arm access · warmth",
+            "link": "/collections/dialysis",
+            "all_label": "All Dialysis →",
+            "journey_label": "Your journey",
+            "journey_links": "New to dialysis | /pages/dialysis-new\nOngoing sessions | /pages/dialysis-ongoing\nCaregiver — buying for someone | /pages/dialysis-gifting | care",
+            "kit_links": "The Session Day Kit | /pages/build-your-own\nThe Warm Session Set | /pages/build-your-own\nThe Starter Kit | /pages/build-your-own",
+            "piece_links": "Sleeve-Access Tops | /collections/dialysis\nSession Hoodies | /collections/dialysis\nAdaptive Pants | /collections/dialysis",
+            "byo_link": "/pages/build-your-own"
+          }
+        },
+        "cond_iv": {
+          "type": "shop_condition",
+          "settings": {
+            "group": "Shop by condition",
+            "name": "IV & Infusions",
+            "tagline": "Port access · PICC lines",
+            "link": "/collections/iv-infusions",
+            "all_label": "All IV & Infusions →",
+            "journey_label": "Your journey",
+            "journey_links": "First infusion coming up | /pages/iv-new\nRegular ongoing infusions | /pages/iv-ongoing\nCaregiver — buying for someone | /pages/iv-gifting | care",
+            "kit_links": "The Long-Day Comfort Set | /pages/build-your-own\nThe First Infusion Kit | /pages/build-your-own\nThe Everyday Access Kit | /pages/build-your-own",
+            "piece_links": "Arm-Access Tops | /collections/iv-infusions\nPort-Access Wraps | /collections/iv-infusions\nPICC & Midline | /collections/iv-infusions",
+            "byo_link": "/pages/build-your-own"
+          }
+        },
+        "cond_mastectomy": {
+          "type": "shop_condition",
+          "settings": {
+            "group": "Shop by condition",
+            "name": "Mastectomy",
+            "tagline": "Drain pockets · shoulder access",
+            "link": "/collections/mastectomy",
+            "all_label": "All Mastectomy →",
+            "journey_label": "Your journey",
+            "journey_links": "Surgery coming up | /pages/mastectomy-pre-surgery\nRecovering now — with drains | /pages/mastectomy-post-surgery\nWeeks 4–8 recovery | /pages/mastectomy-post-surgery\nCaregiver — buying for someone | /pages/mastectomy-gifting | care",
+            "kit_links": "The Healing Weeks Kit | /pages/build-your-own\nThe Surgery Week Kit | /pages/build-your-own\nThe Reconstruction Kit | /pages/build-your-own",
+            "piece_links": "Camisoles & Tanks | /collections/mastectomy\nFront-Zip Tops | /collections/mastectomy\nDrain Carriers | /collections/mastectomy",
+            "byo_link": "/pages/build-your-own"
+          }
+        },
+        "cond_chemo": {
+          "type": "shop_condition",
+          "settings": {
+            "group": "Shop by condition",
+            "name": "Chemotherapy",
+            "tagline": "Port tops · warmth",
+            "link": "/collections/chemotherapy",
+            "all_label": "All Chemotherapy →",
+            "journey_label": "Your journey",
+            "journey_links": "Starting treatment | /pages/chemo-starting\nDuring treatment | /pages/chemo-during\nCaregiver — buying for someone | /pages/chemo-gifting | care",
+            "kit_links": "The Infusion Day Kit | /pages/build-your-own\nThe First Infusion Kit | /pages/build-your-own\nThe Long-Day Comfort Kit | /pages/build-your-own",
+            "piece_links": "Port-Access Tops | /collections/chemotherapy\nComfort Hoodies | /collections/chemotherapy\nWarm Layers | /collections/chemotherapy",
+            "byo_link": "/pages/build-your-own"
+          }
+        },
+        "cond_surgery": {
+          "type": "shop_condition",
+          "settings": {
+            "group": "Shop by condition",
+            "name": "Post-Surgery",
+            "tagline": "Easy-on · limited mobility",
+            "link": "/collections/post-surgery",
+            "all_label": "All Post-Surgery →",
+            "journey_label": "Your situation",
+            "journey_links": "Shoulder & Rotator Cuff | /pages/surgery-shoulder\nHip & Knee | /pages/surgery-hip-knee\nGeneral Surgery | /collections/post-surgery\nCaregiver — buying for someone | /pages/caregiver-gifts | care",
+            "kit_links": "The Shoulder Recovery Kit | /pages/build-your-own\nThe Hip & Knee Kit | /pages/build-your-own\nThe Sling-Week Kit | /pages/build-your-own",
+            "piece_links": "Snap & Front-Open Tops | /collections/post-surgery\nRecovery Pants | /collections/post-surgery\nAdaptive Shorts | /collections/post-surgery",
+            "byo_link": "/pages/build-your-own"
+          }
+        },
+        "cond_gifts": {
+          "type": "shop_condition",
+          "settings": {
+            "group": "Gifts & Add-ons",
+            "name": "Gifts That Help",
+            "tagline": "Care packages · kits",
+            "link": "/collections/caregiver-gifts",
+            "all_label": "All Gift Guides →",
+            "journey_label": "Shop by their condition",
+            "journey_links": "Dialysis | /pages/dialysis-gifting\nIV & Infusions | /pages/iv-gifting\nMastectomy | /pages/mastectomy-gifting\nChemotherapy | /pages/chemo-gifting\nSend a Gift Card | /products/gift-card | care",
+            "kit_links": "",
+            "piece_links": "",
+            "byo_link": ""
+          }
+        },
+        "cond_accessories": {
+          "type": "shop_condition",
+          "settings": {
+            "group": "Gifts & Add-ons",
+            "name": "Accessories",
+            "tagline": "Dignity bags · daily aids",
+            "link": "/collections/accessories",
+            "all_label": "All Accessories →",
+            "journey_label": "Shop accessories",
+            "journey_links": "Dignity Bags | /collections/accessories\nWheelchair Gloves | /collections/accessories\nSeatbelt & Port Pillows | /collections/accessories\nCast Covers | /collections/accessories\nGet Well Cards | /collections/accessories",
+            "kit_links": "",
+            "piece_links": "",
+            "byo_link": ""
+          }
+        }
+      },
+      "block_order": ["nav_shop", "nav_guides", "nav_story", "nav_partners", "cond_dialysis", "cond_iv", "cond_mastectomy", "cond_chemo", "cond_surgery", "cond_gifts", "cond_accessories"],
+      "settings": {
+        "menu": "main-menu",
+        "show_search": true,
+        "show_account": false,
+        "cta_label": "Find my kit",
+        "cta_link": "/pages/find-my-kit",
+        "shop_save_badge": "Build a kit · any 3 save 15%, add a 4th for 20%",
+        "shop_byo_eyebrow": "Build your own kit · you choose the pieces",
+        "shop_byo_heading": "Any 3 pieces, save 15%. Add a 4th — save 20%."
+      }
+    }
+  },
+  "order": ["announcement-bar", "header"]
+}

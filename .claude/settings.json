@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(shopify theme *)",
+      "Bash(node -e 'const fs=require\\(\"fs\"\\);[\"templates/index.json\"].forEach\\(f=>{try{JSON.parse\\(fs.readFileSync\\(f,\"utf8\"\\)\\);console.log\\(\"OK \"+f\\)}catch\\(e\\){console.log\\(\"ERR \"+f+\": \"+e.message\\);process.exit\\(1\\)}}\\)')",
+      "Bash(node -e 'const fs=require\\(\"fs\"\\);[\"sections/header-group.json\"].forEach\\(f=>{try{JSON.parse\\(fs.readFileSync\\(f,\"utf8\"\\)\\);console.log\\(\"OK \"+f\\)}catch\\(e\\){console.log\\(\"ERR \"+f+\": \"+e.message\\);process.exit\\(1\\)}}\\)')",
+      "Bash(node -e 'const fs=require\\(\"fs\"\\);[\"sections/header-group.json\"].forEach\\(f=>{try{JSON.parse\\(fs.readFileSync\\(f,\"utf8\"\\)\\);console.log\\(\"JSON OK \"+f\\)}catch\\(e\\){console.log\\(\"ERR \"+f+\": \"+e.message\\);process.exit\\(1\\)}}\\)')"
+    ]
+  }
+}

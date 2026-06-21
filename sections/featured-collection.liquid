@@ -1,0 +1,42 @@
+{%- liquid
+  assign coll = collections[section.settings.collection]
+-%}
+<section class="section" style="background: {{ section.settings.bg }};">
+  <div class="page-width">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px; gap:16px; flex-wrap:wrap;">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="section-heading" style="font-size:clamp(22px,3vw,32px);">{{ section.settings.heading }}</h2>
+      </div>
+      {%- if section.settings.button_label != blank and coll -%}
+        <a href="{{ coll.url }}" class="link-underline">{{ section.settings.button_label }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if coll != blank and coll.products.size > 0 -%}
+      <div class="product-grid grid-{{ section.settings.columns }}">
+        {%- for product in coll.products limit: section.settings.product_limit -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p style="color:var(--taupe);">Choose a collection in the theme editor.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "You might also need" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "product_limit", "min": 2, "max": 12, "step": 1, "label": "Products", "default": 4 },
+    { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "Columns", "default": 4 },
+    { "type": "text", "id": "button_label", "label": "View-all label", "default": "View all →" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#FCFAF4" }
+  ],
+  "presets": [ { "name": "Featured collection" } ]
+}
+{% endschema %}

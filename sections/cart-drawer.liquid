@@ -1,0 +1,8 @@
+{%- comment -%}
+  Section wrapper so JS can fetch /?section_id=cart-drawer to refresh
+  the live cart contents after add/change.
+{%- endcomment -%}
+{% render 'cart-drawer' %}
+{% schema %}
+{ "name": "Cart drawer" }
+{% endschema %}

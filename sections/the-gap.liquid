@@ -1,0 +1,64 @@
+<section class="gap-grid">
+  <div class="gap-quote">
+    <div class="gap-quote__text">
+      {%- if section.settings.quote != blank -%}
+        <div class="gap-quote__pull">
+          <p>{{ section.settings.quote }}</p>
+          {%- if section.settings.attribution != blank -%}
+            <p style="font-family:var(--font-body); font-size:11px; color:rgba(255,255,255,.45); letter-spacing:.08em; text-transform:uppercase;">{{ section.settings.attribution }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.body != blank -%}
+        <div class="rte" style="font-family:var(--font-body); font-size:15px; color:rgba(255,255,255,.8); line-height:1.85;">{{ section.settings.body }}</div>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.image != blank -%}
+      <div class="gap-quote__media">{{ section.settings.image | image_url: width: 520 | image_tag: loading: 'lazy', alt: '' }}</div>
+    {%- endif -%}
+  </div>
+
+  <div class="gap-stats">
+    {%- for block in section.blocks -%}
+      <div class="gap-stat" {{ block.shopify_attributes }}>
+        <div class="gap-stat__num">{{ block.settings.number }}</div>
+        <div class="gap-stat__head">{{ block.settings.head }}</div>
+        <div class="gap-stat__body">{{ block.settings.body }}</div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "The gap (quote + stats)",
+  "settings": [
+    { "type": "inline_richtext", "id": "quote", "label": "Pull quote", "default": "“The doctors are extraordinary. But nobody thinks about the rest of you.”" },
+    { "type": "text", "id": "attribution", "label": "Attribution", "default": "— A recovery nurse we work with" },
+    { "type": "richtext", "id": "body", "label": "Body" },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Number", "default": "73%" },
+        { "type": "text", "id": "head", "label": "Headline", "default": "of patients" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "said nobody gave them guidance on what to wear before treatment." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "The gap (quote + stats)",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "73%", "head": "of patients", "body": "said nobody gave them guidance on what to wear before their first treatment appointment." } },
+        { "type": "stat", "settings": { "number": "62%", "head": "cite clothing", "body": "as a significant factor in how they feel emotionally on treatment days." } },
+        { "type": "stat", "settings": { "number": "89%", "head": "of our customers", "body": "felt more confident at their next appointment after receiving their kit." } },
+        { "type": "stat", "settings": { "number": "1 in 4", "head": "patients told us", "body": "they wore the same clothes to every appointment because figuring it out was too hard." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

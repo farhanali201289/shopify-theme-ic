@@ -1,0 +1,132 @@
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+-%}
+<section class="section" data-product-root>
+  <div class="page-width">
+
+    {%- comment -%} Breadcrumb {%- endcomment -%}
+    <nav class="rte" style="font-size:11px; color:var(--taupe); margin-bottom:16px;" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      {%- if collection.url -%} › <a href="{{ collection.url }}">{{ collection.title }}</a>{%- endif -%}
+      › <span>{{ product.title }}</span>
+    </nav>
+
+    <div class="pdp">
+      {%- comment -%} Gallery {%- endcomment -%}
+      <div class="pdp__gallery" data-gallery>
+        {%- if product.featured_media -%}
+          <img class="pdp__main-img" data-gallery-main src="{{ product.featured_media | image_url: width: 900 }}" alt="{{ product.featured_media.alt | default: product.title }}" width="900" height="1125">
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'pdp__main-img' }}
+        {%- endif -%}
+        {%- if product.media.size > 1 -%}
+          <div class="pdp__thumbs">
+            {%- for media in product.media limit: 8 -%}
+              <img class="pdp__thumb {% if forloop.first %}is-active{% endif %}" data-gallery-thumb data-full="{{ media | image_url: width: 900 }}" src="{{ media | image_url: width: 144 }}" alt="{{ media.alt | default: product.title }}" loading="lazy" width="72" height="72">
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Info {%- endcomment -%}
+      <div class="pdp__info">
+        {%- if product.type != blank -%}<div class="product-card__vendor">{{ product.type }}</div>{%- endif -%}
+        <h1 class="pdp__title">{{ product.title }}</h1>
+
+        <div class="pdp__price">
+          <span data-price>{{ current.price | money }}</span>
+          <s class="price__compare" data-compare {% unless current.compare_at_price > current.price %}style="display:none"{% endunless %}>{{ current.compare_at_price | money }}</s>
+        </div>
+
+        {% render 'rating', product: product %}
+
+        {%- comment -%} Short description / what's inside {%- endcomment -%}
+        {%- if product.metafields.custom.card_subtitle != blank -%}
+          <p class="section-subtext" style="font-size:14px; margin:12px 0;">{{ product.metafields.custom.card_subtitle }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Variant picker {%- endcomment -%}
+        <form data-product-form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" style="margin-top:16px;">
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <div class="pdp__option" data-option-index="{{ forloop.index0 }}">
+                <div class="pdp__option-label">
+                  <span>{{ option.name }}</span>
+                  {%- if option.name == 'Size' and section.settings.size_guide_link != blank -%}
+                    <a href="{{ section.settings.size_guide_link }}" class="link-underline" style="font-size:11px;">Sizing guide →</a>
+                  {%- endif -%}
+                </div>
+                <div class="pdp__swatches">
+                  {%- for value in option.values -%}
+                    <button type="button" class="pdp__swatch" data-value="{{ value | escape }}" aria-checked="{% if option.selected_value == value %}true{% else %}false{% endif %}">{{ value }}</button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+
+          <div class="pdp__option" style="max-width:140px;">
+            <div class="pdp__option-label"><span>{{ 'products.product.quantity' | t }}</span></div>
+            <div class="cart-line__qty" style="display:inline-flex;">
+              <button type="button" onclick="this.nextElementSibling.stepDown()">−</button>
+              <input type="number" name="quantity" value="1" min="1" inputmode="numeric">
+              <button type="button" onclick="this.previousElementSibling.stepUp()">+</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--accent btn--full" data-add-label="{{ 'products.product.add_to_cart' | t }}" {% unless current.available %}disabled{% endunless %} style="margin-top:6px;">
+            {%- if current.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+          </button>
+
+          <div class="pdp__trust">
+            <span>✓ 30-day comfort guarantee</span>
+            <span>✓ Free size exchange</span>
+            <span>✓ Ships in 1–2 days</span>
+          </div>
+        </form>
+
+        {%- comment -%} Accordions {%- endcomment -%}
+        <div class="pdp__accordion" style="margin-top:24px;">
+          {%- if product.description != blank -%}
+            <details open>
+              <summary>Details <span>＋</span></summary>
+              <div class="rte">{{ product.description }}</div>
+            </details>
+          {%- endif -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'accordion' -%}
+              <details {{ block.shopify_attributes }}>
+                <summary>{{ block.settings.title }} <span>＋</span></summary>
+                <div class="rte">{{ block.settings.content }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Variant data for JS {%- endcomment -%}
+  <script type="application/json" data-variants-json>{{ product.variants | json }}</script>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "url", "id": "size_guide_link", "label": "Sizing guide link" }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion row",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Shipping & returns" },
+        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Free shipping over $75. 30-day comfort guarantee. Free size exchanges.</p>" }
+      ]
+    }
+  ]
+}
+{% endschema %}
