@@ -1,27 +1,98 @@
 <section class="trust-strip" style="background: {{ section.settings.bg }};">
   <div class="trust-strip__inner">
     {%- for block in section.blocks -%}
-      {%- if forloop.index > 1 -%}<span class="trust-stat__divider">|</span>{%- endif -%}
+      {%- if forloop.index > 1 -%}<span class="trust-stat__divider" style="color: {{ section.settings.divider_color | default: '#8a8070' }};">|</span>{%- endif -%}
       <div class="trust-stat" {{ block.shopify_attributes }}>
-        <span class="trust-stat__val">{{ block.settings.value }}</span>
-        <span class="trust-stat__label">{{ block.settings.label }}</span>
+        <span class="trust-stat__val" style="color: {{ section.settings.value_color | default: '#F5F0E8' }};"
+          {%- if block.settings.counter_end != 0 %}
+            data-counter
+            data-end="{{ block.settings.counter_end }}"
+            data-prefix="{{ block.settings.counter_prefix }}"
+            data-suffix="{{ block.settings.counter_suffix }}"
+            data-duration="{{ section.settings.counter_duration }}"
+          {%- endif -%}
+        >
+          {%- if block.settings.counter_end != 0 -%}
+            {{ block.settings.counter_prefix }}0{{ block.settings.counter_suffix }}
+          {%- else -%}
+            {{ block.settings.value }}
+          {%- endif -%}
+        </span>
+        <span class="trust-stat__label" style="color: {{ section.settings.label_color | default: '#8a8070' }};">{{ block.settings.label }}</span>
       </div>
     {%- endfor -%}
   </div>
 </section>
 
+<script>
+  (function() {
+    var animated = false;
+    var counters = document.querySelectorAll('[data-counter]');
+    if (!counters.length) return;
+
+    function animateCounters() {
+      if (animated) return;
+      animated = true;
+      counters.forEach(function(el) {
+        var end = parseInt(el.dataset.end, 10);
+        var prefix = el.dataset.prefix || '';
+        var suffix = el.dataset.suffix || '';
+        var duration = parseInt(el.dataset.duration, 10) || 2000;
+        var start = 0;
+        var startTime = null;
+
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          var progress = Math.min((timestamp - startTime) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var current = Math.floor(eased * (end - start) + start);
+          el.textContent = prefix + current.toLocaleString() + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+          else el.textContent = prefix + end.toLocaleString() + suffix;
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateCounters();
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+      observer.observe(counters[0].closest('.trust-strip'));
+    } else {
+      animateCounters();
+    }
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Trust bar",
   "settings": [
-    { "type": "color", "id": "bg", "label": "Background", "default": "#1D1A14" }
+    { "type": "color", "id": "bg", "label": "Background color", "default": "#1D1A14" },
+    { "type": "color", "id": "value_color", "label": "Value text color", "default": "#F5F0E8" },
+    { "type": "color", "id": "label_color", "label": "Label text color", "default": "#8a8070" },
+    { "type": "color", "id": "divider_color", "label": "Divider color", "default": "#8a8070" },
+    {
+      "type": "range", "id": "counter_duration", "label": "Counter animation speed",
+      "min": 500, "max": 5000, "step": 250, "default": 2000, "unit": "ms"
+    }
   ],
   "blocks": [
     {
       "type": "stat",
       "name": "Stat",
       "settings": [
-        { "type": "text", "id": "value", "label": "Value", "default": "14k+" },
+        { "type": "text", "id": "value", "label": "Display value (if no counter)", "default": "14k+" },
+        { "type": "header", "content": "Counter animation" },
+        { "type": "number", "id": "counter_end", "label": "Counter end number (0 = off)", "default": 0 },
+        { "type": "text", "id": "counter_prefix", "label": "Prefix (before number)", "default": "" },
+        { "type": "text", "id": "counter_suffix", "label": "Suffix (after number)", "default": "" },
         { "type": "text", "id": "label", "label": "Label", "default": "patients served" }
       ]
     }
@@ -30,9 +101,9 @@
     {
       "name": "Trust bar",
       "blocks": [
-        { "type": "stat", "settings": { "value": "14k+", "label": "patients served" } },
+        { "type": "stat", "settings": { "value": "14k+", "counter_end": 14000, "counter_prefix": "", "counter_suffix": "+", "label": "patients served" } },
         { "type": "stat", "settings": { "value": "4.9 ★", "label": "1,200+ reviews" } },
-        { "type": "stat", "settings": { "value": "1,247", "label": "kits sponsored" } },
+        { "type": "stat", "settings": { "value": "1,247", "counter_end": 1247, "counter_prefix": "", "counter_suffix": "", "label": "kits sponsored" } },
         { "type": "stat", "settings": { "value": "<1%", "label": "return rate" } }
       ]
     }
