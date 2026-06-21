@@ -18,10 +18,10 @@
     {%- endif -%}
   </div>
 
-  <div class="gap-stats">
+  <div class="gap-stats" id="gap-stats-{{ section.id }}">
     {%- for block in section.blocks -%}
       <div class="gap-stat" {{ block.shopify_attributes }}>
-        <div class="gap-stat__num" data-gap-num>{{ block.settings.number }}</div>
+        <div class="gap-stat__num">{{ block.settings.number }}</div>
         <div class="gap-stat__head">{{ block.settings.head }}</div>
         <div class="gap-stat__body">{{ block.settings.body }}</div>
       </div>
@@ -31,56 +31,12 @@
 
 <style>
   {% render 'section-spacing', sid: section.id, s: section.settings %}
-  {% if section.settings.stats_2col_mob %}
   @media (max-width: 749px) {
-    #shopify-section-{{ section.id }} .gap-stats { grid-template-columns: 1fr 1fr; }
+    #shopify-section-{{ section.id }} .gap-stats {
+      grid-template-columns: 1fr 1fr !important;
+    }
   }
-  {% endif %}
 </style>
-
-<script>
-(function(){
-  var done = false;
-  var els = document.querySelectorAll('#gap-{{ section.id }} [data-gap-num]');
-  if (!els.length) return;
-
-  function parseNum(text) {
-    text = text.trim();
-    var m = text.match(/^([^0-9]*?)([\d,]+)(.*?)$/);
-    if (!m) return null;
-    return { prefix: m[1], num: parseInt(m[2].replace(/,/g, ''), 10), suffix: m[3] };
-  }
-
-  function run() {
-    if (done) return;
-    done = true;
-    els.forEach(function(el) {
-      var parsed = parseNum(el.textContent);
-      if (!parsed || isNaN(parsed.num)) return;
-      var end = parsed.num;
-      var pre = parsed.prefix;
-      var suf = parsed.suffix;
-      var t0 = null;
-      function tick(ts) {
-        if (!t0) t0 = ts;
-        var p = Math.min((ts - t0) / 1000, 1);
-        var e = 1 - Math.pow(1 - p, 3);
-        el.textContent = pre + Math.floor(e * end).toLocaleString() + suf;
-        if (p < 1) requestAnimationFrame(tick);
-        else el.textContent = pre + end.toLocaleString() + suf;
-      }
-      requestAnimationFrame(tick);
-    });
-  }
-
-  if ('IntersectionObserver' in window) {
-    var ob = new IntersectionObserver(function(entries) {
-      if (entries[0].isIntersecting) { run(); ob.disconnect(); }
-    }, { threshold: 0.3 });
-    ob.observe(document.getElementById('gap-{{ section.id }}'));
-  } else { run(); }
-})();
-</script>
 
 {% schema %}
 {
@@ -90,7 +46,6 @@
     { "type": "text", "id": "attribution", "label": "Attribution", "default": "— A recovery nurse we work with" },
     { "type": "richtext", "id": "body", "label": "Body" },
     { "type": "image_picker", "id": "image", "label": "Image" },
-    { "type": "checkbox", "id": "stats_2col_mob", "label": "Stats 2 columns on mobile", "default": false },
     { "type": "header", "content": "─── Spacing & Width ───" },
     { "type": "header", "content": "Padding — Desktop" },
     { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 20, "step": 1, "default": 4 },

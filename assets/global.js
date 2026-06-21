@@ -300,4 +300,35 @@
   document.querySelectorAll('[data-goto-url]').forEach((el) =>
     el.addEventListener('click', () => { window.location.href = el.dataset.gotoUrl; })
   );
+
+  /* ---------- Gap stats counter ---------- */
+  document.querySelectorAll('.gap-stat__num').forEach((el) => {
+    const text = el.textContent.trim();
+    const m = text.match(/^([^0-9]*?)([\d,]+)(.*?)$/);
+    if (!m) return;
+    const end = parseInt(m[2].replace(/,/g, ''), 10);
+    if (isNaN(end) || end === 0) return;
+    const pre = m[1], suf = m[3];
+    let fired = false;
+    function run() {
+      if (fired) return;
+      fired = true;
+      let t0 = null;
+      function tick(ts) {
+        if (!t0) t0 = ts;
+        const p = Math.min((ts - t0) / 1000, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + Math.floor(e * end).toLocaleString() + suf;
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = pre + end.toLocaleString() + suf;
+      }
+      requestAnimationFrame(tick);
+    }
+    if ('IntersectionObserver' in window) {
+      const ob = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { run(); ob.disconnect(); }
+      }, { threshold: 0.3 });
+      ob.observe(el);
+    } else { run(); }
+  });
 })();
