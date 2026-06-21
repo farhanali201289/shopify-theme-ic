@@ -1,13 +1,23 @@
+{%- liquid
+  assign img_pos = section.settings.image_position
+  assign reverse = false
+  if img_pos == 'left'
+    assign reverse = true
+  endif
+-%}
+
 <section class="section value-section">
   <div class="page-width">
-    <div class="value-intro">
-      <div>
-        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
-        <h2 class="section-heading">{{ section.settings.heading }}</h2>
-        {%- if section.settings.text != blank -%}<p class="section-subtext" style="margin-top:16px;">{{ section.settings.text }}</p>{%- endif -%}
+    <div class="value-intro {% if reverse %}value-intro--reverse{% endif %}">
+      <div class="value-intro__content">
+        {%- if section.settings.eyebrow != blank -%}<span class="vp-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2 class="vp-heading">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<p class="vp-text">{{ section.settings.text }}</p>{%- endif -%}
       </div>
       {%- if section.settings.image != blank -%}
-        <div class="value-intro__media">{{ section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: section.settings.heading | strip_html }}</div>
+        <div class="value-intro__media">
+          {{ section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: section.settings.heading | strip_html }}
+        </div>
       {%- endif -%}
     </div>
 
@@ -24,6 +34,107 @@
   </div>
 </section>
 
+{%- liquid
+  assign eb_lh = section.settings.eb_lh | times: 1.0 | divided_by: 10.0
+  assign eb_ls = section.settings.eb_ls | times: 1.0 | divided_by: 100.0
+  assign eb_lh_m = section.settings.eb_lh_m | times: 1.0 | divided_by: 10.0
+  assign eb_ls_m = section.settings.eb_ls_m | times: 1.0 | divided_by: 100.0
+
+  assign h_lh = section.settings.h_lh | times: 1.0 | divided_by: 10.0
+  assign h_ls = section.settings.h_ls | times: 1.0 | divided_by: 100.0
+  assign h_lh_m = section.settings.h_lh_m | times: 1.0 | divided_by: 10.0
+  assign h_ls_m = section.settings.h_ls_m | times: 1.0 | divided_by: 100.0
+
+  assign t_lh = section.settings.t_lh | times: 1.0 | divided_by: 10.0
+  assign t_ls = section.settings.t_ls | times: 1.0 | divided_by: 100.0
+  assign t_lh_m = section.settings.t_lh_m | times: 1.0 | divided_by: 10.0
+  assign t_ls_m = section.settings.t_ls_m | times: 1.0 | divided_by: 100.0
+
+  assign v_lh = section.settings.v_lh | times: 1.0 | divided_by: 10.0
+  assign v_ls = section.settings.v_ls | times: 1.0 | divided_by: 100.0
+  assign v_lh_m = section.settings.v_lh_m | times: 1.0 | divided_by: 10.0
+  assign v_ls_m = section.settings.v_ls_m | times: 1.0 | divided_by: 100.0
+-%}
+
+<style>
+  {%- capture s -%}#shopify-section-{{ section.id }}{%- endcapture -%}
+
+  {{ s }} .value-intro--reverse { direction: rtl; }
+  {{ s }} .value-intro--reverse > * { direction: ltr; }
+
+  {{ s }} .vp-eyebrow {
+    display: block;
+    color: {{ section.settings.eb_color | default: 'inherit' }};
+    font-size: {{ section.settings.eb_size }}px;
+    font-weight: {{ section.settings.eb_weight }};
+    text-align: {{ section.settings.eb_align }};
+    line-height: {{ eb_lh }};
+    letter-spacing: {{ eb_ls }}em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  {{ s }} .vp-heading {
+    color: {{ section.settings.h_color | default: 'inherit' }};
+    font-size: {{ section.settings.h_size }}px;
+    font-weight: {{ section.settings.h_weight }};
+    text-align: {{ section.settings.h_align }};
+    line-height: {{ h_lh }};
+    letter-spacing: {{ h_ls }}em;
+  }
+  {{ s }} .vp-text {
+    color: {{ section.settings.t_color | default: 'inherit' }};
+    font-size: {{ section.settings.t_size }}px;
+    font-weight: {{ section.settings.t_weight }};
+    text-align: {{ section.settings.t_align }};
+    line-height: {{ t_lh }};
+    letter-spacing: {{ t_ls }}em;
+    margin-top: 16px;
+  }
+  {{ s }} .value-cell__title {
+    color: {{ section.settings.v_color | default: 'var(--accent)' }};
+    font-size: {{ section.settings.v_size }}px;
+    font-weight: {{ section.settings.v_weight }};
+    text-align: {{ section.settings.v_align }};
+    line-height: {{ v_lh }};
+    letter-spacing: {{ v_ls }}em;
+  }
+
+  @media (max-width: 749px) {
+    {{ s }} .value-intro { grid-template-columns: 1fr; }
+    {{ s }} .value-intro--reverse { direction: ltr; }
+    {{ s }} .value-intro__media { order: -1; }
+
+    {{ s }} .vp-eyebrow {
+      font-size: {{ section.settings.eb_size_m }}px;
+      font-weight: {{ section.settings.eb_weight_m }};
+      text-align: {{ section.settings.eb_align_m }};
+      line-height: {{ eb_lh_m }};
+      letter-spacing: {{ eb_ls_m }}em;
+    }
+    {{ s }} .vp-heading {
+      font-size: {{ section.settings.h_size_m }}px;
+      font-weight: {{ section.settings.h_weight_m }};
+      text-align: {{ section.settings.h_align_m }};
+      line-height: {{ h_lh_m }};
+      letter-spacing: {{ h_ls_m }}em;
+    }
+    {{ s }} .vp-text {
+      font-size: {{ section.settings.t_size_m }}px;
+      font-weight: {{ section.settings.t_weight_m }};
+      text-align: {{ section.settings.t_align_m }};
+      line-height: {{ t_lh_m }};
+      letter-spacing: {{ t_ls_m }}em;
+    }
+    {{ s }} .value-cell__title {
+      font-size: {{ section.settings.v_size_m }}px;
+      font-weight: {{ section.settings.v_weight_m }};
+      text-align: {{ section.settings.v_align_m }};
+      line-height: {{ v_lh_m }};
+      letter-spacing: {{ v_ls_m }}em;
+    }
+  }
+</style>
+
 {% schema %}
 {
   "name": "Value proposition",
@@ -31,7 +142,75 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What we give back to you" },
     { "type": "richtext", "id": "heading", "label": "Heading", "default": "<p>You focus on getting better. <em>We've already handled the rest.</em></p>" },
     { "type": "text", "id": "text", "label": "Text", "default": "Every product came from a real patient telling us what they wished they'd had." },
-    { "type": "image_picker", "id": "image", "label": "Intro image" }
+    { "type": "image_picker", "id": "image", "label": "Intro image" },
+    {
+      "type": "select", "id": "image_position", "label": "Image position (desktop)",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "right"
+    },
+
+    { "type": "header", "content": "─── Eyebrow ───" },
+    { "type": "color", "id": "eb_color", "label": "Color" },
+    { "type": "header", "content": "Eyebrow — Desktop" },
+    { "type": "range", "id": "eb_size", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 11, "unit": "px" },
+    { "type": "select", "id": "eb_weight", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "select", "id": "eb_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "eb_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "eb_ls", "label": "Letter spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 12 },
+    { "type": "header", "content": "Eyebrow — Mobile" },
+    { "type": "range", "id": "eb_size_m", "label": "Font size", "min": 8, "max": 24, "step": 1, "default": 9, "unit": "px" },
+    { "type": "select", "id": "eb_weight_m", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "700" },
+    { "type": "select", "id": "eb_align_m", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "eb_lh_m", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 14 },
+    { "type": "range", "id": "eb_ls_m", "label": "Letter spacing (÷100 em)", "min": 0, "max": 30, "step": 1, "default": 12 },
+
+    { "type": "header", "content": "─── Heading ───" },
+    { "type": "color", "id": "h_color", "label": "Color" },
+    { "type": "header", "content": "Heading — Desktop" },
+    { "type": "range", "id": "h_size", "label": "Font size", "min": 16, "max": 80, "step": 1, "default": 36, "unit": "px" },
+    { "type": "select", "id": "h_weight", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "h_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "h_lh", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "h_ls", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+    { "type": "header", "content": "Heading — Mobile" },
+    { "type": "range", "id": "h_size_m", "label": "Font size", "min": 16, "max": 60, "step": 1, "default": 26, "unit": "px" },
+    { "type": "select", "id": "h_weight_m", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "h_align_m", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "h_lh_m", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 12 },
+    { "type": "range", "id": "h_ls_m", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "─── Text ───" },
+    { "type": "color", "id": "t_color", "label": "Color" },
+    { "type": "header", "content": "Text — Desktop" },
+    { "type": "range", "id": "t_size", "label": "Font size", "min": 10, "max": 30, "step": 1, "default": 15, "unit": "px" },
+    { "type": "select", "id": "t_weight", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "t_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "t_lh", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 16 },
+    { "type": "range", "id": "t_ls", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+    { "type": "header", "content": "Text — Mobile" },
+    { "type": "range", "id": "t_size_m", "label": "Font size", "min": 10, "max": 24, "step": 1, "default": 14, "unit": "px" },
+    { "type": "select", "id": "t_weight_m", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "t_align_m", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "t_lh_m", "label": "Line height (÷10)", "min": 10, "max": 25, "step": 1, "default": 16 },
+    { "type": "range", "id": "t_ls_m", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+
+    { "type": "header", "content": "─── Value title ───" },
+    { "type": "color", "id": "v_color", "label": "Color" },
+    { "type": "header", "content": "Value title — Desktop" },
+    { "type": "range", "id": "v_size", "label": "Font size", "min": 16, "max": 60, "step": 1, "default": 34, "unit": "px" },
+    { "type": "select", "id": "v_weight", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "v_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "v_lh", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 11 },
+    { "type": "range", "id": "v_ls", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 },
+    { "type": "header", "content": "Value title — Mobile" },
+    { "type": "range", "id": "v_size_m", "label": "Font size", "min": 14, "max": 48, "step": 1, "default": 26, "unit": "px" },
+    { "type": "select", "id": "v_weight_m", "label": "Font weight", "options": [{"value":"300","label":"Light"},{"value":"400","label":"Normal"},{"value":"600","label":"Semi-bold"},{"value":"700","label":"Bold"},{"value":"800","label":"Extra-bold"}], "default": "400" },
+    { "type": "select", "id": "v_align_m", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "v_lh_m", "label": "Line height (÷10)", "min": 8, "max": 20, "step": 1, "default": 11 },
+    { "type": "range", "id": "v_ls_m", "label": "Letter spacing (÷100 em)", "min": 0, "max": 20, "step": 1, "default": 0 }
   ],
   "blocks": [
     {

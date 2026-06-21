@@ -325,8 +325,8 @@ body.mega-open .header__overlay { opacity: 1; visibility: visible; }
 
 .value-section { background: var(--sand); }
 .value-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-bottom: 48px; }
-.value-intro__media { overflow: hidden; border-radius: var(--card-radius); height: 340px; }
-.value-intro__media img { width: 100%; height: 100%; object-fit: cover; }
+.value-intro__media { overflow: hidden; border-radius: var(--card-radius); }
+.value-intro__media img { width: 100%; height: auto; display: block; border-radius: var(--card-radius); }
 .value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--card-radius); overflow: hidden; }
 .value-cell { background: var(--cream); padding: 28px 24px; }
 .value-cell__icon { width: 44px; height: 44px; margin-bottom: 12px; color: var(--accent-dark); }
