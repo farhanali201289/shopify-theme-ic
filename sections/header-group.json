@@ -1,19 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {
-        "text": "Free shipping on orders over $75   ·   30-day comfort guarantee   ·   Free returns"
-      }
-    },
     "header": {
       "type": "header",
       "blocks": {
         "nav_shop": {
           "type": "nav_item",
-          "settings": { "title": "Shop", "url": "/collections/all", "mega_type": "shop" }
+          "settings": {
+            "title": "Shop",
+            "url": "/collections/all",
+            "mega_type": "shop",
+            "col1_heading": "",
+            "col1_links": "",
+            "col2_heading": "",
+            "col2_links": "",
+            "col3_heading": "",
+            "col3_links": "",
+            "col4_heading": "",
+            "col4_links": "",
+            "col5_heading": "",
+            "col5_links": ""
+          }
         },
         "nav_guides": {
           "type": "nav_item",
@@ -44,7 +61,11 @@
             "col2_heading": "Our Team",
             "col2_links": "Meet the Team | /pages/our-team\nWhat drives each of us | /pages/our-team",
             "col3_heading": "Our Promise",
-            "col3_links": "Quality & Craft | /pages/our-commitment\nCustomer care & our commitment | /pages/our-commitment"
+            "col3_links": "Quality & Craft | /pages/our-commitment\nCustomer care & our commitment | /pages/our-commitment",
+            "col4_heading": "",
+            "col4_links": "",
+            "col5_heading": "",
+            "col5_links": ""
           }
         },
         "nav_partners": {
@@ -58,7 +79,11 @@
             "col2_heading": "Nonprofits & Causes",
             "col2_links": "Patient Advocacy Orgs | /pages/partners-nonprofits\nSponsor a Kit | /pages/sponsor-a-kit\nHospital Gifting Program | /pages/partners-nonprofits\nGrant Partnerships | /pages/partners-nonprofits",
             "col3_heading": "Creators & Ambassadors",
-            "col3_links": "Patient Ambassadors | /pages/ambassadors\nContent Creators | /pages/partners-creators\nAffiliate Program | /pages/partners-creators\nShare Your Story | /pages/ambassadors"
+            "col3_links": "Patient Ambassadors | /pages/ambassadors\nContent Creators | /pages/partners-creators\nAffiliate Program | /pages/partners-creators\nShare Your Story | /pages/ambassadors",
+            "col4_heading": "",
+            "col4_links": "",
+            "col5_heading": "",
+            "col5_links": ""
           }
         },
         "cond_dialysis": {
@@ -167,8 +192,21 @@
           }
         }
       },
-      "block_order": ["nav_shop", "nav_guides", "nav_story", "nav_partners", "cond_dialysis", "cond_iv", "cond_mastectomy", "cond_chemo", "cond_surgery", "cond_gifts", "cond_accessories"],
+      "block_order": [
+        "nav_shop",
+        "nav_guides",
+        "nav_story",
+        "nav_partners",
+        "cond_dialysis",
+        "cond_iv",
+        "cond_mastectomy",
+        "cond_chemo",
+        "cond_surgery",
+        "cond_gifts",
+        "cond_accessories"
+      ],
       "settings": {
+        "logo_tagline": "Adaptive recovery clothing",
         "menu": "main-menu",
         "show_search": true,
         "show_account": false,
@@ -176,9 +214,32 @@
         "cta_link": "/pages/find-my-kit",
         "shop_save_badge": "Build a kit · any 3 save 15%, add a 4th for 20%",
         "shop_byo_eyebrow": "Build your own kit · you choose the pieces",
-        "shop_byo_heading": "Any 3 pieces, save 15%. Add a 4th — save 20%."
+        "shop_byo_heading": "Any 3 pieces, save 15%. Add a 4th — save 20%.",
+        "mega_cond_size": 14,
+        "mega_cond_color": "",
+        "mega_cond_active_color": "",
+        "mega_tag_size": 11,
+        "mega_tag_color": "",
+        "mega_title_size": 26,
+        "mega_title_color": "",
+        "mega_link_size": 13,
+        "mega_link_color": "",
+        "mega_label_size": 9.5,
+        "mega_label_color": ""
+      }
+    },
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "text": "Free shipping on orders over $75   ·   30-day comfort guarantee   ·   Free returns",
+        "link": "",
+        "bg": "#1d1a14",
+        "text_color": "#ffffff"
       }
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "header",
+    "announcement-bar"
+  ]
 }
